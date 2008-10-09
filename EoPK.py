@@ -1178,6 +1178,8 @@ class MainWindow(wx.Frame):
 			for cgid in zone:
 				card = self.client.gameState.FindCard(cgid)
 				self.client.Send(netcore.Msg('set-card-property', cgid=card.cgid, property='tapped', value=False))
+				for token in card.markers:
+					self.client.Send(netcore.Msg('set-markers', cgid=card.cgid, token=token, number=0))
 	
 	def OnMenuCreateCard(self, event):
 		if self.client and self.client.Playing():
