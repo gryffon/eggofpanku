@@ -849,6 +849,12 @@ class MainWindow(wx.Frame):
 		toolbar.AddLabelTool(ID_MNU_STRAIGHTEN_ALL, 'Straighten all', wx.Bitmap('images/tlb_icon_straighten_all.png'),
 			shortHelp='Straighten all', longHelp='Straighten all cards you control in play.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuStraightenAll, id=ID_MNU_STRAIGHTEN_ALL)
+
+		#Toolbar Icon for Remove all Markers
+		#Added by PCW 10/10/2008
+		toolbar.AddLabelTool(ID_MNU_REMOVE_MARKERS, 'Remove all markers', wx.Bitmap('images/tlb_icon_remove_markers.png'),
+			shortHelp='Remove All Markers', longHelp='Remove all the markers from cards.')
+		self.Bind(wx.EVT_TOOL, self.OnMenuRemoveAllMarkers, id=ID_MNU_REMOVE_MARKERS)
 		
 		toolbar.AddSeparator()
 		toolbar.AddLabelTool(ID_MNU_FAMILY_HONOR_SET, 'Set family honor', wx.Bitmap('images/tlb_icon_honor.png'),
@@ -941,6 +947,7 @@ class MainWindow(wx.Frame):
 		#mnuGame.Append(ID_MNU_PHASE_CLEANUP, "Cleanup Phase", "Go to the cleanup phase.")
 		#mnuGame.AppendSeparator()
 		mnuGame.Append(ID_MNU_STRAIGHTEN_ALL, "&Straighten All\tCtrl+U", "Straighten all your cards in play.")
+		mnuGame.Append(ID_MNU_REMOVE_MARKERS, "Remove All &Markers\tCtrl+M", "Remove all the markers your cards.")
 		mnuGame.AppendSeparator()
 		mnuGame.Append(ID_MNU_FAMILY_HONOR_SET, "Set Family &Honor...\tCtrl+H", "Set your current family honor directly to some value.")
 		mnuGame.Append(ID_MNU_FAMILY_HONOR_INC, "Increase Family Honor\tCtrl+Up", "Increase your current family honor by 1.")
@@ -1096,6 +1103,8 @@ class MainWindow(wx.Frame):
 			menuBar.EnableTop(x, enable)
 		# Tools too.
 		self.GetToolBar().EnableTool(ID_MNU_STRAIGHTEN_ALL, enable)
+		#added by PCW, 10/10/2008
+		self.GetToolBar().EnableTool(ID_MNU_REMOVE_MARKERS,enable)
 		self.GetToolBar().EnableTool(ID_MNU_FAMILY_HONOR_SET, enable)
 		self.GetToolBar().EnableTool(ID_MNU_FAMILY_HONOR_INC, enable)
 		self.GetToolBar().EnableTool(ID_MNU_FAMILY_HONOR_DEC, enable)
@@ -1744,6 +1753,16 @@ class MainWindow(wx.Frame):
 		if dlg.ShowModal() == wx.ID_OK:
 			numMarkers = self.contextCard.NumMarkers(token.name) - int(dlg.GetNumber())
 			self.client.Send(netcore.Msg('set-markers', cgid=self.contextCard.cgid, marker=token.name, number=numMarkers))
+
+	def OnMenuRemoveAllMarkers(self, evt):
+		#check to make sure you're paying a game
+		if self.client and self.client.Playing():
+			zone = self.client.localPlayer.zones[game.ZONE_PLAY]
+			#get for each card, get the markers and send a 'set-markers' number=0
+			for cgid in zone:
+				card = self.client.gameState.FindCard(cgid)
+				for token in card.markers:
+					self.client.Send(netcore.Msg('set-markers', cgid=card.cgid, token=token, number=0))
 
 	#--------------------------
 	# end of changes
