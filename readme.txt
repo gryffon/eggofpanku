@@ -210,6 +210,13 @@ Technical details
 
 News & Changes
 
+  2008-Oct-8 Egg of P'an Ku 0.8.2
+  	* Markers were added to the game. Like Tokens, you can put attach these to a
+	card to show value changes. Unlike tokens, the markers are removed when a 
+	player unbows all his cards (signalling the start of a turn).
+	* Added Marker images
+	
+
   2008-Jun-4 Egg of P'an Ku 0.8.0
 
     * They playfield is now split into compartments, one for each player.

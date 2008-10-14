@@ -141,6 +141,7 @@ if len(sys.argv) == 1:
 	sys.argv.append("py2exe")
 	sys.argv.append("-q")
 
+sys.stdout = open('py2exe-output.log','w')
 
 deckfiles = ['decks\\Crab Followers.l5d', 'decks\\Dragon Ring Honor.l5d', \
 			'decks\\Spider Enlightenment.l5d', 'decks\\Scorpion Ninja.l5d']
@@ -173,7 +174,7 @@ setup(
 	options={
 		'py2exe':{
 			'excludes':['doctest', '_ssl', 'optparse', 'Numeric', 'simplejson._speedups'],
-			'optimize':2,
+			'optimize':3,
 		},
 	},
 	data_files=[
