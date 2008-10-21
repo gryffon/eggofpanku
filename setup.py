@@ -18,8 +18,10 @@ import shutil
 import guids
 
 
-NSIS_DIR = 'g:\\development\\tools\\nsis'
-UPX_DIR = 'g:\\development\\tools\\upx'
+
+
+NSIS_DIR = 'c:\\Program Files\\NSIS'
+UPX_DIR = 'c:\\upx303w'
 
 manifestxml = '''
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -137,11 +139,13 @@ Section "Uninstall"
 SectionEnd
 '''
 
+sys.stdout = open('py2exe-output.log','w')
+
+
 if len(sys.argv) == 1:
 	sys.argv.append("py2exe")
 	sys.argv.append("-q")
 
-sys.stdout = open('py2exe-output.log','w')
 
 deckfiles = ['decks\\Crab Followers.l5d', 'decks\\Dragon Ring Honor.l5d', \
 			'decks\\Spider Enlightenment.l5d', 'decks\\Scorpion Ninja.l5d']
@@ -173,8 +177,10 @@ setup(
 	zipfile='sys/library.zip',
 	options={
 		'py2exe':{
-			'excludes':['doctest', '_ssl', 'optparse', 'Numeric', 'simplejson._speedups'],
-			'optimize':3,
+			'excludes':['doctest', '_ssl', 'optparse', 'Numeric', 'simplejson._speedups',
+						"Tkconstants","Tkinter","tcl" ],
+			'packages':['OpenGL'],
+			'optimize':2,
 		},
 	},
 	data_files=[
@@ -214,11 +220,12 @@ nsis = nsis_template \
 file('dist/eopk.nsi', 'wb').write(nsis)
 
 try:
+	sys.stdout.write('\r\n---------------------------------------------------------------\r\n making Dirs \r\n')
 	os.makedirs(srcdest)
 except:
 	pass
 
-subprocess.Popen('%s\\makensis dist\\eopk.nsi' % NSIS_DIR, stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
+#subprocess.Popen('%s\\makensis dist\\eopk.nsi' % NSIS_DIR, stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
 
 # Ensure target directory exists
 srcdest = 'dist-src/eopk-%s-src' % guids.EOPK_VERSION_FULL
