@@ -57,8 +57,8 @@ OutFile "eopk-%%%VERSION%%%-win32.exe"
 InstallDir "$PROGRAMFILES\%%%APPNAME%%%"
 InstallDirRegKey HKCU "Software\%%%APPNAME%%%" ""
 
-LangString Homepage ${LANG_ENGLISH} "Visit eopk.monkeyblah.com for more information."
-LangString HomepageLink ${LANG_ENGLISH} "http://eopk.monkeyblah.com/"
+LangString Homepage ${LANG_ENGLISH} "Visit http://code.google.com/p/eopk/ for more information."
+LangString HomepageLink ${LANG_ENGLISH} "http://code.google.com/p/eopk/"
 
 ;--------------------------------------------------------
 XPStyle on
@@ -225,7 +225,7 @@ try:
 except:
 	pass
 
-#subprocess.Popen('%s\\makensis dist\\eopk.nsi' % NSIS_DIR, stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
+subprocess.Popen('%s\\makensis dist\\eopk.nsi' % NSIS_DIR, stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
 
 # Ensure target directory exists
 srcdest = 'dist-src/eopk-%s-src' % guids.EOPK_VERSION_FULL

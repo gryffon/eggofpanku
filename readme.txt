@@ -1,7 +1,7 @@
 
 
 
-                    EGG OF P'AN KU 0.8.0 (2008-Jun-4)
+                    EGG OF P'AN KU 0.8.2 (2008-OCt-21)
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -211,9 +211,11 @@ Technical details
 News & Changes
 
   2008-Oct-8 Egg of P'an Ku 0.8.2
-  	* Markers were added to the game. Like Tokens, you can put attach these to a
+
+	* Markers were added to the game. Like Tokens, you can put attach these to a
 	card to show value changes. Unlike tokens, the markers are removed when a 
-	player unbows all his cards (signalling the start of a turn).
+	player unbows all his cards (signalling the start of a turn), or they can be
+	removed by the "remove markers" menu item and buttons
 	* Added Marker images
 	
 
@@ -330,7 +332,11 @@ News & Changes
 
 
 
-Egg of P'an Ku is Copyright (C) 2008 Peter C O Johansson. For news and
-updates, see http://www.monkeyblah.com.
+Egg of P'an Ku is Copyright (C) 2008 Peter C O Johansson.
+
+Modifications to this source were done by Paige Watson
+
+Download new versions at http://code.google.com/p/eopk/
+Origianl website is http://www.monkeyblah.com.
 
 
