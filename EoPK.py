@@ -248,18 +248,41 @@ class AddTokenDialog(wx.Dialog):
 # This is the Game Match Service Connection Dialog
 # This class is derived from ConnectionDialog
 #-----------------------------------
-class AddMarkerDialog(AddTokenDialog):
+class AddMarkerDialog(wx.Dialog):
+
+	MarkerTypes =  {
+		'Crab':'crab',
+		'Crane':'crane',
+		'Dragon':'dragon',
+		'Imperial':'imperial',
+		'Lion':'lion',
+		'Mantis':'mantis',
+		'Phoenix':'phoenix',
+		'Scorpion':'scorpion',
+		'Shadowlands':'shadowlands',
+		'Spider':'spider',
+		'Unicorn':'unicorn',
+		'Unaligned':'imperial',
+		'Generic':'generic'
+	}		
+	
 	def __init__(self, parent, title='Add Markers', token=None):
 		wx.Dialog.__init__(self, parent, wx.ID_ANY, title, size=(240, 160))
 		
 		sbDeck = wx.StaticBox(self, -1, 'Markers')
 		sbsizer = wx.StaticBoxSizer(sbDeck, wx.HORIZONTAL)
 		
-		sbsizer.Add(wx.StaticText(self, label='Marker type:'), 0, wx.CENTRE|wx.ALL, 5)
-		
 		if token is None:
 			self.txtMarkerType = wx.TextCtrl(self, size=(120, -1))
 			sbsizer.Add(self.txtMarkerType, 1, wx.CENTRE|wx.ALL, 5)
+
+			self.cmbType = wx.ComboBox(self, size=(200,-1), style=wx.CB_READONLY)
+			for type in self.MarkerTypes:
+				self.cmbType.Append(type)
+
+			self.cmbType.SetValue('Generic')
+			sbsizer.Add(self.cmbType, 0, wx.CENTRE|wx.ALL|wx.EXPAND, 5)
+
 		else:
 			self.token = token
 			sbsizer.Add(wx.StaticText(self, label=token), 0, wx.CENTRE|wx.ALL, 5)
@@ -290,6 +313,22 @@ class AddMarkerDialog(AddTokenDialog):
 			return self.token
 		except AttributeError:
 			return self.txtMarkerType.GetValue()
+
+	def GetTokenImage(self):
+		try:
+			if self.token is not None:
+				return None
+			else:
+				tokenImage = self.MarkerTypes[self.cmbType.GetValue()]
+				print 'tokenimage =  %s' % (tokenImage)
+				imagePath = game.MARKER_IMAGE_PREFIX + tokenImage + '.png'
+				return imagePath
+
+		except AttributeError:
+				tokenImage = self.MarkerTypes[self.cmbType.GetValue()]
+				print 'tokenimage =  %s' % (tokenImage)
+				imagePath = game.MARKER_IMAGE_PREFIX + tokenImage + '.png'
+				return imagePath
 	
 	def GetNumber(self):
 		return int(self.txtMarkerNumber.GetValue())
@@ -1073,13 +1112,14 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_KILL_DISCARD, self.OnMenuCardKillDiscard)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_DECK_TOP, self.OnMenuCardDeckTop)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_DECK_BOTTOM, self.OnMenuCardDeckBottom)
+		
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_TOKEN_ADD_CUSTOM, self.OnMenuCardAddCustomToken)
 		wx.EVT_MENU_RANGE(self, ID_MNU_CARDPOPUP_TOKEN_ADD, ID_MNU_CARDPOPUP_TOKEN_ADD + 99, self.OnMenuCardAddToken)
 		wx.EVT_MENU_RANGE(self, ID_MNU_CARDPOPUP_TOKEN_REMOVE, ID_MNU_CARDPOPUP_TOKEN_REMOVE + 99, self.OnMenuCardRemoveToken)
 
 		#Added by PCW 08/23/2008
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_MARKER_ADD_CUSTOM, self.OnMenuCardAddCustomMarker)
-		wx.EVT_MENU_RANGE(self, ID_MNU_CARDPOPUP_MARKER_ADD_CUSTOM, ID_MNU_CARDPOPUP_MARKER_ADD_CUSTOM + 49, self.OnMenuCardAddMarker)
+		wx.EVT_MENU_RANGE(self, ID_MNU_CARDPOPUP_MARKER_ADD, ID_MNU_CARDPOPUP_MARKER_ADD + 49, self.OnMenuCardAddMarker)
 		wx.EVT_MENU_RANGE(self, ID_MNU_CARDPOPUP_MARKER_REMOVE, ID_MNU_CARDPOPUP_MARKER_REMOVE + 49, self.OnMenuCardRemoveMarker)
 
 		wx.EVT_MENU_RANGE(self, ID_MNU_CARDPOPUP_CONTROL, ID_MNU_CARDPOPUP_CONTROL+49, self.OnMenuCardChangeControl)
@@ -1188,7 +1228,8 @@ class MainWindow(wx.Frame):
 				card = self.client.gameState.FindCard(cgid)
 				self.client.Send(netcore.Msg('set-card-property', cgid=card.cgid, property='tapped', value=False))
 				for token in card.markers:
-					self.client.Send(netcore.Msg('set-markers', cgid=card.cgid, token=token, number=0))
+					marker = game.FindMarkerTemplate(game, token)
+					self.client.Send(netcore.Msg('set-markers', cgid=card.cgid, token=marker.name, number=0, image=marker.image))
 	
 	def OnMenuCreateCard(self, event):
 		if self.client and self.client.Playing():
@@ -1729,8 +1770,11 @@ class MainWindow(wx.Frame):
 	def OnMenuCardAddCustomMarker(self, evt):
 		dlg = AddMarkerDialog(self)
 		if dlg.ShowModal() == wx.ID_OK:
-			numMarkers = self.contextCard.numMarkers(dlg.GetToken()) + int(dlg.GetNumber())
-			self.client.Send(netcore.Msg('set-markers', cgid=self.contextCard.cgid, token=dlg.GetToken(), number=numMarkers))
+			numMarkers = self.contextCard.NumMarkers(dlg.GetToken()) + int(dlg.GetNumber())
+			customImage = dlg.GetTokenImage()
+			markerName = dlg.GetToken()
+			game.AddMarkerTemplate(markerName, customImage)
+			self.client.Send(netcore.Msg('set-markers', cgid=self.contextCard.cgid, token= markerName, number=numMarkers, image=customImage))
 		
 	def OnMenuCardAddMarker(self, evt):
 		# Figure out what kind of token.
@@ -1741,7 +1785,7 @@ class MainWindow(wx.Frame):
 		dlg = AddMarkerDialog(self, token=token.name)
 		if dlg.ShowModal() == wx.ID_OK:
 			numMarkers = self.contextCard.NumMarkers(token.name) + int(dlg.GetNumber())
-			self.client.Send(netcore.Msg('set-markers', cgid=self.contextCard.cgid, token=token.name, number=numMarkers))
+			self.client.Send(netcore.Msg('set-markers', cgid=self.contextCard.cgid, token=token.name, number=numMarkers, image=token.image))
 
 	def OnMenuCardRemoveMarker(self, evt):
 		# Figure out what kind of token.
@@ -1752,7 +1796,7 @@ class MainWindow(wx.Frame):
 		dlg = AddMarkerDialog(self, title='Remove markers', token=token.name)
 		if dlg.ShowModal() == wx.ID_OK:
 			numMarkers = self.contextCard.NumMarkers(token.name) - int(dlg.GetNumber())
-			self.client.Send(netcore.Msg('set-markers', cgid=self.contextCard.cgid, marker=token.name, number=numMarkers))
+			self.client.Send(netcore.Msg('set-markers', cgid=self.contextCard.cgid, token=token.name, number=numMarkers, image=token.image))
 
 	def OnMenuRemoveAllMarkers(self, evt):
 		#check to make sure you're paying a game
@@ -1762,7 +1806,8 @@ class MainWindow(wx.Frame):
 			for cgid in zone:
 				card = self.client.gameState.FindCard(cgid)
 				for token in card.markers:
-					self.client.Send(netcore.Msg('set-markers', cgid=card.cgid, token=token, number=0))
+					marker = game.FindMarkerTemplate(game, token)
+					self.client.Send(netcore.Msg('set-markers', cgid=card.cgid, token=marker.name, number=0, image=marker.image))
 
 	#--------------------------
 	# end of changes
@@ -2236,8 +2281,12 @@ class MainWindow(wx.Frame):
 		#print '%s' % (event.token)
 		# This is important -- make sure the marker exists in our list of available markers.
 		# If it doesn't, the menus will break.
-		if event.token not in game.MarkerNames:
-			game.AddMarkerTemplate(event.token)
+		if event.token not in game.MarkerNames:	
+			print '%s' % (event.image)
+			if event.image is None:
+				game.AddMarkerTemplate(event.token)
+			else:
+				game.AddMarkerTemplate(event.token, event.image)
 		
 		card = self.client.gameState.FindCard(event.cgid)
 

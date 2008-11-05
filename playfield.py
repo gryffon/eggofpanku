@@ -304,14 +304,16 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 			tex = self.texMarker[token]
 		except KeyError:
 			try:
-				tokenImage = game.MarkerTemplates[game.MarkerNames[token]].image
+				marker = game.FindMarkerTemplate(game, token)
+				tokenImage = marker.image
 			except KeyError:
-				tokenImage = game.MARKER_DEFAULT_IMAGE
+				tokenImage = game.MARKER_IMAGE_PREFIX + game.MARKER_DEFAULT_IMAGE + game.MARKER_IMAGE_EXTENSION
 
 			try:
 				self.texMarker[token] = self.LoadTexture(tokenImage)
 			except IOError:
-				self.texMarker[token] = self.LoadTexture(game.MARKER_DEFAULT_IMAGE)
+				defaultImage = game.MARKER_IMAGE_PREFIX + game.MARKER_DEFAULT_IMAGE + game.MARKER_IMAGE_EXTENSION
+				self.texMarker[token] = self.LoadTexture(defaultImage)
 		
 		glPushMatrix()
 		glColor4f(1.0, 1.0, 1.0, 1.0)

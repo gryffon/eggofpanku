@@ -31,8 +31,10 @@ ZONE_FOCUS_POOL = 8       # Focus pool
 NUM_ZONES = 9
 
 TOKEN_DEFAULT_IMAGE = 'images/tokens/token_generic.png'
-MARKER_DEFAULT_IMAGE = 'images/markers/marker_generic.png'
-
+MARKER_DEFAULT_IMAGE = 'generic'
+MARKER_IMAGE_PREFIX = 'images/markers/marker_'
+MARKER_IMAGE_EXTENSION = '.png'
+	
 zoneNames = ['limbo', 'dynasty deck', 'fate deck', 'dynasty discard pile', 'fate discard pile', 'hand', 'removed-from-game pile', 'play', 'focus pool']
 
 class GameException(Exception):
@@ -324,9 +326,17 @@ MarkerTemplates = []
 MarkerNames = {}
 
 def AddMarkerTemplate(name, image=MARKER_DEFAULT_IMAGE):
-	tpl = MarkerTemplate(name, image)
+	imagePath = MARKER_IMAGE_PREFIX + image + MARKER_IMAGE_EXTENSION
+	tpl = MarkerTemplate(name, imagePath)
 	MarkerTemplates.append(tpl)
 	MarkerNames[name] = len(MarkerTemplates) - 1
+
+def FindMarkerTemplate(self, name):
+	for marker in self.MarkerTemplates:
+		if marker.name == name:
+			return marker
+
+	return None
 
 try:
 	for line in file('markers.dat', 'rb'):

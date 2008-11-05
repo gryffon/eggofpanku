@@ -589,16 +589,15 @@ class Server(threading.Thread):
 	#--------------------
 	
 	@MustBePlayer
-	def HandleSetMarkers(self, client, cgid, token, number):
+	def HandleSetMarkers(self, client, cgid, token, number, image):
 		card = self.gameState.FindCard(cgid)
 		if card.location.owner != client.player:  # We can only put markers on our own guys.
 			return
 		
 		if number < 0:  # There can't be fewer than no markers on a card.
 			number = 0;
-			
 		card.SetMarkers(token, number)
-		self.Broadcast(Msg('set-markers', pid=client.player.pid, cgid=cgid, token=token, number=number))
+		self.Broadcast(Msg('set-markers', pid=client.player.pid, cgid=cgid, token=token, number=number, image=image))
 
 	#--------------------
 	# End of additions
@@ -1032,11 +1031,11 @@ class Client(threading.Thread):
 	# These are the handlers for adding custom markers to the cards
 	# Markers will be removed at the end of every turn.
 	#--------------------------
-	def HandleSetMarkers(self, pid, cgid, token, number):
+	def HandleSetMarkers(self, pid, cgid, token, number, image):
 		card = self.gameState.FindCard(cgid)
 		change = number - card.NumMarkers(token)
 		card.SetMarkers(token, number)
-		wx.PostEvent(self._eventTarget, ClientSetMarkersEvent(pid=pid, cgid=cgid, token=token, number=number, change=change))
+		wx.PostEvent(self._eventTarget, ClientSetMarkersEvent(pid=pid, cgid=cgid, token=token, number=number, change=change, image=image))
 
 	#--------------------------
 	# end of changes
