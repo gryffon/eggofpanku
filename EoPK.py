@@ -843,7 +843,7 @@ class MainWindow(wx.Frame):
 		db = database.get()
 		self.PrintToChat("%s %s -- an unofficial" \
 			" Legend of the Five Rings online tabletop Copyright (C) 2008" \
-			" Peter C O Johansson " % (EOPK_APPNAME, EOPK_VERSION_STRING))
+			" Peter C O Johansson" % (EOPK_APPNAME, EOPK_VERSION_STRING))
 		self.PrintToChat("%s comes with ABSOLUTELY NO WARRANTY." \
 			" This is free software, and you are welcome to redistribute it" \
 			" under certain conditions; see license.txt for details." % EOPK_APPNAME)
