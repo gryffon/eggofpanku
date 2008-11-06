@@ -320,14 +320,18 @@ class AddMarkerDialog(wx.Dialog):
 				return None
 			else:
 				tokenImage = self.MarkerTypes[self.cmbType.GetValue()]
-				print 'tokenimage =  %s' % (tokenImage)
-				imagePath = game.MARKER_IMAGE_PREFIX + tokenImage + '.png'
+				#print 'AddMarkerDialog.GetTokenImage tokenimage =  %s' % (tokenImage)
+				#imagePath = game.MARKER_IMAGE_PREFIX + tokenImage + '.png'
+				imagePath = tokenImage
+				print 'AddMarkerDialog.GetTokenImage imagePath =  %s' % (imagePath)
 				return imagePath
 
 		except AttributeError:
 				tokenImage = self.MarkerTypes[self.cmbType.GetValue()]
-				print 'tokenimage =  %s' % (tokenImage)
-				imagePath = game.MARKER_IMAGE_PREFIX + tokenImage + '.png'
+				#print 'AddMarkerDialog.GetTokenImage tokenimage =  %s' % (tokenImage)
+				#imagePath = game.MARKER_IMAGE_PREFIX + tokenImage + '.png'
+				imagePath = tokenImage
+				print 'AddMarkerDialog.GetTokenImage imagePath =  %s' % (imagePath)
 				return imagePath
 	
 	def GetNumber(self):
@@ -2282,7 +2286,7 @@ class MainWindow(wx.Frame):
 		# This is important -- make sure the marker exists in our list of available markers.
 		# If it doesn't, the menus will break.
 		if event.token not in game.MarkerNames:	
-			print '%s' % (event.image)
+			#print '%s' % (event.image)
 			if event.image is None:
 				game.AddMarkerTemplate(event.token)
 			else:

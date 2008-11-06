@@ -210,6 +210,11 @@ Technical details
 
 News & Changes
 
+  2008-Nov-6 Egg of P'an Ku 0.8.3
+
+	* Added Custom Markers, including custom marker images, the default being generic.
+	* Fixed a bug with removing all markers and marker display.
+
   2008-Oct-8 Egg of P'an Ku 0.8.2
 
 	* Markers were added to the game. Like Tokens, you can put attach these to a
@@ -217,6 +222,8 @@ News & Changes
 	player unbows all his cards (signalling the start of a turn), or they can be
 	removed by the "remove markers" menu item and buttons
 	* Added Marker images
+	* Added a toolbar item to "remove all markers" from all cards in play on a players side.
+	* Straighten all now removes all markers from a players side as well.
 	
 
   2008-Jun-4 Egg of P'an Ku 0.8.0

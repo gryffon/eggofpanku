@@ -1,14 +1,7 @@
 +1F:images/tokens/token_p1f.png
 +2F:images/tokens/token_p2f.png
 +1C:images/tokens/token_p1c.png
-+2C:images/tokens/token_p2c.png
-+2F/-1C Oath:images/tokens/token_generic.png
 -1F:images/tokens/token_generic.png
--2F:images/tokens/token_m2f.png
 -1C:images/tokens/token_generic.png
--2C:images/tokens/token_generic.png
--1C Corruption:images/tokens/token_corruption_1c.png
 -1F/-1C:images/tokens/token_generic.png
--1F/-1C Corruption:images/tokens/token_corruption_1f1c.png
--5F/-2C Rock:images/tokens/token_rock.png
 Wealth:images/tokens/token_wealth.png
