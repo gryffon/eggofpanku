@@ -20,6 +20,7 @@
 import xml.parsers.expat
 import os
 import cPickle
+import odict
 
 cardAttrs = ("name", "force", "chi", "text", "cost", "focus", \
 	"personal_honor", "honor_req", "starting_honor", \
@@ -28,12 +29,21 @@ cardTypes = ['Strongholds', 'Regions', 'Holdings', 'Events', \
 	'Personalities', 'Actions', 'Items', 'Followers', 'Spells', 'Rings', \
 	'Ancestors', 'Senseis', 'Winds']
 factions = ['Phoenix', 'Dragon', 'Mantis', 'Crab', 'Spider', 'Scorpion', \
-	'Lion', 'Unicorn', 'Crane', 'Ratling', 'Shadowlands', 'Naga', 'Monk', \
-	'Ninja']
-legalityFormats = ('Samurai', 'Lotus', 'Diamond', 'Gold', 'Jade', 'Open')
-cardSets = dict([line.strip().split(':') for line in file('sets.dat', 'rb')])
+	'Lion', 'Unicorn', 'Crane','Shadowlands']
+minorClans = ['Ratling', 'Naga', 'Monk', \
+	'Ninja', 'Hare', 'Toturi\'s Army', 'Monkey', 'Spirit']
+#sort the factions
+minorClans.sort()
+factions.sort()
+#add the minors to the list
+factions.extend(minorClans)
+
+legalityFormats = ('Samurai', 'Lotus', 'Diamond', 'Gold', 'Jade', 'Open') #'Celestial', 
+
+cardSets = odict.OrderedDict([line.strip().split(':') for line in file('sets.dat', 'rb')])
 
 LOCALDATABASE = 'cards.db'
+
 
 
 class CardData:
@@ -54,7 +64,7 @@ class CardData:
 	
 	def isDynasty(self):
 		return self.type in ['holdings', 'personalities', 'regions', \
-			'events']
+			'events', 'winds']
 	
 	def isFate(self):
 		return self.type in ['actions', 'followers', 'items', \

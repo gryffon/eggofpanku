@@ -25,6 +25,7 @@ import deck
 import re
 import sys
 import StringIO
+import win32clipboard
 
 from settings import settings
 import dbimport
@@ -38,6 +39,7 @@ ID_DE_MNU_NEW_DECK = 9000
 ID_DE_MNU_SAVE_DECK = 9001
 ID_DE_MNU_SAVE_DECK_AS = 9002
 ID_DE_MNU_OPEN_DECK = 9003
+ID_DE_MNU_IMPORT_CLIPBOARD = 9004
 ID_DE_MNU_RECENT = 9010
 
 ID_MAIN_WINDOW = 8998
@@ -606,6 +608,8 @@ class MainWindow(wx.Frame):
 		self.mnuFile.Append(ID_DE_MNU_SAVE_DECK, 'Save deck\tCtrl+S', 'Save the current deck.')
 		self.mnuFile.Append(ID_DE_MNU_SAVE_DECK_AS, 'Save deck as...\tCtrl+Shift+S', 'Save the current deck with a new name.')
 		self.mnuFile.AppendSeparator()
+		self.mnuFile.Append(ID_DE_MNU_IMPORT_CLIPBOARD, 'Import from clipboard\tCtrl+Shift+I', 'Import deck list from clipboad.')
+		self.mnuFile.AppendSeparator()
 		self.recent_files_pos = self.mnuFile.GetMenuItemCount()
 		self.mnuFile.AppendSeparator()
 		self.mnuFile.Append(wx.ID_EXIT, 'Exit', 'Close the deck editor.')
@@ -619,6 +623,7 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, ID_DE_MNU_OPEN_DECK, self.OnMenuOpenDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK, self.OnMenuSaveDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK_AS, self.OnMenuSaveDeckAs)
+		wx.EVT_MENU(self, ID_DE_MNU_IMPORT_CLIPBOARD, self.OnMenuImportClipboard)
 		wx.EVT_MENU(self, wx.ID_EXIT, self.OnMenuExit)
 		wx.EVT_MENU_RANGE(self, ID_DE_MNU_RECENT, ID_DE_MNU_RECENT+NUM_RECENT, self.OnMenuRecent)
 		wx.EVT_CLOSE(self, self.OnClose)
@@ -685,6 +690,27 @@ class MainWindow(wx.Frame):
 		self.noteViews.GetCurrentPage().Activate()
 		self.RecentlyUsed(self.deckName)
 		self.UpdateStatus()
+
+	def OpenDeckFromClipboard(self):
+		try:
+			win32clipboard.OpenClipboard()
+			data = win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)  
+
+#			print 'data from clipboard:\r\n%s' % (data)
+#			win32clipboard.EmptyClipboard()
+			win32clipboard.CloseClipboard()
+			self.deck = deck.Deck.loadFromClipboard(data)
+		except deck.InvalidCardError, e:
+			wx.MessageDialog(self, 'A card in the deck (%s) was not found in the card database.\n' \
+				'This could be because your card database is outdated, missing some cards, or ' \
+				'because the deck is invalid somehow.' % e.card, 'Deck Error', wx.ICON_ERROR).ShowModal()
+			return
+		self.panelEdit.SetDeck(self.deck)
+		self.deckName = filename
+		self.noteViews.GetCurrentPage().Activate()
+		self.RecentlyUsed(self.deckName)
+		self.UpdateStatus()
+
 		
 	def PickSaveName(self):
 		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_WILDCARD, defaultDir=settings.last_deck, style=wx.SAVE|wx.OVERWRITE_PROMPT)
@@ -756,7 +782,12 @@ class MainWindow(wx.Frame):
 	
 	def OnMenuExit(self, event):
 		self.Close()
-		
+
+	def OnMenuImportClipboard(self, event):
+		if self.deck and self.deck.modified and not self.QuerySaveFirst():
+			return
+		self.OpenDeckFromClipboard()
+				
 if __name__ == "__main__":
 	# If we've got psyco, we should use it.
 	try:
@@ -765,9 +796,11 @@ if __name__ == "__main__":
 	except ImportError:
 		pass
 
-	app = wx.PySimpleApp()
-	
-	if dbimport.EnsureExists():
-		frame = MainWindow()
-		app.MainLoop()
+	try:
+		app = wx.PySimpleApp()
+		if dbimport.EnsureExists():
+			frame = MainWindow()
+			app.MainLoop()
+	finally:
+		del app
 

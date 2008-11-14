@@ -69,6 +69,21 @@ class Deck:
 					raise InvalidCardError(cardname)
 		return deck
 
+	@classmethod
+	def loadFromClipboard(cls, data):
+		db = database.get()
+		deck = Deck()
+		for line in data.splitlines():
+			if not line.startswith('#') and not line.startswith('\x00') and line.strip() != '' and not line.isspace():
+				print 'Line = \'%s\'' % (line)
+				(count, cardname) = line.strip().split(' ', 1)
+				cardname = cardname.strip()
+				try:
+					deck.cards.append((int(count), db.FindCardByName(cardname).id))
+				except KeyError:
+					raise InvalidCardError(cardname)
+		return deck
+
 	def Save(self, fp):
 		db = database.get()
 		
