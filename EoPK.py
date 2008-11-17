@@ -320,18 +320,14 @@ class AddMarkerDialog(wx.Dialog):
 				return None
 			else:
 				tokenImage = self.MarkerTypes[self.cmbType.GetValue()]
-				#print 'AddMarkerDialog.GetTokenImage tokenimage =  %s' % (tokenImage)
-				#imagePath = game.MARKER_IMAGE_PREFIX + tokenImage + '.png'
 				imagePath = tokenImage
-				print 'AddMarkerDialog.GetTokenImage imagePath =  %s' % (imagePath)
+#				print 'AddMarkerDialog.GetTokenImage imagePath =  %s' % (imagePath)
 				return imagePath
 
 		except AttributeError:
 				tokenImage = self.MarkerTypes[self.cmbType.GetValue()]
-				#print 'AddMarkerDialog.GetTokenImage tokenimage =  %s' % (tokenImage)
-				#imagePath = game.MARKER_IMAGE_PREFIX + tokenImage + '.png'
 				imagePath = tokenImage
-				print 'AddMarkerDialog.GetTokenImage imagePath =  %s' % (imagePath)
+#				print 'AddMarkerDialog.GetTokenImage imagePath =  %s' % (imagePath)
 				return imagePath
 	
 	def GetNumber(self):
@@ -1699,6 +1695,7 @@ class MainWindow(wx.Frame):
 	def OnMenuCardKillDiscard(self, evt):
 		if not self.contextCard:
 			return
+
 		self.contextCard.Isolate()
 		self.client.Send(netcore.Msg('set-card-property', cgid=self.contextCard.cgid, property='dead', value=True))
 		if self.contextCard.IsDynasty():

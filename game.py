@@ -185,7 +185,6 @@ class Card:
 	def SetMarkers(self, type, number):
 		"""Set the number of markers of a given type on this card."""
 		self.markers[type] = number
-		print 'Card.SetMarkers %s (%s)' % (type,number)
 		if number == 0:
 			del self.markers[type]
 
@@ -327,7 +326,6 @@ MarkerTemplates = []
 MarkerNames = {}
 
 def AddMarkerTemplate(name, image=MARKER_DEFAULT_IMAGE):
-	print 'AddMarkerTemplate: %s = %s' % (name,image)
 	imagePath = MARKER_IMAGE_PREFIX + image + MARKER_IMAGE_EXTENSION
 	tpl = MarkerTemplate(name, imagePath)
 	MarkerTemplates.append(tpl)

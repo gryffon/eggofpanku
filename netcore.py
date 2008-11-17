@@ -657,13 +657,12 @@ class Server(threading.Thread):
 			tokTypes = [token for token in card.tokens]
 			for token in tokTypes:
 				self.HandleSetTokens(client, cgid=card.cgid, token=token, number=0)
-
-			markerTypes = [token for token in card.markers]
-			for token in markerTypes:
-				self.HandleSetMarkers(client, cgid=card.cgid, token=token, number=0)
-				
-
-		
+			#remove all markers
+			
+			markerTypes = [game.FindMarkerTemplate(game,markertoken) for markertoken in card.markers]
+			for marker in markerTypes:
+				self.HandleSetMarkers(client, cgid=card.cgid, token=marker.name, number=0, image=marker.image)
+						
 		# Do the move... if applicable.
 		if top is None and card.location.zid == zid and card.location.owner.pid == pid:
 			pass

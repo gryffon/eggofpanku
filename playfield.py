@@ -277,7 +277,7 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 				mpos = 0
 				
 				for token, number in card.markers.iteritems():
-					print 'PlayfieldCanvas.OnDraw marker = %s' % (token)
+#					print 'PlayfieldCanvas.OnDraw marker = %s' % (token)
 					for i in xrange(number):
 						glPushMatrix()
 						glTranslatef(card.markerSpots[mpos][0], card.markerSpots[mpos][1], 0)
@@ -302,9 +302,9 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 
 	def DrawMarkerToken(self, token):
 		try:
-			print 'PlayfieldCanvas.DrawMarkerToken token = %s' % (token)
+#			print 'PlayfieldCanvas.DrawMarkerToken token = %s' % (token)
 			tex = self.texMarker[token]
-			print 'PlayfieldCanvas.DrawMarkerToken tex = %s' % (tex)
+#			print 'PlayfieldCanvas.DrawMarkerToken tex = %s' % (tex)
 		except KeyError:
 			try:
 				marker = game.FindMarkerTemplate(game, token)
@@ -313,12 +313,12 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 			except KeyError:
 				tokenImage = game.MARKER_IMAGE_PREFIX + game.MARKER_DEFAULT_IMAGE + game.MARKER_IMAGE_EXTENSION
 
-			print 'PlayfieldCanvas.DrawMarkerToken tokenImage = %s' % (tokenImage)
+#			print 'PlayfieldCanvas.DrawMarkerToken tokenImage = %s' % (tokenImage)
 			try:
 				self.texMarker[token] = self.LoadTexture(tokenImage)
 			except IOError:
 				defaultImage = game.MARKER_IMAGE_PREFIX + game.MARKER_DEFAULT_IMAGE + game.MARKER_IMAGE_EXTENSION
-				print 'PlayfieldCanvas.DrawMarkerToken Loading defaultImage = %s' % (defaultImage)
+#				print 'PlayfieldCanvas.DrawMarkerToken Loading defaultImage = %s' % (defaultImage)
 				self.texMarker[token] = self.LoadTexture(defaultImage)
 		
 		glPushMatrix()

@@ -104,7 +104,7 @@ class L5RCanvas(GLCanvas):
 		
 	def DrawMarker(self, tex):
 		"""Draw a transparent 'marker' for cards."""
-		print 'DrawMarker text = %s' % (tex)
+		#print 'DrawMarker text = %s' % (tex)
 		glPushMatrix()
 		
 		glEnable(GL_TEXTURE_2D)
