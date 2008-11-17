@@ -21,6 +21,15 @@ import database
 
 class DeckException(Exception):
 	pass
+
+class ImportCardsNotFoundError(DeckException):
+	def __init__(self, cardErrors, deck):
+		self.problemCards = cardErrors
+		self.importedDeck = deck
+	def __str__(self):
+		errorStr = (''.join(['%s\r\n' % line for line in self.problemCards]))
+		return "These cards were unable to be imported:\r\n%s" % errorStr
+			
 	
 class InvalidCardError(DeckException):
 	def __init__(self, card):
@@ -30,6 +39,8 @@ class InvalidCardError(DeckException):
 
 
 class Deck:
+	
+	
 	def __init__(self):
 		self.cards = []
 		self.modified = False
@@ -71,17 +82,45 @@ class Deck:
 
 	@classmethod
 	def loadFromClipboard(cls, data):
+		#set up a holder for unknown cards
+		cardErrors= []
+		importLineHeaders = ['stronghold','dynasty','holdings','regions','personalities','events','fate','actions','spells','items','followers','rings']
+		
 		db = database.get()
 		deck = Deck()
+
+		#Look for a card line, not a header, not a space, and not the EOF (\x00) line.
 		for line in data.splitlines():
-			if not line.startswith('#') and not line.startswith('\x00') and line.strip() != '' and not line.isspace():
-				print 'Line = \'%s\'' % (line)
-				(count, cardname) = line.strip().split(' ', 1)
-				cardname = cardname.strip()
+			if not line.startswith('#') \
+			and line.find('\x00') == -1 \
+			and line.find(':') == -1 \
+			and line.strip() != '' \
+			and not line.isspace():
+				try:
+					#check that the first item is an integer
+					cardStr = line.strip().split(' ', 1)
+					cardLower = cardStr[0].lower()
+					if  cardLower in importLineHeaders:
+						continue
+					
+					count = cardStr[0].strip('x')
+					if count.isdigit():				
+						cardname =  cardStr[1].strip()
+					else:
+						count = 1
+						cardname = line.strip()
+				except (ValueError, IndexError):
+						count = 1
+						cardname = line.strip()
 				try:
 					deck.cards.append((int(count), db.FindCardByName(cardname).id))
-				except KeyError:
-					raise InvalidCardError(cardname)
+				except (ValueError,KeyError):
+					cardErrors.append(cardname)
+
+		#If there are errors throw an import error.
+		if len(cardErrors) > 0:
+			raise ImportCardsNotFoundError(cardErrors, deck)
+		
 		return deck
 
 	def Save(self, fp):

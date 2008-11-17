@@ -695,20 +695,20 @@ class MainWindow(wx.Frame):
 		try:
 			win32clipboard.OpenClipboard()
 			data = win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)  
-
-#			print 'data from clipboard:\r\n%s' % (data)
-#			win32clipboard.EmptyClipboard()
+			win32clipboard.EmptyClipboard()
 			win32clipboard.CloseClipboard()
 			self.deck = deck.Deck.loadFromClipboard(data)
+		except deck.ImportCardsNotFoundError, ei:
+			wx.MessageDialog(self, '%s\n' % ei, 'Import Error', wx.ICON_ERROR).ShowModal()
+			self.deck = ei.importedDeck
 		except deck.InvalidCardError, e:
 			wx.MessageDialog(self, 'A card in the deck (%s) was not found in the card database.\n' \
 				'This could be because your card database is outdated, missing some cards, or ' \
-				'because the deck is invalid somehow.' % e.card, 'Deck Error', wx.ICON_ERROR).ShowModal()
+				'because the deck is invalid somehow.' % e.card, 'Import Error', wx.ICON_ERROR).ShowModal()
 			return
 		self.panelEdit.SetDeck(self.deck)
-		self.deckName = filename
+		self.deck.modified = True
 		self.noteViews.GetCurrentPage().Activate()
-		self.RecentlyUsed(self.deckName)
 		self.UpdateStatus()
 
 		
