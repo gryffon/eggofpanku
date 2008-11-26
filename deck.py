@@ -17,7 +17,9 @@
 # 02110-1301, USA.
 """Deck module for Egg of P'an Ku."""
 import database
+from enums import Enumeration
 
+OUTPUT_TYPES = Enumeration("OUTPUT_TYPES",['Text','HTML','BBCode'])
 
 class DeckException(Exception):
 	pass
@@ -123,26 +125,102 @@ class Deck:
 		
 		return deck
 
-	def Save(self, fp):
+	def Save(self, fp, savetype):
 		db = database.get()
+
+		headerString = ''
+		headerString = {OUTPUT_TYPES.Text:'\n# %s (%d)\n',
+						OUTPUT_TYPES.HTML:'\n<h3><u>%s (%d)</u></h3>\n',
+						OUTPUT_TYPES.BBCode:'\n[size=150]%s (%d)[/size]\n'}[savetype]
 		
 		for count, cdid in self:
 			card = db[cdid]
 			if card.type == 'strongholds':
-				fp.write('%d %s\n' % (count, card.name))
-		
-		fp.write('\n# Fate\n')
-		fatecards = [(count, db[cdid]) for count, cdid in self if db[cdid].isFate()]
-		fatecards.sort(lambda a, b: cmp(a[1].type, b[1].type))
-		for count, card in fatecards:
-			fp.write('%d %s\n' % (count, card.name))
-				
-		fp.write('\n# Dynasty\n')
+				shString = {OUTPUT_TYPES.Text:'\n1 %s\n',
+							OUTPUT_TYPES.HTML:'\n<h3><u>%s</u></h3>\n',
+							OUTPUT_TYPES.BBCode:'\n[size=150]%s[/size]\n'}[savetype]
+				fp.write(shString % (card.name))
+		#Dynasty Deck
 		dyncards = [(count, db[cdid]) for count, cdid in self if db[cdid].isDynasty()]
-		dyncards.sort(lambda a, b: cmp(a[1].type, b[1].type))
-		for count, card in dyncards:
-			fp.write('%d %s\n' % (count, card.name))
-		
+		dynCount = 0
+		for item in dyncards:
+			dynCount += int(item[0])
+
+		fp.write(headerString % ('Dynasty',dynCount))
+
+		eventcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isEvent()]
+		self.WriteCardsToTypeList(fp,eventcards,'Events', savetype)
+
+		regioncards = [(count, db[cdid]) for count, cdid in self if db[cdid].isRegion()]
+		self.WriteCardsToTypeList(fp,regioncards,'Regions', savetype)
+
+		holdingcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isHolding()]
+		self.WriteCardsToTypeList(fp,holdingcards,'Holdings', savetype)
+
+		windcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isWind()]
+		self.WriteCardsToTypeList(fp,windcards,'Winds', savetype)
+
+		personalitycards = [(count, db[cdid]) for count, cdid in self if db[cdid].isPersonality()]
+		self.WriteCardsToTypeList(fp,personalitycards,'Personalities', savetype)
+
+
+		#Fate Deck
+		fatecards = [(count, db[cdid]) for count, cdid in self if db[cdid].isFate()]
+		fateCount = 0
+		for item in fatecards:
+			fateCount += int(item[0])
+
+		#fatecards.sort(lambda a, b: cmp(a[1].type, b[1].type))
+		fp.write(headerString % ('Fate',dynCount))
+
+		ancestorcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isAncestor()]
+		self.WriteCardsToTypeList(fp,ancestorcards,'Ancestors', savetype)
+
+		actioncards = [(count, db[cdid]) for count, cdid in self if db[cdid].isAction()]
+		self.WriteCardsToTypeList(fp,actioncards,'Actions', savetype)
+
+		followercards = [(count, db[cdid]) for count, cdid in self if db[cdid].isFollower()]
+		self.WriteCardsToTypeList(fp,followercards,'Followers', savetype)
+
+
+		itemcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isItem()]
+		self.WriteCardsToTypeList(fp,itemcards,'Items', savetype)
+
+		spellcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isSpell()]
+		self.WriteCardsToTypeList(fp,spellcards,'Spells', savetype)
+
+		ringcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isRing()]
+		self.WriteCardsToTypeList(fp,ringcards,'Rings', savetype)
+
+		senseicards = [(count, db[cdid]) for count, cdid in self if db[cdid].isSensei()]
+		self.WriteCardsToTypeList(fp,senseicards,'Senseis', savetype)
+
+
+
+	def WriteCardsToTypeList(self, fp, cardlist, title, saveType):
+		"""Writes all the cards to a typed list, for display and saving"""
+		#Added 11/24/08 PCW
+		headerString = ''
+		cardString = ''
+			
+		if len(cardlist) > 0:
+			cardCount = 0
+			for item in cardlist:
+				cardCount += int(item[0])
+
+			headerString = {OUTPUT_TYPES.Text:'\n# %s (%d)\n',
+							OUTPUT_TYPES.HTML:'\n<b><u>%s (%d)</u></b>\n',
+							OUTPUT_TYPES.BBCode:'\n[b][u]%s (%d)[/u][/b]\n'}[saveType]
+				
+			cardlist.sort(lambda a, b: cmp(a[1].type, b[1].type))
+			cardString = {OUTPUT_TYPES.Text:'%d %s\n',
+						  OUTPUT_TYPES.HTML:'%d %s<br/>\n',
+						  OUTPUT_TYPES.BBCode:'%d %s\n'}[saveType]
+			
+			fp.write(headerString % (title,cardCount))
+			for count, card in cardlist:
+				fp.write(cardString % (count, card.name))
+
 	def Add(self, cdid, num = 1):
 		"""Add a number of a particular card to the deck.
 		

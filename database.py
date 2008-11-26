@@ -65,10 +65,45 @@ class CardData:
 	def isDynasty(self):
 		return self.type in ['holdings', 'personalities', 'regions', \
 			'events', 'winds']
-	
+	def isHolding(self):
+		return self.type == 'holdings'
+
+	def isPersonality(self):
+		return self.type == 'personalities'
+
+	def isRegion(self):
+		return self.type == 'regions'
+
+	def isEvent(self):
+		return self.type == 'events'
+
+	def isWind(self):
+		return self.type == 'winds'
+
 	def isFate(self):
 		return self.type in ['actions', 'followers', 'items', \
 			'spells', 'ancestors', 'rings', 'senseis']
+
+	def isAction(self):
+		return self.type == 'actions'
+
+	def isFollower(self):
+		return self.type == 'followers'
+
+	def isItem(self):
+		return self.type == 'items'
+
+	def isAncestor(self):
+		return self.type == 'ancestors'
+
+	def isRing(self):
+		return self.type == 'rings'
+
+	def isSpell(self):
+		return self.type == 'spells'
+
+	def isSensei(self):
+		return self.type == 'senseis'
 	
 	def hasGoldCost(self):
 		return self.type in ['actions', 'followers', 'items', \

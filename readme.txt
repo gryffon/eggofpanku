@@ -210,6 +210,12 @@ Technical details
 
 News & Changes
 
+  2008-Nov-26 Egg of P'an Ku 0.8.5
+
+	* moved the import menu item to the Edit menu.
+	* Added the ability to copy the current deck to the clipboard as BBCode or HTML
+	* Changed the look of the deck list to include card counts and seperate list into card types.
+
   2008-Nov-17 Egg of P'an Ku 0.8.4
 
 	* Added the ability to import a decklist from the clipboard.
@@ -217,7 +223,6 @@ News & Changes
 	* Fixed a bug that wouldn't allow you to discard or destroy a card with markers on it.
 	* Changed the order that the sets are listed in the deck editor dropdown to chronological.
 	* Changed the Clan filter dropdown to list great clans first then minor/others.
-	* Fixed a bug that wouldn't allow you to discard or destroy a card with markers on it.
 	* Fixed a bug that wouldn't allow you to discard or destroy a card with markers on it.
 
   2008-Nov-6 Egg of P'an Ku 0.8.3

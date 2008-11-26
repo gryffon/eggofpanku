@@ -26,11 +26,13 @@ import re
 import sys
 import StringIO
 import win32clipboard
+from enums import Enumeration
 
 from settings import settings
 import dbimport
 import card_filters
 
+#OUTPUT_TYPES = Enumeration("OUTPUT_TYPES",['Text','HTML','BBCode'])
 
 MAIN_TITLE = 'Egg of P\'an Ku Deck Editor'
 FILE_DIALOG_WILDCARD = 'Egg of P\'an Ku deck files (*.l5d)|*.l5d|All files (*.*)|*.*'
@@ -40,6 +42,8 @@ ID_DE_MNU_SAVE_DECK = 9001
 ID_DE_MNU_SAVE_DECK_AS = 9002
 ID_DE_MNU_OPEN_DECK = 9003
 ID_DE_MNU_IMPORT_CLIPBOARD = 9004
+ID_DE_MNU_EDIT_OUTPUT_HTML = 9005
+ID_DE_MNU_EDIT_OUTPUT_BBCODE = 9006
 ID_DE_MNU_RECENT = 9010
 
 ID_MAIN_WINDOW = 8998
@@ -421,7 +425,7 @@ class DeckPlaintextPanel(wx.Panel):
 
 	def Activate(self):
 		io = StringIO.StringIO()
-		GetCurrentDeck().Save(io)
+		GetCurrentDeck().Save(io, deck.OUTPUT_TYPES.Text)
 		self.txtView.SetValue(io.getvalue())
 
 class DeckEditPanel(wx.Panel):
@@ -608,14 +612,20 @@ class MainWindow(wx.Frame):
 		self.mnuFile.Append(ID_DE_MNU_SAVE_DECK, 'Save deck\tCtrl+S', 'Save the current deck.')
 		self.mnuFile.Append(ID_DE_MNU_SAVE_DECK_AS, 'Save deck as...\tCtrl+Shift+S', 'Save the current deck with a new name.')
 		self.mnuFile.AppendSeparator()
-		self.mnuFile.Append(ID_DE_MNU_IMPORT_CLIPBOARD, 'Import from clipboard\tCtrl+Shift+I', 'Import deck list from clipboad.')
-		self.mnuFile.AppendSeparator()
 		self.recent_files_pos = self.mnuFile.GetMenuItemCount()
 		self.mnuFile.AppendSeparator()
 		self.mnuFile.Append(wx.ID_EXIT, 'Exit', 'Close the deck editor.')
+
+		self.mnuEdit = wx.Menu()
+		self.mnuEdit.Append(ID_DE_MNU_EDIT_OUTPUT_HTML, 'Copy deck as HTML', 'Copy current deck list to the clipboard in HTML format.')
+		self.mnuEdit.Append(ID_DE_MNU_EDIT_OUTPUT_BBCODE, 'Copy deck as BBCode', 'Copy current deck list to the clipboard in BBCode format.')
+		self.mnuEdit.AppendSeparator()
+		self.mnuEdit.Append(ID_DE_MNU_IMPORT_CLIPBOARD, 'Import from clipboard\tCtrl+Shift+I', 'Import deck list from clipboard.')
 		
 		menubar = wx.MenuBar()
 		menubar.Append(self.mnuFile, '&File')
+		menubar.Append(self.mnuEdit, '&Edit')
+		
 		self.SetMenuBar(menubar)
 		
 		# Events
@@ -624,6 +634,8 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK, self.OnMenuSaveDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK_AS, self.OnMenuSaveDeckAs)
 		wx.EVT_MENU(self, ID_DE_MNU_IMPORT_CLIPBOARD, self.OnMenuImportClipboard)
+		wx.EVT_MENU(self, ID_DE_MNU_EDIT_OUTPUT_HTML, self.OnCopyHTMLDecklistToClipboard)
+		wx.EVT_MENU(self, ID_DE_MNU_EDIT_OUTPUT_BBCODE, self.OnCopyBBCodeDecklistToClipboard)
 		wx.EVT_MENU(self, wx.ID_EXIT, self.OnMenuExit)
 		wx.EVT_MENU_RANGE(self, ID_DE_MNU_RECENT, ID_DE_MNU_RECENT+NUM_RECENT, self.OnMenuRecent)
 		wx.EVT_CLOSE(self, self.OnClose)
@@ -667,7 +679,7 @@ class MainWindow(wx.Frame):
 		if not self.deckName and not self.PickSaveName():
 				return
 		
-		self.deck.Save(file(self.deckName, 'wb'))
+		self.deck.Save(file(self.deckName, 'wb'), deck.OUTPUT_TYPES.Text)
 		self.deck.modified = False
 		self.RecentlyUsed(self.deckName)
 		self.UpdateStatus()
@@ -711,7 +723,14 @@ class MainWindow(wx.Frame):
 		self.noteViews.GetCurrentPage().Activate()
 		self.UpdateStatus()
 
-		
+	def SaveToClipboard(self, textformat):
+		win32clipboard.OpenClipboard()
+		win32clipboard.EmptyClipboard()
+		io = StringIO.StringIO()
+		GetCurrentDeck().Save(io, textformat)
+		win32clipboard.SetClipboardData(win32clipboard.CF_TEXT,io.getvalue())
+		win32clipboard.CloseClipboard()
+
 	def PickSaveName(self):
 		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_WILDCARD, defaultDir=settings.last_deck, style=wx.SAVE|wx.OVERWRITE_PROMPT)
 		if dlg.ShowModal() == wx.ID_OK:
@@ -782,6 +801,12 @@ class MainWindow(wx.Frame):
 	
 	def OnMenuExit(self, event):
 		self.Close()
+
+	def OnCopyBBCodeDecklistToClipboard(self, event):
+		self.SaveToClipboard(deck.OUTPUT_TYPES.BBCode)
+
+	def OnCopyHTMLDecklistToClipboard(self, event):
+		self.SaveToClipboard(deck.OUTPUT_TYPES.HTML)
 
 	def OnMenuImportClipboard(self, event):
 		if self.deck and self.deck.modified and not self.QuerySaveFirst():
