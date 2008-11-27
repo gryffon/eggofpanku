@@ -209,7 +209,7 @@ class Deck:
 				cardCount += int(item[0])
 
 			headerString = {OUTPUT_TYPES.Text:'\n# %s (%d)\n',
-							OUTPUT_TYPES.HTML:'\n<b><u>%s (%d)</u></b>\n',
+							OUTPUT_TYPES.HTML:'\n<br/><b><u>%s (%d)</u></b><br/>\n',
 							OUTPUT_TYPES.BBCode:'\n[b][u]%s (%d)[/u][/b]\n'}[saveType]
 				
 			cardlist.sort(lambda a, b: cmp(a[1].type, b[1].type))
