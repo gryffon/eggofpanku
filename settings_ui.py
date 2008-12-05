@@ -167,12 +167,14 @@ class PlayfieldSettings(wx.Panel):
 		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
 		
 		psizer.Add(sbsizer, 0, wx.CENTRE|wx.EXPAND|wx.ALL, 4)
-		
+
+
 		# Attachments --------------------------
-		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Attachments'), wx.VERTICAL)
+		
+		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Card Attachments'), wx.VERTICAL)
 		sbsizer.Add(wx.StaticText(self, label='Allow cards to be attached to:'), 0, wx.EXPAND|wx.ALL, 5)
 		self.attachBoxes = {}
-		swin = wx.ScrolledWindow(self, style=wx.VSCROLL|wx.SUNKEN_BORDER, size=(-1, 100))
+		swin = wx.ScrolledWindow(self, style=wx.VSCROLL|wx.SUNKEN_BORDER, size=(-1, -1))
 		swinsizer = wx.BoxSizer(wx.VERTICAL)
 		for type in database.cardTypes:
 			chk = wx.CheckBox(swin, label=type)
@@ -182,9 +184,9 @@ class PlayfieldSettings(wx.Panel):
 			swinsizer.Add(chk, 0, wx.EXPAND|wx.ALL, 2)
 		swin.SetSizer(swinsizer)
 		swin.SetScrollbars(0, 10, 0, swinsizer.GetMinSize()[1]/10)
-		sbsizer.Add(swin, 0, wx.EXPAND|wx.ALL, 5)
+		sbsizer.Add(swin, 1, wx.EXPAND|wx.ALL, 5)
 		
-		psizer.Add(sbsizer, 0, wx.CENTRE|wx.EXPAND|wx.ALL, 4)
+		psizer.Add(sbsizer, 1, wx.CENTRE|wx.EXPAND|wx.ALL, 4)
 
 		# Done
 		self.SetSizer(psizer)
@@ -238,8 +240,11 @@ class SettingsDialog(wx.Dialog):
 
 
 if __name__ == "__main__":
-	app = wx.PySimpleApp()
-	import dbimport
-	if dbimport.EnsureExists():
-		frame = SettingsDialog(None)
-		frame.ShowModal()
+	try:
+		app = wx.PySimpleApp()
+		import dbimport
+		if dbimport.EnsureExists():
+			frame = SettingsDialog(None)
+			frame.ShowModal()
+	finally:
+		del app
