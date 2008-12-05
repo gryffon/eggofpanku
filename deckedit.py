@@ -32,8 +32,6 @@ from settings import settings
 import dbimport
 import card_filters
 
-#OUTPUT_TYPES = Enumeration("OUTPUT_TYPES",['Text','HTML','BBCode'])
-
 MAIN_TITLE = 'Egg of P\'an Ku Deck Editor'
 FILE_DIALOG_WILDCARD = 'Egg of P\'an Ku deck files (*.l5d)|*.l5d|All files (*.*)|*.*'
 

@@ -210,6 +210,12 @@ Technical details
 
 News & Changes
 
+  2008-Dec-05 Egg of P'an Ku 0.8.6
+
+	* Fixed issue 11 (attach list in settings-ui too small) 
+	* Fixed issue 13 (Change the card text font to a more readable font) to make the card text a little larger
+	* updated the HTML output to a little better format
+
   2008-Nov-26 Egg of P'an Ku 0.8.5
 
 	* moved the import menu item to the Edit menu.

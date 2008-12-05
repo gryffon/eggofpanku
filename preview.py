@@ -151,36 +151,40 @@ class CardPreviewWindow(wx.SplitterWindow):
 		html.append('<font size="+1"><b>%s</b></font>' % card.name) # Everything has a name.
 		
 		try:
-			html.append('<br><font size="-1">%s</font>' % typeNames[card.type])
+			html.append('<br>%s' % typeNames[card.type])
 		except KeyError:
 			pass
 		
 		if card.type in ('personalities', 'followers', 'items'): # Force and chi.
-			html.append('<br><font size="-1">Force: <b>%s</b>  Chi: <b>%s</b></font>' % (card.force, card.chi))
+			html.append('<br>Force: <b>%s</b>  Chi: <b>%s</b>' % (card.force, card.chi))
 		elif card.type == 'holdings' and card.force != '':
-			html.append('<br><font size="-1">Gold Production: <b>%s</b></font>' % card.force)
+			html.append('<br>Gold Production: <b>%s</b>' % card.force)
 		
 		if card.type == 'personalities': # Gold cost, honor req, phonor.
-			html.append('<br><font size="-1">HR: <b>%s</b>  GC: <b>%s</b>  PH: <b>%s</b></font>' % (card.honor_req, card.cost, card.personal_honor))
+			html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>  PH: <b>%s</b>' % (card.honor_req, card.cost, card.personal_honor))
 		elif card.type == 'followers': # Gold cost, honor req.
-			html.append('<br><font size="-1">HR: <b>%s</b>  GC: <b>%s</b></font>' % (card.honor_req, card.cost))
+			html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>' % (card.honor_req, card.cost))
 		elif card.type == 'strongholds': # Production, honor, etc.
-			html.append('<br><font size="-1">Province Strength: <b>%s</b><br>Gold Production: <b>%s</b><br>Starting Honor: <b>%s</b></font>' %  \
+			html.append('<br>Province Strength: <b>%s</b><br>Gold Production: <b>%s</b><br>Starting Honor: <b>%s</b>' %  \
 				(card.province_strength, card.gold_production, card.starting_honor))
 		elif card.hasGoldCost(): # Gold cost.
-			html.append('<br><font size="-1">Gold Cost: <b>%s</b></font>' % card.cost)
-		
-		html.append('<hr><font size="-2">%s</font><hr>' % card.text)
-		
+			html.append('<br>Gold Cost: <b>%s</b>' % card.cost)
+
+		textArr = []
+		for text in card.text.split("<br>"):
+			textArr.append('<p>%s</p>' % text)
+		cardText = '<hr><font size="-1">%s</font><hr>' % ('\n'.join(textArr))
+
+		html.append(cardText)
 		if card.isFate():
-			html.append('<br><font size="-1">Focus Value: <b>%s</b></font>' % card.focus)
+			html.append('<br>Focus Value: <b>%s</b>' % card.focus)
 		
-		html.append('<br><font size="-2">Legal in <b>%s</b></font>' % ', '.join(card.legal))
+		html.append('<br><font size="-1">Legal in <b>%s</b></font>' % ', '.join(card.legal))
 		
 		if card.id[0] == '_':
-			html.append('<br><font size="-2">Created card</font>')
+			html.append('<br><font size="-1">Created card</font>')
 		else:
-			html.append('<br><font size="-2">%s</font>' % card.id)
+			html.append('<br><font size="-1">%s</font>' % card.id)
 		
 		html.append('</center></body></html>')
 		
