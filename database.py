@@ -31,7 +31,7 @@ cardTypes = ['Strongholds', 'Regions', 'Holdings', 'Events', \
 factions = ['Phoenix', 'Dragon', 'Mantis', 'Crab', 'Spider', 'Scorpion', \
 	'Lion', 'Unicorn', 'Crane','Shadowlands']
 minorClans = ['Ratling', 'Naga', 'Monk', \
-	'Ninja', 'Hare', 'Toturi\'s Army', 'Monkey', 'Spirit']
+	'Ninja', 'Hare', 'Toturi', 'Monkey', 'Spirit']
 #sort the factions
 minorClans.sort()
 factions.sort()
