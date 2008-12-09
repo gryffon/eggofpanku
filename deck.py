@@ -310,16 +310,16 @@ class TheGameDeckConverter():
 		self.db = database.get()
 		self.deck = Deck()
 		try:
-		filestring = (file(self.filename, 'rb')).read()
-		cardarray = filestring.rstrip('|').split('|')
-		for cardId in cardarray:
-			if cardId in self.cards:
-				self.cards[cardId] += 1
-			else:
-				self.cards[cardId]=1
+			filestring = (file(self.filename, 'rb')).read()
+			cardarray = filestring.rstrip('|').split('|')
+			for cardId in cardarray:
+				if cardId in self.cards:
+					self.cards[cardId] += 1
+				else:
+					self.cards[cardId]=1
 
-		for k,v in self.cards.iteritems():
-			self.deck.cards.append((v, self.db.FindCardByID(k).id))
+			for k,v in self.cards.iteritems():
+				self.deck.cards.append((v, self.db.FindCardByID(k).id))
 		except (ValueError,KeyError):
 			raise DeckException()
 		except IOError:
