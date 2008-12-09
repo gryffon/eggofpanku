@@ -185,6 +185,9 @@ class CardDB:
 	
 	def FindCardByName(self, name):
 		return self.cardNames[name]
+
+	def FindCardByID(self, cardId):
+		return self.cards[cardId]
 	
 	def CreateCard(self, name, id=None, **kwargs):
 		"""Create a temporary card."""

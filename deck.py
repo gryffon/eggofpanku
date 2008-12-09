@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 """Deck module for Egg of P'an Ku."""
+import xml.parsers.expat
 import database
 from enums import Enumeration
 
@@ -249,3 +250,82 @@ class Deck:
 					del self.cards[idx]
 					return 0
 		return 0
+
+	
+class GempukkuDeckConverter():
+	def __init__(self, filename):
+		self.filename = filename
+
+	def convert(self):
+		"""Import the source file and convert it to a Eopk Deck File."""
+		
+		self.parser = xml.parsers.expat.ParserCreate()
+		self.parser.StartElementHandler = self.parseStartElem
+		self.parser.EndElementHandler = self.parseEndElem
+		self.parser.CharacterDataHandler = self.parseCData
+
+		self.count = 0
+		self.cdata = ""
+		self.cardId = None
+		self.deck = Deck()
+		self.db = database.get()
+		self.cards = {}
+
+		try:
+			self.parser.ParseFile(file(self.filename, 'rb'))
+
+			for k,v in self.cards.iteritems():
+				self.deck.cards.append((v, self.db.FindCardByID(k).id))
+		except (ValueError,KeyError):
+			raise DeckException()
+		
+		return self.deck;
+
+	def parseStartElem(self, name, attrs):
+		if name== "card":
+			self.cdata = ""
+		
+	def parseEndElem(self, name):
+		if name == "card":
+			self.cards[self.cardId] = self.count
+			self.cardId = None
+			self.count = 0
+			
+		elif name == "cardId":
+			self.cardId = self.cdata
+		elif name == "count":
+			self.count = (int(self.cdata))
+
+		self.cdata = ''			
+			
+	def parseCData(self, data):
+		self.cdata = data
+
+class TheGameDeckConverter():
+	def __init__(self, filename):
+		self.filename = filename
+		self.cards = {}
+		
+	def convert(self):
+		self.db = database.get()
+		self.deck = Deck()
+		try:
+		filestring = (file(self.filename, 'rb')).read()
+		cardarray = filestring.rstrip('|').split('|')
+		for cardId in cardarray:
+			if cardId in self.cards:
+				self.cards[cardId] += 1
+			else:
+				self.cards[cardId]=1
+
+		for k,v in self.cards.iteritems():
+			self.deck.cards.append((v, self.db.FindCardByID(k).id))
+		except (ValueError,KeyError):
+			raise DeckException()
+		except IOError:
+			wx.MessageDialog(self, 'The specified deck file could not be opened.\nMake sure the path ' \
+				'entered exists.', 'Deck Error', wx.ICON_ERROR).ShowModal()
+			return
+		return self.deck
+
+		

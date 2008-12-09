@@ -34,14 +34,18 @@ import card_filters
 
 MAIN_TITLE = 'Egg of P\'an Ku Deck Editor'
 FILE_DIALOG_WILDCARD = 'Egg of P\'an Ku deck files (*.l5d)|*.l5d|All files (*.*)|*.*'
+FILE_DIALOG_GEMPUKKU = 'Gempukku Decks (*.g3d)|*.g3d'
+FILE_DIALOG_THEGAME = 'The Game Decks (*.dck)|*.dck'
 
 ID_DE_MNU_NEW_DECK = 9000
 ID_DE_MNU_SAVE_DECK = 9001
 ID_DE_MNU_SAVE_DECK_AS = 9002
 ID_DE_MNU_OPEN_DECK = 9003
 ID_DE_MNU_IMPORT_CLIPBOARD = 9004
-ID_DE_MNU_EDIT_OUTPUT_HTML = 9005
-ID_DE_MNU_EDIT_OUTPUT_BBCODE = 9006
+ID_DE_MNU_IMPORT_GEMPUKKU = 9005
+ID_DE_MNU_IMPORT_THEGAME = 9006
+ID_DE_MNU_EDIT_OUTPUT_HTML = 9007
+ID_DE_MNU_EDIT_OUTPUT_BBCODE = 9008
 ID_DE_MNU_RECENT = 9010
 
 ID_MAIN_WINDOW = 8998
@@ -618,6 +622,9 @@ class MainWindow(wx.Frame):
 		self.mnuEdit.Append(ID_DE_MNU_EDIT_OUTPUT_HTML, 'Copy deck as HTML', 'Copy current deck list to the clipboard in HTML format.')
 		self.mnuEdit.Append(ID_DE_MNU_EDIT_OUTPUT_BBCODE, 'Copy deck as BBCode', 'Copy current deck list to the clipboard in BBCode format.')
 		self.mnuEdit.AppendSeparator()
+		self.mnuEdit.Append(ID_DE_MNU_IMPORT_GEMPUKKU, 'Import a Gempukku deck', 'Import a deck saved in Gempukku.')
+		self.mnuEdit.Append(ID_DE_MNU_IMPORT_THEGAME, 'Import \'The Game\' deck', 'Import a deck saved in \'The Game\'.')
+		self.mnuEdit.AppendSeparator()
 		self.mnuEdit.Append(ID_DE_MNU_IMPORT_CLIPBOARD, 'Import from clipboard\tCtrl+Shift+I', 'Import deck list from clipboard.')
 		
 		menubar = wx.MenuBar()
@@ -631,6 +638,8 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, ID_DE_MNU_OPEN_DECK, self.OnMenuOpenDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK, self.OnMenuSaveDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK_AS, self.OnMenuSaveDeckAs)
+		wx.EVT_MENU(self, ID_DE_MNU_IMPORT_THEGAME, self.OnMenuImportTheGame)
+		wx.EVT_MENU(self, ID_DE_MNU_IMPORT_GEMPUKKU, self.OnMenuImportGempukku)
 		wx.EVT_MENU(self, ID_DE_MNU_IMPORT_CLIPBOARD, self.OnMenuImportClipboard)
 		wx.EVT_MENU(self, ID_DE_MNU_EDIT_OUTPUT_HTML, self.OnCopyHTMLDecklistToClipboard)
 		wx.EVT_MENU(self, ID_DE_MNU_EDIT_OUTPUT_BBCODE, self.OnCopyBBCodeDecklistToClipboard)
@@ -653,6 +662,34 @@ class MainWindow(wx.Frame):
 		self.UpdateRecentFiles()
 		self.NewDeck()
 		self.Show()
+
+	def ConvertDeckFromTheGame(self, filename):
+		try:
+			converter = deck.TheGameDeckConverter(filename)
+			self.deck = converter.convert()
+		except:
+			wx.MessageDialog(self, 'There was an error converting the file from \'The Game\' to Egg of P\'an Ku', 'Deck Error', wx.ICON_ERROR).ShowModal()
+			return
+		
+		self.panelEdit.SetDeck(self.deck)
+		self.deckName = None
+		self.deck.modified = True
+		self.noteViews.GetCurrentPage().Activate()
+		self.UpdateStatus()
+
+	def ConvertDeckFromGempukku(self, filename):
+		try:
+			converter = deck.GempukkuDeckConverter(filename)
+			self.deck = converter.convert()
+		except:
+			wx.MessageDialog(self, 'There was an error converting the file from Gempukku to Egg of P\'an Ku', 'Deck Error', wx.ICON_ERROR).ShowModal()
+			return
+		
+		self.panelEdit.SetDeck(self.deck)
+		self.deckName = None
+		self.deck.modified = True
+		self.noteViews.GetCurrentPage().Activate()
+		self.UpdateStatus()
 
 	def NewDeck(self):
 		if self.deck and self.deck.modified and not self.QuerySaveFirst():
@@ -717,6 +754,7 @@ class MainWindow(wx.Frame):
 				'because the deck is invalid somehow.' % e.card, 'Import Error', wx.ICON_ERROR).ShowModal()
 			return
 		self.panelEdit.SetDeck(self.deck)
+		self.deckName = None
 		self.deck.modified = True
 		self.noteViews.GetCurrentPage().Activate()
 		self.UpdateStatus()
@@ -810,7 +848,23 @@ class MainWindow(wx.Frame):
 		if self.deck and self.deck.modified and not self.QuerySaveFirst():
 			return
 		self.OpenDeckFromClipboard()
-				
+
+	def OnMenuImportGempukku(self, event):
+		if self.deck and self.deck.modified and not self.QuerySaveFirst():
+			return
+					
+		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_GEMPUKKU, defaultDir=settings.last_deck, style=wx.OPEN|wx.FILE_MUST_EXIST)
+		if dlg.ShowModal() == wx.ID_OK:
+			self.ConvertDeckFromGempukku(dlg.GetPath())
+
+
+	def OnMenuImportTheGame(self, event):
+		if self.deck and self.deck.modified and not self.QuerySaveFirst():
+			return
+		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_THEGAME, defaultDir=settings.last_deck, style=wx.OPEN|wx.FILE_MUST_EXIST)
+		if dlg.ShowModal() == wx.ID_OK:
+			self.ConvertDeckFromTheGame(dlg.GetPath())
+		
 if __name__ == "__main__":
 	# If we've got psyco, we should use it.
 	try:
