@@ -275,6 +275,13 @@ Technical details
 
 News & Changes
 
+  2008-Dec-11 Egg of P'an Ku 0.8.6beta
+
+	* Fixed issue 15 (Cards not sorting for Toturi's Army)
+	* Fixed issue 16 (Need converter for The Game and Gempukku decks) - You can now import these formats
+	* Fixed issue 4 (program throws OpenGL error in Win2003)
+	* Added the enums.py to the EoPK source for others to use.
+
   2008-Dec-05 Egg of P'an Ku 0.8.6
 
 	* Fixed issue 11 (attach list in settings-ui too small) 

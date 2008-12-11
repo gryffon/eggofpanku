@@ -119,6 +119,7 @@ Section "Uninstall"
   Delete "$INSTDIR\\cards.db"
   Delete "$INSTDIR\\eopk-settings"
   Delete "$INSTDIR\\EoPK.exe.log"
+  Delete "$INSTDIR\\eopk.log"
   Delete "$INSTDIR\\Uninstall.exe"
   RMDir "$INSTDIR\\images\\cards"
   RMDir "$INSTDIR\\images\\tokens"
@@ -178,7 +179,7 @@ setup(
 	options={
 		'py2exe':{
 			'excludes':['doctest', '_ssl', 'optparse', 'Numeric', 'simplejson._speedups',
-						"Tkconstants","Tkinter","tcl" ],
+						"Tkinter","tcl" ], #"Tkconstants",
 			'packages':['OpenGL'],
 			'optimize':2,
 		},

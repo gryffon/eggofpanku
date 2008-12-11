@@ -22,6 +22,7 @@ import sys
 import os
 import socket
 import wx
+import logging
 
 import database
 import canvas
@@ -38,6 +39,10 @@ import deckedit
 import dbimport
 from guids import *
 
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    filename='eopk.log',
+                    filemode='w')
 
 LinkClickEvent, EVT_LINK_CLICK = wx.lib.newevent.NewEvent()
 CreatedCards = []  # A mapping helper for the 'Create card' menu.
