@@ -776,6 +776,7 @@ class MainWindow(wx.Frame):
 		# Main display, which is an OGL context.
 		self.gameTable = playfield.Table(splitterChat, -1)
 		playfield.EVT_PLAYFIELD_DOUBLE_CLICK_CARD(self.gameTable, self.OnDoubleClickCard)
+		playfield.EVT_PLAYFIELD_WHEEL_CLICK_CARD(self.gameTable, self.OnWheelClickCard)
 		playfield.EVT_PLAYFIELD_RIGHT_CLICK_CARD(self.gameTable, self.OnRightClickCard)
 		playfield.EVT_PLAYFIELD_CARD_DROP(self.gameTable, self.OnCardDragToPlay)
 		playfield.EVT_PLAYFIELD_CARD_HOVER(self.gameTable, self.OnCardHover)
@@ -1608,7 +1609,10 @@ class MainWindow(wx.Frame):
 	def OnDoubleClickCard(self, evt):
 		"""Process a double click on a card on the playfield canvas."""
 		self.client.Send(netcore.Msg('set-card-property', cgid=evt.card.cgid, property='tapped', value=not evt.card.tapped))
-	
+
+	def OnWheelClickCard(self, evt):
+		self.client.Send(netcore.Msg('set-card-property', cgid=evt.card.cgid, property='faceUp', value=not evt.card.faceUp))
+		
 	def OnRightClickCard(self, evt):
 		"""Process a right-click on a card on the playfield canvas."""
 		self.contextCard = evt.card

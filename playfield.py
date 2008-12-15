@@ -50,6 +50,7 @@ CANVAS_BG_GRADIENT_VERT = 1
 CANVAS_BG_GRADIENT_HORZ = 2
 
 PlayfieldDoubleClickCardEvent, EVT_PLAYFIELD_DOUBLE_CLICK_CARD = wx.lib.newevent.NewEvent()
+PlayfieldWheelClickCardEvent, EVT_PLAYFIELD_WHEEL_CLICK_CARD = wx.lib.newevent.NewEvent()
 PlayfieldRightClickCardEvent, EVT_PLAYFIELD_RIGHT_CLICK_CARD = wx.lib.newevent.NewEvent()
 PlayfieldCardDropEvent, EVT_PLAYFIELD_CARD_DROP = wx.lib.newevent.NewEvent()
 PlayfieldCardHoverEvent, EVT_PLAYFIELD_CARD_HOVER = wx.lib.newevent.NewEvent()
@@ -167,6 +168,7 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 		wx.EVT_RIGHT_DOWN(self, self.OnRightMouseDown)
 		wx.EVT_MOTION(self, self.OnMotion)
 		wx.EVT_MOUSEWHEEL(self, self.OnMouseWheel)
+		wx.EVT_MIDDLE_DOWN(self,self.OnMouseWheelDown)
 		
 		self.SetDropTarget(dragdrop.CardDropTarget(self.OnDragData, self.OnDragOver, self.OnDragLeave))
 		
@@ -416,13 +418,21 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 		
 		return None
 	
-	def OnDoubleClick(self, event):
-		if self.isLocal:
-			(px, py) = event.GetPosition()
-			(x, y) = self.CoordScreen2World(px, py)
-			card = self.FindCardAt(px, py)
-			if card:
-				wx.PostEvent(self.eventTarget, PlayfieldDoubleClickCardEvent(card=card))
+	def OnDoubleClick(self, e):
+		#(self, event)
+		if not self.gameState or not self.isLocal:
+			return
+		
+		# Locate any cards we're pointing at.
+		(x, y) = self.CoordScreen2World(*e.GetPosition())
+		card = self.FindCardAt(*e.GetPosition())
+
+#		if self.isLocal:
+#			(px, py) = event.GetPosition()
+#			(x, y) = self.CoordScreen2World(px, py)
+#			card = self.FindCardAt(px, py)
+		if card:
+			wx.PostEvent(self.eventTarget, PlayfieldDoubleClickCardEvent(card=card))
 	
 	def OnRightMouseDown(self, e):
 		if not self.gameState or not self.isLocal:
@@ -576,6 +586,19 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 		height = min(400, max(30, self.pfHeight - delta/10))
 		self.SetPlayfieldHeight(height)
 
+	def OnMouseWheelDown(self, e):
+		#(self, event)
+		if not self.gameState or not self.isLocal:
+			return
+		
+		# Locate any cards we're pointing at.
+		(x, y) = self.CoordScreen2World(*e.GetPosition())
+		card = self.FindCardAt(*e.GetPosition())
+
+		if card:
+			wx.PostEvent(self.eventTarget, PlayfieldWheelClickCardEvent(card=card))
+
+		
 class MiniPile(wx.Panel):
 	def __init__(self, parent, id=wx.ID_ANY, player=None, zid=0, name='', bitmap=None):
 		wx.Panel.__init__(self, parent, id, size=(12, 12))
