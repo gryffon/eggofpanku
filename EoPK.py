@@ -1630,9 +1630,21 @@ class MainWindow(wx.Frame):
 		except AttributeError:
 			pass
 		cardMenu.AppendSeparator()
-		cardMenu.Append(ID_MNU_CARDPOPUP_MOVE_TOP, 'Move to top')
-		cardMenu.Append(ID_MNU_CARDPOPUP_MOVE_BOTTOM, 'Move to bottom')
-		cardMenu.AppendSeparator()
+		# Changed 1/5/09 by PCW
+		# this is for issue 14/19
+
+		#check to see if you can move the card to a deck
+		if self.contextCard.IsDynasty() or self.contextCard.IsFate():
+			deckname = ''
+			if self.contextCard.IsDynasty():
+				deckname = 'Dynasty'
+			else:
+				deckname = 'Fate'
+			
+			cardMenu.Append(ID_MNU_CARDPOPUP_DECK_TOP, 'Put on %s deck top' % deckname)
+			cardMenu.Append(ID_MNU_CARDPOPUP_DECK_BOTTOM, 'Put on %s deck bottom' % deckname)
+			cardMenu.AppendSeparator()
+		#End Changes 14/19 PCW
 		
 		# Change control
 		if len(self.client.gameState.players) > 1:
