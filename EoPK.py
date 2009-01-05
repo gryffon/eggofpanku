@@ -466,12 +466,21 @@ class ViewFocusPoolDialog(ViewCardsDialog):
 	def __init__(self, parent, id=wx.ID_ANY, title='', gameState=None):
 		ViewCardsDialog.__init__(self, parent, id, title, gameState)
 
+		wx.EVT_MENU(self, ID_MNU_FOCUSPOPUP_DECK_TOP, self.OnMenuCardDeckTop)
+		wx.EVT_MENU(self, ID_MNU_FOCUSPOPUP_DECK_BOTTOM, self.OnMenuCardDeckBottom)
+
 		self.lstCards.SetColumnWidth(0, self.lstCards.GetColumnWidth(0) - 48)
 		self.lstCards.InsertColumn(1, "FV", wx.LIST_FORMAT_CENTRE, 48)
 		self.lstCards.SetDropTarget(dragdrop.CardDropTarget(self.OnDragData))
+
+		#Added by PCW 1/5/2009
+		#Issue 19 - adding right click menu to put card on bottom
+		wx.EVT_LIST_ITEM_RIGHT_CLICK(self, id, self.OnFocusCardRightClick)
 		
 		netcore.EVT_CLIENT_MOVE_CARD(parent, self.OnCardMove)
 		wx.EVT_CLOSE(self, self.OnClose)
+		self.cgid = 0
+		self.contextCard = None
 
 	def OnClose(self, event):
 		# Move remaining cards to bottom of fate deck.
@@ -492,16 +501,32 @@ class ViewFocusPoolDialog(ViewCardsDialog):
 			self.lstCards.SetItemData(idx, event.card.cgid)
 		event.Skip()
 
+	def OnFocusCardRightClick(self, event):
+		#added by PCW 1/5/2009
+		self.cgid = event.GetData()
+		self.contextCard = self.gameState.FindCard(self.cgid)
+		focusmenu = wx.Menu()
+		focusmenu.Append(ID_MNU_FOCUSPOPUP_DECK_TOP, 'Put on top of Fate deck')
+		focusmenu.Append(ID_MNU_FOCUSPOPUP_DECK_BOTTOM, 'Put on bottom of Fate deck')
+		self.PopupMenu(focusmenu)
+		
 	def OnListDrag(self, event):
 		# Different from default; always drag face-down.
 		top = not wx.GetKeyState(wx.WXK_ALT)
-		
 		cgid = event.GetData()
 		data = dragdrop.CardDropData(cgid=cgid, x=0, y=0, faceUp=False, top=top)
 		src = wx.DropSource(self)
 		src.SetData(data)
 		result = src.DoDragDrop(True)
-	
+
+	def OnMenuCardDeckTop(self, event):
+		"""Handle moving a card to the top of the fate deck from the focus pool """
+		wx.FindWindowById(ID_MAIN_WINDOW).client.Send(netcore.Msg('move-card', cgid=self.cgid, pid=self.gameState.localPlayer.pid, zid=game.ZONE_DECK_FATE, top=True))
+		
+	def OnMenuCardDeckBottom(self, event):
+		"""Handle moving a card to the bottom of the fate deck from the focus pool """
+		wx.FindWindowById(ID_MAIN_WINDOW).client.Send(netcore.Msg('move-card', cgid=self.cgid, pid=self.gameState.localPlayer.pid, zid=game.ZONE_DECK_FATE, top=False))
+
 	def OnDragData(self, x, y, dragdata):
 		"""Handle a drag-n-drop operation."""
 		card = self.gameState.FindCard(dragdata.cgid)
@@ -1630,6 +1655,7 @@ class MainWindow(wx.Frame):
 		except AttributeError:
 			pass
 		cardMenu.AppendSeparator()
+
 		# Changed 1/5/09 by PCW
 		# this is for issue 14/19
 
