@@ -1,0 +1,54 @@
+#labels Documentation
+#This is a walk-through for developers who want to install the EoPK source
+
+= Introduction =
+
+This is a walk-though for installing and compiling the source code using [http://www.activestate.com/Products/activepython/index.mhtml ActiveState's ActivePyton 2.5.2.2].
+
+= Prerequisites =
+
+You should have some programming knowledge and it is immensely helpful to have Visual Studio 2003 installed on the computer that you are working on.
+
+= Installing Python =
+
+== ActivePython ==
+You'll need to have Python on your computer.  I recommend using [http://www.activestate.com/Products/activepython/index.mhtml ActiveState's ActivePython] as it includes Python 2.5 and is a good *free* IDE.
+
+You can also download [http://www.python.org/download/releases/2.6/ Python2.6] and use the included IDE.
+
+== Easy_Install ==
+
+Once you have installed ActivePython (or Python 2.6) you'll need to the Python SetupTools that you can download from [http://pypi.python.org/packages/2.5/s/setuptools/setuptools-0.6c9.win32-py2.5.exe#md5=602d06054ec1165e995ae54ac30884d7].
+
+Once you've downloaded this, follow [http://pypi.python.org/pypi/setuptools#windows these instructions] to install (on Windows Platform).
+
+=== Add Modules ===
+
+You'll need to install PyOpenGL, PIL, simplejson and wxPython to run this project.  
+  * Download and install [http://www.wxpython.org/download.php wxPython] for your python version (2.5)
+  * Download and install [http://www.pythonware.com/products/pil/ PIL]
+
+=== Add Eggs ===
+
+At this time, py2exe does not have support for zipped Eggs. To be safe, use the --always-unzip option from the command line in order to ensure the module is deployed into the site-packages location properly.
+You can do this by opening a command prompt and typing "easy_install --always-unzip [moduleName]".
+
+The order that seems to work well for me is:
+  * easy_install --always-unzip pyOpenGL
+  * easy_install --always-unzip simplejson
+
+This should install all the eggs you need to start development. If the project builds in the interpreter but fails as an executable, check to make sure that your modules have not been installed as zipped eggs.
+
+_If you have problems running "easy_install", make sure that your Python25/scripts directory is in your PATH_
+
+== SVN ==
+Also, to get the source code, you'll need to have a version of installed.  I like to use [http://tortoisesvn.tigris.org/ TortoiseSVN].
+Use the link on the [http://code.google.com/p/eopk/source/checkout Source tab] to get the current source code.
+
+
+== Compiling a stand alone application ==
+
+To compile the application to an executable you'll need to download some tools:
+  * [http://sourceforge.net/project/showfiles.php?group_id=15583 Py2exe] will build the windows executable file.
+  * [http://nsis.sourceforge.net/Download NSIS] will make the installation files.
+  * Finally, you'll need [http://upx.sourceforge.net/#download UPX] to compress the files.
