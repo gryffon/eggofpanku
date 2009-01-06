@@ -275,13 +275,18 @@ Technical details
 
 News & Changes
 
-  2008-Dec-11 Egg of P'an Ku 0.8.7beta
+  2008-Dec-11 Egg of P'an Ku 0.9.0
 
 	* Fixed issue 15 (Cards not sorting for Toturi's Army)
 	* Fixed issue 16 (Need converter for The Game and Gempukku decks) - You can now import these formats
-	* Fixed issue 4 (program throws OpenGL error in Win2003)
 	* Fixed issue 17 (Possible Quck flip option) - You can now center (wheel) click a card to flip it.
+	* Added issue 19 (Add "put on bottom/top of deck" to right click menu)
+	* Added issue 14 (Can't easily put cards on deck bottoms) - Same as 19, but from all card lists!
+	* Added issue 20 (Add auto-draw functionality when the game starts) - now draws 5 cards for each player.
 	* Added the enums.py to the EoPK source for others to use.
+	* Added the odict.py to the EoPK source for others to use.
+	* Added a Docs directory to the SVN Source
+	* Updated the .tar zipped source code to contain all the files needed to build EoPK
 
   2008-Dec-05 Egg of P'an Ku 0.8.6
 
