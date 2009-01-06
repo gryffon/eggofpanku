@@ -432,6 +432,14 @@ class ViewCardsDialog(wx.Dialog):
 class PeekDialog(ViewCardsDialog):
 	def __init__(self, parent, id=wx.ID_ANY, title='', gameState=None, cgids=[]):
 		ViewCardsDialog.__init__(self, parent, id, title, gameState)
+
+
+		#added by PCW 1/6/2009
+		wx.EVT_LIST_ITEM_RIGHT_CLICK(self, id, self.OnCardRightClick)
+		wx.EVT_MENU(self,ID_MNU_FATEDECKPOPUP_DECK_TOP,self.OnMenuCardDeckTop)
+		wx.EVT_MENU(self,ID_MNU_FATEDECKPOPUP_DECK_BOTTOM,self.OnMenuCardDeckBottom)
+		self.cgid = 0
+		self.contextCard = None
 		
 		self.cards = [gameState.FindCard(cgid) for cgid in cgids]
 		for card in self.cards:
@@ -441,7 +449,43 @@ class PeekDialog(ViewCardsDialog):
 		netcore.EVT_CLIENT_MOVE_CARD(parent, self.OnCardMove)
 		netcore.EVT_CLIENT_ZONE_SHUFFLED(parent, self.OnShuffleZone)
 		wx.EVT_CLOSE(self, self.OnClose)
-	
+
+	def OnCardRightClick(self, event):
+		"""handler for when a user right clicks a card in the deck preview dialog"""
+		self.cgid = event.GetData()
+		self.contextCard = self.gameState.FindCard(self.cgid)
+
+		deckname = ''
+		if self.contextCard.IsDynasty():
+			deckname = 'Dynasty'
+		else:
+			deckname = 'Fate'
+
+		cardmenu = wx.Menu()
+		cardmenu.Append(ID_MNU_FATEDECKPOPUP_DECK_TOP, 'Put on top of %s deck' % (deckname))
+		cardmenu.Append(ID_MNU_FATEDECKPOPUP_DECK_BOTTOM, 'Put on bottom of %s deck' % (deckname))
+		self.PopupMenu(cardmenu)
+
+	def OnMenuCardDeckTop(self, event):
+		"""Puts a card on the top of the appropriate deck"""
+		gamezone = None
+		if self.contextCard.IsDynasty():
+			gamezone = game.ZONE_DECK_DYNASTY
+		else:
+			gamezone = game.ZONE_DECK_FATE
+			
+		wx.FindWindowById(ID_MAIN_WINDOW).client.Send(netcore.Msg('move-card', cgid=self.cgid, pid=self.gameState.localPlayer.pid, zid=gamezone, top=True))
+		
+	def OnMenuCardDeckBottom(self, event):
+		"""Puts a card on the bottom of the appropriate deck"""
+		gamezone = None
+		if self.contextCard.IsDynasty():
+			gamezone = game.ZONE_DECK_DYNASTY
+		else:
+			gamezone = game.ZONE_DECK_FATE
+
+		wx.FindWindowById(ID_MAIN_WINDOW).client.Send(netcore.Msg('move-card', cgid=self.cgid, pid=self.gameState.localPlayer.pid, zid=gamezone, top=False))
+		
 	def OnClose(self, event):
 		self.GetParent().Unbind(netcore.EVT_CLIENT_MOVE_CARD)  # Why does this work!?
 		self.GetParent().Unbind(netcore.EVT_CLIENT_ZONE_SHUFFLED)
@@ -569,7 +613,8 @@ class ViewDeckDialog(ViewCardsDialog):
 		self.GetParent().Unbind(netcore.EVT_CLIENT_ZONE_SHUFFLED)
 		self.GetParent().Unbind(netcore.EVT_CLIENT_SET_CARD_PROPERTY)
 		self.Destroy()
-	
+
+
 	def OnPropertyChange(self, event):
 		if event.property == 'dead':
 			idx = self.lstCards.FindItemData(-1, event.cgid)
