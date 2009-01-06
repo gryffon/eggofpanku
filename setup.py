@@ -237,7 +237,7 @@ except:
 
 # Copy files
 srcfiles = [
-	('.', glob.glob('*.py') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','icon.ico','iconedit.ico']),
+	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcp71.dll']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images/cards', cardimagefiles),
