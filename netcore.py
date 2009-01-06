@@ -399,6 +399,14 @@ class Server(threading.Thread):
 			# Now shuffle their decks.
 			self.gameState.ShuffleZone(player.pid, game.ZONE_DECK_FATE)
 			self.gameState.ShuffleZone(player.pid, game.ZONE_DECK_DYNASTY)
+
+
+			#Added 1/5/2009 by PCW
+			#draw 5 Fate cards per player
+			zone = player.zones[game.ZONE_DECK_FATE]
+			for cgid in reversed(zone.TopCards(5)):
+				self.HandleMoveCard(player.client,cgid,player.pid,game.ZONE_HAND,x=0,y=0,faceup=True)
+				
 			
 			# Find their Stronghold.
 			bothDecks = player.zones[game.ZONE_DECK_FATE].cards + player.zones[game.ZONE_DECK_DYNASTY].cards
@@ -407,12 +415,12 @@ class Server(threading.Thread):
 				if card.data.type == 'strongholds':
 					# Found it!
 					#self.RevealCard(card, player)
-					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=0, y=0, faceup=True)
+					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=10, y=10, faceup=True)
 					# Also set family honor.
 					self.HandleSetFamilyHonor(player.client, honor=int(card.data.starting_honor))
 					break
-			
-			
+
+
 		
 	def ProcessRequest(self, client, data):
 		"Handles a request sent from the specified client."
