@@ -415,7 +415,7 @@ class Server(threading.Thread):
 				if card.data.type == 'strongholds':
 					# Found it!
 					#self.RevealCard(card, player)
-					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=10, y=10, faceup=True)
+					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=0, y=0, faceup=True)
 					# Also set family honor.
 					self.HandleSetFamilyHonor(player.client, honor=int(card.data.starting_honor))
 					break
