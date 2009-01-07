@@ -49,6 +49,9 @@ License
 
 Installation
 
+Developers ONLY - Please see /docs/Developer Installation Guide.txt for instructions
+on how to install the source and deveopment resources.
+
 Download the installation executable file
 
   You can get it either from the Egg of P'an Ku Google Code site (http://code.google.com/p/eopk)
