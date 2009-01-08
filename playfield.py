@@ -31,7 +31,7 @@ from guids import *
 
 DEFAULT_PLAYFIELD_HEIGHT = 100
 
-CANVAS_MOVE_SNAP = 5.0  # Distance, in world units, to snap when dragging on the playfield.
+CANVAS_MOVE_SNAP = 7.0  # Distance, in world units, to snap when dragging on the playfield.
 CANVAS_TOKEN_SIZE = 5
 CANVAS_TOKEN_ARR_W = canvas.CANVAS_CARD_W - CANVAS_TOKEN_SIZE
 CANVAS_TOKEN_ARR_H = canvas.CANVAS_CARD_H - CANVAS_TOKEN_SIZE

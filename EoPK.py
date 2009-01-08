@@ -390,7 +390,6 @@ class SubmitDeckDialog(wx.Dialog):
 
 		self.EndModal(wx.ID_OK)
 
-
 class ViewCardsDialog(wx.Dialog):
 	def __init__(self, parent, id=wx.ID_ANY, title='', gameState=None, allowMove=True):
 		wx.Dialog.__init__(self, parent, id, title)

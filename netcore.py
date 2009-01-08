@@ -29,6 +29,7 @@ import simplejson
 import game
 import random
 import canvas
+import playfield
 
 
 DEFAULT_PORT = 18072
@@ -401,14 +402,28 @@ class Server(threading.Thread):
 			self.gameState.ShuffleZone(player.pid, game.ZONE_DECK_FATE)
 			self.gameState.ShuffleZone(player.pid, game.ZONE_DECK_DYNASTY)
 			
+			#Added 01/07/2009 by BSB
+			#draw 4 Dynasty cards per player
+			CANVAS_CARD_AND_GRID = ((canvas.CANVAS_CARD_W*2) + playfield.CANVAS_MOVE_SNAP)
+			provToDraw = 4
+			dynDeck = player.zones[game.ZONE_DECK_DYNASTY]
+			
+			leftProv = (provToDraw - (provToDraw // 2)) * CANVAS_CARD_AND_GRID
+			prov = 0			
+			for	cgid in reversed(dynDeck.TopCards(provToDraw)):
+				prov_loc_x = (prov * CANVAS_CARD_AND_GRID) - leftProv
+				self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=prov_loc_x, y=0, faceup=False)
+				prov += 1
+			
 			# Find their Stronghold.
 			bothDecks = player.zones[game.ZONE_DECK_FATE].cards + player.zones[game.ZONE_DECK_DYNASTY].cards
+			strongLoc = 0 - (leftProv + CANVAS_CARD_AND_GRID)
 			for cgid in bothDecks:
 				card = self.gameState.FindCard(cgid)
 				if card.data.type == 'strongholds':
 					# Found it!
 					#self.RevealCard(card, player)
-					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=0, y=0, faceup=True)
+					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=strongLoc, y=0, faceup=True)
 					# Also set family honor.
 					self.HandleSetFamilyHonor(player.client, honor=int(card.data.starting_honor))
 					break
@@ -418,15 +433,6 @@ class Server(threading.Thread):
 			zone = player.zones[game.ZONE_DECK_FATE]
 			for cgid in reversed(zone.TopCards(5)):
 				self.HandleMoveCard(player.client,cgid,player.pid,game.ZONE_HAND,x=0,y=0,faceup=True)
-			
-			#Added 01/07/2009 by BSB
-			#draw 4 Dynasty cards per player
-			#dynDeck = player.zones[game.ZONE_DECK_DYNASTY]
-			#prov = 0			
-			#for	cgid in reversed(dynDeck.TopCards(4)):
-			#	prov += 1 
-			#	prov_loc_x = (prov * canvas.CANVAS_CARD_W * 3)
-			#	self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=prov_loc_x, y=0, faceup=False)
 
 
 		

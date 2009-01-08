@@ -36,7 +36,6 @@ from settings import settings
 CANVAS_CARD_W = 10.5
 CANVAS_CARD_H = 15.0
 
-
 def next_power_of_two(n):
 	"""Return the next-highest power of two."""
 	n = n - 1;
