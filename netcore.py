@@ -28,6 +28,7 @@ import simplejson
 
 import game
 import random
+import canvas
 
 
 DEFAULT_PORT = 18072
@@ -399,14 +400,6 @@ class Server(threading.Thread):
 			# Now shuffle their decks.
 			self.gameState.ShuffleZone(player.pid, game.ZONE_DECK_FATE)
 			self.gameState.ShuffleZone(player.pid, game.ZONE_DECK_DYNASTY)
-
-
-			#Added 1/5/2009 by PCW
-			#draw 5 Fate cards per player
-			zone = player.zones[game.ZONE_DECK_FATE]
-			for cgid in reversed(zone.TopCards(5)):
-				self.HandleMoveCard(player.client,cgid,player.pid,game.ZONE_HAND,x=0,y=0,faceup=True)
-				
 			
 			# Find their Stronghold.
 			bothDecks = player.zones[game.ZONE_DECK_FATE].cards + player.zones[game.ZONE_DECK_DYNASTY].cards
@@ -419,6 +412,21 @@ class Server(threading.Thread):
 					# Also set family honor.
 					self.HandleSetFamilyHonor(player.client, honor=int(card.data.starting_honor))
 					break
+				
+			#Added 1/5/2009 by PCW
+			#draw 5 Fate cards per player
+			zone = player.zones[game.ZONE_DECK_FATE]
+			for cgid in reversed(zone.TopCards(5)):
+				self.HandleMoveCard(player.client,cgid,player.pid,game.ZONE_HAND,x=0,y=0,faceup=True)
+			
+			#Added 01/07/2009 by BSB
+			#draw 4 Dynasty cards per player
+			#dynDeck = player.zones[game.ZONE_DECK_DYNASTY]
+			#prov = 0			
+			#for	cgid in reversed(dynDeck.TopCards(4)):
+			#	prov += 1 
+			#	prov_loc_x = (prov * canvas.CANVAS_CARD_W * 3)
+			#	self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=prov_loc_x, y=0, faceup=False)
 
 
 		
