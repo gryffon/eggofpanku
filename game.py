@@ -292,6 +292,12 @@ class GameState:
 			return self.cards[cgid]
 		except KeyError:
 			raise NoSuchCardException(cgid)
+
+	def FindCardByName(self, cardname):
+		try:
+			return self.cardDB.FindCardByName(cardname)
+		except KeyError:
+			raise NoSuchCardException(cardname)
 	
 	def HasPlayer(self, pid):
 		"""Return whether we have a player with a given ID."""

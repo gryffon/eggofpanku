@@ -64,7 +64,10 @@ ClientSetMarkersEvent,      EVT_CLIENT_SET_MARKERS       = wx.lib.newevent.NewEv
 ClientSetTokensEvent,       EVT_CLIENT_SET_TOKENS        = wx.lib.newevent.NewEvent()
 ClientNewCardEvent,         EVT_CLIENT_NEW_CARD          = wx.lib.newevent.NewEvent()
 ClientCreateCardEvent,      EVT_CLIENT_CREATE_CARD       = wx.lib.newevent.NewEvent()
+
+ClientPeekOpponentCardEvent, EVT_CLIENT_PEEK_OPPONENT_CARD = wx.lib.newevent.NewEvent()
 ClientPeekCardEvent,        EVT_CLIENT_PEEK_CARD         = wx.lib.newevent.NewEvent()
+
 ClientFlipCoinEvent,        EVT_CLIENT_FLIP_COIN         = wx.lib.newevent.NewEvent()
 ClientRollDieEvent,         EVT_CLIENT_ROLL_DIE          = wx.lib.newevent.NewEvent()
 ClientFavorEvent,           EVT_CLIENT_FAVOR             = wx.lib.newevent.NewEvent()
@@ -434,7 +437,6 @@ class Server(threading.Thread):
 			for cgid in reversed(zone.TopCards(5)):
 				self.HandleMoveCard(player.client,cgid,player.pid,game.ZONE_HAND,x=0,y=0,faceup=True)
 
-
 		
 	def ProcessRequest(self, client, data):
 		"Handles a request sent from the specified client."
@@ -444,7 +446,6 @@ class Server(threading.Thread):
 		
 		# Figure out handler name.
 		name = 'Handle' + ''.join(part.capitalize() for part in action.split('-'))
-		#print '%s' % name
 		try:
 			function = getattr(self, name)
 		except AttributeError:
@@ -514,6 +515,17 @@ class Server(threading.Thread):
 		
 		self.gameState.ShuffleZone(client.player.pid, zid)
 		self.Broadcast(Msg('zone-shuffled', pid=client.player.pid, zid=zid))
+
+	@MustBePlayer
+	def HandlePeekOpponent(self, client, cgid, pid):
+		"""Handle a peek-card request."""
+		print "[SERVER] Opponent-Peek %s" % cgid
+		try:
+			card = self.gameState.FindCard(cgid)
+		except NoSuchCardException:
+			return
+
+		self.Broadcast(Msg('peek-opponent', pid=pid, cgid=cgid))
 	
 	@MustBePlayer
 	def HandlePeekCard(self, client, cgid):
@@ -857,6 +869,8 @@ class Client(threading.Thread):
 		
 		# Figure out handler name.
 		name = 'Handle' + ''.join(part.capitalize() for part in action.split('-'))
+
+		#print "Recieved message: '%s'\r\n%s." % (action, parameters)
 		
 		try:
 			function = getattr(self, name)
@@ -1070,9 +1084,15 @@ class Client(threading.Thread):
 		card.data = self.cardDB[cdid]
 		card.MoveToTop(self.gameState.FindZone(pid, zid))
 		wx.PostEvent(self._eventTarget, ClientCreateCardEvent(cgid=cgid, pid=pid, zid=zid))
-	
+
+	def HandlePeekOpponent(self,pid,cgid):
+		print "[CLIENT] Opponent-Peek (player: %s, cgid:%s)" % (pid,cgid)	
+		wx.PostEvent(self._eventTarget, ClientPeekOpponentCardEvent(cgid=cgid, pid=pid))
+		
 	def HandlePeekCard(self, pid, cgid):
-		wx.PostEvent(self._eventTarget, ClientPeekCardEvent(cgid=cgid, pid=pid))
+#		wx.PostEvent(self._eventTarget, ClientPeekCardEvent(cgid=cgid, pid=pid))
+		card = self.gameState.FindCard(cgid)
+		wx.PostEvent(self._eventTarget, ClientPeekCardEvent(cgid=cgid, card=card, pid=pid))		
 	
 	def HandleFlipCoin(self, pid, result):
 		wx.PostEvent(self._eventTarget, ClientFlipCoinEvent(result=result, pid=pid))

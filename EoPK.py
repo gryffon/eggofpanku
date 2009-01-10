@@ -23,7 +23,6 @@ import os
 import socket
 import wx
 import logging
-
 import database
 import canvas
 import playfield
@@ -900,7 +899,10 @@ class MainWindow(wx.Frame):
 		netcore.EVT_CLIENT_SET_MARKERS(self, self.OnClientSetMarkers)
 		netcore.EVT_CLIENT_CREATE_CARD(self, self.OnClientCreateCard)
 		netcore.EVT_CLIENT_NEW_CARD(self, self.OnClientNewCard)
+		
+		netcore.EVT_CLIENT_PEEK_OPPONENT_CARD(self, self.OnClientPeekOpponentCard)
 		netcore.EVT_CLIENT_PEEK_CARD(self, self.OnClientPeekCard)
+		
 		netcore.EVT_CLIENT_FLIP_COIN(self, self.OnClientFlipCoin)
 		netcore.EVT_CLIENT_ROLL_DIE(self, self.OnClientRollDie)
 		netcore.EVT_CLIENT_FAVOR(self, self.OnClientFavor)
@@ -1198,6 +1200,10 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU_RANGE(self, ID_MNU_CARDPOPUP_MARKER_REMOVE, ID_MNU_CARDPOPUP_MARKER_REMOVE + 49, self.OnMenuCardRemoveMarker)
 
 		wx.EVT_MENU_RANGE(self, ID_MNU_CARDPOPUP_CONTROL, ID_MNU_CARDPOPUP_CONTROL+49, self.OnMenuCardChangeControl)
+
+		#Added by PCW 01/06/2009
+		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_PEEK_OPPONENT, self.OnMenuCardOpponentPeek)
+		
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_PEEK, self.OnMenuCardPeek)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_DISHONOR, self.OnMenuCardDishonor)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_MOVE_TOP, self.OnMenuCardMoveTop)
@@ -1690,6 +1696,11 @@ class MainWindow(wx.Frame):
 		cardMenu.Append(ID_MNU_CARDPOPUP_TAP, 'Straighten' if evt.card.tapped else 'Bow', 'Change this card\'s bowed status.')
 		if not evt.card.faceUp:
 			cardMenu.Append(ID_MNU_CARDPOPUP_PEEK, 'Peek', 'Peek at this card.')
+			#PCW added 1/6/2009
+			#if there's more than one player offer the Show to Opponent menu
+			if len(self.client.gameState.players) > 1:
+				cardMenu.Append(ID_MNU_CARDPOPUP_PEEK_OPPONENT, 'Show to Opponent', 'Show this card to your opponent.')
+				
 		cardMenu.Append(ID_MNU_CARDPOPUP_DISHONOR, 'Rehonor' if evt.card.dishonored else 'Dishonor', 'Change this card\'s honorable status.')
 		cardMenu.AppendSeparator()
 		cardMenu.Append(ID_MNU_CARDPOPUP_DISCARD, 'Discard')
@@ -1812,6 +1823,15 @@ class MainWindow(wx.Frame):
 		else:
 			self.client.Send(netcore.Msg('move-card', cgid=self.contextCard.cgid, top=False, pid=self.client.localPlayer.pid, zid=game.ZONE_DECK_FATE))
 
+	def OnMenuCardOpponentPeek(self, evt):
+#		cardID = self.contextCard.cgid
+#		card = self.server.gameState.FindCard(cardID)
+#		cardname = card.GetName()
+#		deckcard = self.client.cardDB.FindCardByName(cardname)
+#		print "Sending peek-opponent from menu (%s, %s)" % (deckcard.id, cardname)		
+#		self.client.Send(netcore.Msg('peek-opponent', cdid=deckcard.id, cardname=cardname))
+		self.client.Send(netcore.Msg('peek-opponent', cgid=self.contextCard.cgid, pid=self.client.localPlayer.pid))
+		
 	def OnMenuCardPeek(self, evt):
 		self.client.Send(netcore.Msg('peek-card', cgid=self.contextCard.cgid))
 
@@ -2266,9 +2286,25 @@ class MainWindow(wx.Frame):
 			self.lstClients.SetStringItem(idx, 2, str(handSize))
 		
 		event.Skip()
+
+	def OnClientPeekOpponentCard(self, event):
+		"""Let your Opponent peek at one of your face down cards"""
+		#Added 1/6/09 by PCW
+		card = self.client.gameState.FindCard(event.cgid)
+		player = self.client.gameState.GetPlayer(event.pid)
+	
+		if self.client.IsLocalPlayer(event.pid):
+			self.PrintToChat('%s peeks at your facedown card.' % (player.name))		
+		else:
+			self.PrintToChat('%s shows you a face down card: %s.' % (player.name, card.GetStyledName()))
+			#wx.FindWindowById(ID_CARD_PREVIEW).SetCard()
 	
 	def OnClientPeekCard(self, event):
+
+		print "Peeking at card #%s" % (event.card.GetName())
+		
 		card = self.client.gameState.FindCard(event.cgid)
+
 		if self.client.IsLocalPlayer(event.pid):
 			self.PrintToChat('You peek at %s.' % card.GetStyledName())
 			wx.FindWindowById(ID_CARD_PREVIEW).SetCard(card.data.id)
