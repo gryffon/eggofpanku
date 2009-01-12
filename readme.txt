@@ -285,7 +285,9 @@ News & Changes
 	* Fixed issue 17 (Possible Quck flip option) - You can now center (wheel) click a card to flip it.
 	* Added issue 19 (Add "put on bottom/top of deck" to right click menu)
 	* Added issue 14 (Can't easily put cards on deck bottoms) - Same as 19, but from all card lists!
-	* Added issue 20 (Add auto-draw functionality when the game starts) - now draws 5 cards for each player.
+	* Added issue 21 (Add auto-draw functionality when the game starts) - now draws 5 cards for each player.
+	* Added issue 22 (Place 4 Dynasty cards on the playfield at start) - now draws 4 cards for each player on thier play field.
+	* Added issue 24 (Can't show face down card to opponent) - you can now right click to show a face down card to an opponent, without see it yourself
 	* Added the enums.py to the EoPK source for others to use.
 	* Added the odict.py to the EoPK source for others to use.
 	* Added a Docs directory to the SVN Source
