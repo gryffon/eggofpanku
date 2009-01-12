@@ -519,12 +519,13 @@ class Server(threading.Thread):
 	@MustBePlayer
 	def HandlePeekOpponent(self, client, cgid, pid):
 		"""Handle a peek-card request."""
-		print "[SERVER] Opponent-Peek %s" % cgid
 		try:
 			card = self.gameState.FindCard(cgid)
 		except NoSuchCardException:
 			return
 
+		self.RevealCard(card)
+		
 		self.Broadcast(Msg('peek-opponent', pid=pid, cgid=cgid))
 	
 	@MustBePlayer
@@ -1086,8 +1087,9 @@ class Client(threading.Thread):
 		wx.PostEvent(self._eventTarget, ClientCreateCardEvent(cgid=cgid, pid=pid, zid=zid))
 
 	def HandlePeekOpponent(self,pid,cgid):
-		print "[CLIENT] Opponent-Peek (player: %s, cgid:%s)" % (pid,cgid)	
-		wx.PostEvent(self._eventTarget, ClientPeekOpponentCardEvent(cgid=cgid, pid=pid))
+		card = self.gameState.FindCard(cgid)
+		cardname= card.GetName()
+		wx.PostEvent(self._eventTarget, ClientPeekOpponentCardEvent(pid=pid, cgid=cgid))
 		
 	def HandlePeekCard(self, pid, cgid):
 #		wx.PostEvent(self._eventTarget, ClientPeekCardEvent(cgid=cgid, pid=pid))

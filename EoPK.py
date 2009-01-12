@@ -325,13 +325,11 @@ class AddMarkerDialog(wx.Dialog):
 			else:
 				tokenImage = self.MarkerTypes[self.cmbType.GetValue()]
 				imagePath = tokenImage
-#				print 'AddMarkerDialog.GetTokenImage imagePath =  %s' % (imagePath)
 				return imagePath
 
 		except AttributeError:
 				tokenImage = self.MarkerTypes[self.cmbType.GetValue()]
 				imagePath = tokenImage
-#				print 'AddMarkerDialog.GetTokenImage imagePath =  %s' % (imagePath)
 				return imagePath
 	
 	def GetNumber(self):
@@ -1824,12 +1822,8 @@ class MainWindow(wx.Frame):
 			self.client.Send(netcore.Msg('move-card', cgid=self.contextCard.cgid, top=False, pid=self.client.localPlayer.pid, zid=game.ZONE_DECK_FATE))
 
 	def OnMenuCardOpponentPeek(self, evt):
-#		cardID = self.contextCard.cgid
-#		card = self.server.gameState.FindCard(cardID)
-#		cardname = card.GetName()
-#		deckcard = self.client.cardDB.FindCardByName(cardname)
-#		print "Sending peek-opponent from menu (%s, %s)" % (deckcard.id, cardname)		
-#		self.client.Send(netcore.Msg('peek-opponent', cdid=deckcard.id, cardname=cardname))
+		cardID = self.contextCard.cgid
+		card = self.client.gameState.FindCard(cardID)
 		self.client.Send(netcore.Msg('peek-opponent', cgid=self.contextCard.cgid, pid=self.client.localPlayer.pid))
 		
 	def OnMenuCardPeek(self, evt):
@@ -2301,8 +2295,6 @@ class MainWindow(wx.Frame):
 	
 	def OnClientPeekCard(self, event):
 
-		print "Peeking at card #%s" % (event.card.GetName())
-		
 		card = self.client.gameState.FindCard(event.cgid)
 
 		if self.client.IsLocalPlayer(event.pid):
@@ -2406,19 +2398,15 @@ class MainWindow(wx.Frame):
 	# This is the card marker functions
 	#--------------------
 	def OnClientSetMarkers(self, event):
-		#print '%s' % (event.token)
 		# This is important -- make sure the marker exists in our list of available markers.
 		# If it doesn't, the menus will break.
 		if event.token not in game.MarkerNames:	
-			#print '%s' % (event.image)
 			if event.image is None:
 				game.AddMarkerTemplate(event.token)
 			else:
 				game.AddMarkerTemplate(event.token, event.image)
 		
 		card = self.client.gameState.FindCard(event.cgid)
-
-		#print '%s' % (card.NumMarkers)
 
 		if event.change == 0:  # No change--don't bother.
 			return
