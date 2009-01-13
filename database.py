@@ -38,7 +38,7 @@ factions.sort()
 #add the minors to the list
 factions.extend(minorClans)
 
-legalityFormats = ('Samurai', 'Lotus', 'Diamond', 'Gold', 'Jade', 'Open') #'Celestial', 
+legalityFormats = ('Celestial', 'Samurai', 'Lotus', 'Diamond', 'Gold', 'Jade', 'Open') 
 
 cardSets = odict.OrderedDict([line.strip().split(':') for line in file('sets.dat', 'rb')])
 
