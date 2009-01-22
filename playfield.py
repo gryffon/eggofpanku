@@ -393,18 +393,13 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 		self.SetCurrent()
 		(winx, winy) = self.GetSize()
 
-		print "winx,winy (%s,%s)" % (winx, winy)
-		print "pfWidth,pfHeight (%s,%s)" % (self.pfWidth, self.pfHeight)
-		
 		if self.isLocal:
 			worldx = (float(x)/winx - 0.5) * self.pfWidth
 			worldy = canvas.CANVAS_CARD_H + CANVAS_MOVE_SNAP - (1.0 - (float(y)/winy)) * self.pfHeight
-			print "worldx,worldy (%s,%s)" % (worldx, worldy)
 			return (worldx, worldy)
 		else:
 			worldx = (0.5 - float(x)/winx) * self.pfWidth
 			worldy = canvas.CANVAS_CARD_H + CANVAS_MOVE_SNAP - (float(y)/winy) * self.pfHeight
-			print "worldx,worldy (%s,%s)" % (worldx, worldy)
 			return (worldx, worldy)
 	
 	def FindCardAt(self, px, py):
