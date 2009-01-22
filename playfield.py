@@ -31,7 +31,7 @@ from guids import *
 
 DEFAULT_PLAYFIELD_HEIGHT = 100
 
-CANVAS_MOVE_SNAP = 7.0  # Distance, in world units, to snap when dragging on the playfield.
+CANVAS_MOVE_SNAP = 5.0  # Distance, in world units, to snap when dragging on the playfield.
 CANVAS_TOKEN_SIZE = 5
 CANVAS_TOKEN_ARR_W = canvas.CANVAS_CARD_W - CANVAS_TOKEN_SIZE
 CANVAS_TOKEN_ARR_H = canvas.CANVAS_CARD_H - CANVAS_TOKEN_SIZE
@@ -392,14 +392,19 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 		"Converts from screen coordinates to world coordinates. Useful for dragging, etc."
 		self.SetCurrent()
 		(winx, winy) = self.GetSize()
+
+		print "winx,winy (%s,%s)" % (winx, winy)
+		print "pfWidth,pfHeight (%s,%s)" % (self.pfWidth, self.pfHeight)
 		
 		if self.isLocal:
 			worldx = (float(x)/winx - 0.5) * self.pfWidth
 			worldy = canvas.CANVAS_CARD_H + CANVAS_MOVE_SNAP - (1.0 - (float(y)/winy)) * self.pfHeight
+			print "worldx,worldy (%s,%s)" % (worldx, worldy)
 			return (worldx, worldy)
 		else:
 			worldx = (0.5 - float(x)/winx) * self.pfWidth
 			worldy = canvas.CANVAS_CARD_H + CANVAS_MOVE_SNAP - (float(y)/winy) * self.pfHeight
+			print "worldx,worldy (%s,%s)" % (worldx, worldy)
 			return (worldx, worldy)
 	
 	def FindCardAt(self, px, py):
