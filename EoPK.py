@@ -594,7 +594,10 @@ class ViewDeckDialog(ViewCardsDialog):
 	def NameCard(self, card):
 		name = card.GetName()
 		if card.dead:
-			name += ' (dead)'
+			if card.dishonored:
+				name += ' (dead, dishonored)'
+			else:
+				name += ' (dead)'		
 		try:
 			if card.data.type == 'holdings' and 'Legacy.' in card.data.text:
 				name += ' (Legacy Holding)'
@@ -612,7 +615,7 @@ class ViewDeckDialog(ViewCardsDialog):
 
 
 	def OnPropertyChange(self, event):
-		if event.property == 'dead':
+		if event.property == 'dead' or event.property == "dishonored":
 			idx = self.lstCards.FindItemData(-1, event.cgid)
 			self.lstCards.SetStringItem(idx, 0, self.NameCard(self.gameState.FindCard(event.cgid)))
 		event.Skip()
@@ -623,11 +626,18 @@ class ViewDeckDialog(ViewCardsDialog):
 			idx = self.lstCards.FindItemData(-1, event.card.cgid)
 			self.lstCards.DeleteItem(idx)
 		elif event.zone == self.zone:  # A card is entering this zone.
+			name = card.GetName()
+			if card.dead:
+				if card.dishonored:
+					name += ' (dead, dishonored)'
+			else:
+				name += ' (dead)'
 			if event.top:
-				idx = self.lstCards.InsertStringItem(0, event.card.GetName() + (' (dead)' if event.card.dead else ''))
+				
+				idx = self.lstCards.InsertStringItem(0, name)
 				self.lstCards.SetItemData(idx, event.card.cgid)
 			else:
-				idx = self.lstCards.InsertStringItem(-1, event.card.GetName() + (' (dead)' if event.card.dead else ''))
+				idx = self.lstCards.InsertStringItem(-1, name)
 				self.lstCards.SetItemData(idx, event.card.cgid)
 		event.Skip()
 	
@@ -644,12 +654,16 @@ class ViewDynastyDiscardDialog(ViewDeckDialog):
 		wx.EVT_LIST_ITEM_RIGHT_CLICK(self, self.lstCards.GetId(), self.OnListRightClick)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_MARK_DEAD, self.OnMarkDead)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_MARK_DISCARDED, self.OnMarkDiscarded)
+		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_MARK_REHONOR, self.OnRehonor)
 	
 	def OnMarkDead(self, evt):
 		wx.FindWindowById(ID_MAIN_WINDOW).client.Send(netcore.Msg('set-card-property', cgid=self.card.cgid, property='dead', value=True))
 		
 	def OnMarkDiscarded(self, evt):
 		wx.FindWindowById(ID_MAIN_WINDOW).client.Send(netcore.Msg('set-card-property', cgid=self.card.cgid, property='dead', value=False))
+
+	def OnRehonor(self, evt):
+		wx.FindWindowById(ID_MAIN_WINDOW).client.Send(netcore.Msg('set-card-property', cgid=self.card.cgid, property='dishonored', value=False))
 		
 	def OnListRightClick(self, evt):
 		self.card = self.gameState.FindCard(evt.GetData())
@@ -662,6 +676,8 @@ class ViewDynastyDiscardDialog(ViewDeckDialog):
 		menu = wx.Menu()
 		if self.card.dead:
 			menu.Append(ID_MNU_CARDPOPUP_MARK_DISCARDED, 'Mark discarded')
+			if self.card.dishonored:
+				menu.Append(ID_MNU_CARDPOPUP_MARK_REHONOR, 'Rehonor')
 		else:
 			menu.Append(ID_MNU_CARDPOPUP_MARK_DEAD, 'Mark dead')
 		self.PopupMenu(menu)
