@@ -17,6 +17,10 @@
 # 02110-1301, USA.
 """Main module."""
 
+
+from xmlsettings import settings
+#from settings import settings
+
 import cPickle
 import sys
 import os
@@ -33,15 +37,14 @@ import deck
 import preview
 import settings_ui
 import deckpanel
-from settings import settings
 import deckedit
 import dbimport
 from guids import *
 
 logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(levelname)s %(message)s',
-                    filename='eopk.log',
-                    filemode='w')
+					format='%(asctime)s %(levelname)s %(message)s',
+					filename='eopk.log',
+					filemode='w')
 
 LinkClickEvent, EVT_LINK_CLICK = wx.lib.newevent.NewEvent()
 CreatedCards = []  # A mapping helper for the 'Create card' menu.
@@ -1273,6 +1276,8 @@ class MainWindow(wx.Frame):
 		settings.maximize = self.IsMaximized()
 		if not settings.maximize:
 			settings.mainwindow_size = self.GetSize().Get()
+		
+		settings.WriteSettingsFile()
 		event.Skip()
 	
 	def OnMenuExit(self, event):
@@ -1370,7 +1375,6 @@ class MainWindow(wx.Frame):
 		#self.lstClients.PopupMenu(mnu)
 		pass
 	
-	#------------------------------------------------------------------------------------------------------------------------------------------------------------
 	def OnMenuHost(self, event):
 		if self.client:
 			dlg = wx.MessageDialog(self, 'You are already connected to a host.\nAre you sure you want to host a new game?', 'Host', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
@@ -1382,57 +1386,63 @@ class MainWindow(wx.Frame):
 		self.StartServer()
 		if not self.StartClient('localhost'):
 			self.StopServer()
-			
+	
 	def OnMenuConnect(self, event):
 		if self.client:
 			dlg = wx.MessageDialog(self, 'You are already connected to a host.\nAre you sure you want to connect to someone else?', 'Connect', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
 			if dlg.ShowModal() == wx.ID_NO:
 				return
 		
-		dlg= ConnectDialog(self)
+		dlg = ConnectDialog(self)
 		if dlg.ShowModal() == wx.ID_OK:
 			settings.gamehost = dlg.txtHostname.GetValue()
 			try:
 				port = int(dlg.txtHostPort.GetValue())
+				
 			except ValueError:
 				port = netcore.DEFAULT_PORT
-			settings.gameport = port
+				
+			settings.gameport=port
+			settings.WriteSettingsFile()
 			self.StopClient()
 			self.StopServer()
 			self.StartClient(settings.gamehost, settings.gameport)
-
+	
 	#---------------------------------------
 	# Added 08-23-2008 by PCW
-	#This is the menu event handler for connecting to the Game Match Service
+	# This is the menu event handler for connecting to the Game Match Service
+	#---------------------------------------
 	def OnMenuGameMatch(self,event):
 		if self.client:
 			dlg = wx.MessageDialog(self, 'You are already connected to a game via the Game Matching Service.\nAre you sure you want to connect to another?', 'Connect', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
 			if dlg.ShowModal() == wx.ID_NO:
 				return
-#		dlg= GameMatchConnectDialog(self)
-#		if dlg.ShowModal() == wx.ID_OK:
-#			settings.matchuser = dlg.txtUserName.GetValue()
-#			settings.matchpassword = dlg.txtPassword.GetValue()
+
+		#dlg= GameMatchConnectDialog(self)
+		#if dlg.ShowModal() == wx.ID_OK:
+		#settings.matchuser = dlg.txtUserName.GetValue()
+		#settings.matchpassword = dlg.txtPassword.GetValue()
 		self.StopClient()
 		self.StopServer()
 		self.StartGameMatchService()
 		
-	#--------------------------
-	# end of changes
-	#--------------------------
-
+	#--------------------------------------
+	# End of Changes
+	#--------------------------------------
+	
 	def OnMenuDisconnect(self, event):
 		dlg = wx.MessageDialog(self, 'Disconnecting will terminate your current game.\nAre you sure you want to disconnect?', 'Disconnect', wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
 		if dlg.ShowModal() == wx.ID_NO:
 			return
-		
+
 		self.StopClient()
 		self.StopServer()
-	
+		
 	def OnMenuSubmitDeck(self, event):
 		dlg = SubmitDeckDialog(self)
 		if dlg.ShowModal() == wx.ID_OK:
 			settings.last_deck = dlg.GetDeckPath()
+			settings.WriteSettingsFile()
 			self.client.SubmitDeck(dlg.GetDeck())
 			self.GetMenuBar().Enable(ID_MNU_LEAVE_GAME, True)
 			self.GetToolBar().EnableTool(ID_MNU_LEAVE_GAME, True)
@@ -1486,6 +1496,7 @@ class MainWindow(wx.Frame):
 				elif len(bits) == 2:
 					self.client.Send(netcore.Msg('name', value=bits[1]))
 					settings.playername = bits[1]
+					settings.WriteSettingsFile()
 				else:
 					self.PrintToChat('Usage: /nick <name>')
 			else:
@@ -2044,8 +2055,8 @@ class MainWindow(wx.Frame):
 			port = int(oport)
 		except ValueError:
 			port = netcore.DEFAULT_PORT
-
 		settings.gameport = oport
+		settings.WriteSettingsFile()
 		self.StopClient()
 		self.StopServer()
 		self.StartClient(settings.gamehost, settings.gameport)

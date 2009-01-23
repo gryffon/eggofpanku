@@ -18,10 +18,12 @@
 """Settings dialog module for Egg of P'an Ku."""
 
 import wx
+import string
 
 import database
 import dbimport
-from settings import settings
+#from settings import settings
+from xmlsettings import settings
 
 
 class GeneralSettings(wx.Panel):
@@ -67,12 +69,15 @@ class DatabaseSettings(wx.Panel):
 		
 		# -------
 		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Current Database'), wx.VERTICAL)
+		
 		sbsizer.Add(wx.StaticText(self, label='%s (%d cards)' % (db.date, len(db))), 0, wx.EXPAND|wx.ALL, 5)
 		if settings.cardsource:
 			cs = settings.cardsource
 		else:
 			cs = '(no card source)'
-		sbsizer.Add(wx.StaticText(self, label=cs), 0, wx.EXPAND|wx.ALL, 5)
+			
+		self.lblCardDB = wx.StaticText(self, label=cs)
+		sbsizer.Add(self.lblCardDB, 0, wx.EXPAND|wx.ALL, 5)
 		
 		self.btnReload = wx.Button(self, label='Reload')
 		self.Bind(wx.EVT_BUTTON, self.OnReloadDatabase, self.btnReload)
@@ -89,10 +94,14 @@ class DatabaseSettings(wx.Panel):
 		
 		# -------
 		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Image Packs'), wx.VERTICAL)
-		
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		sbsizer.Add(wx.StaticText(self, label='Egg of P\'an Ku will look in the  below directory for card images.'), 0, wx.ALL, 5)
 		self.dirImagePacks = wx.TextCtrl(self, value=settings.dir_imagepacks)
 		sbsizer.Add(self.dirImagePacks, 0, wx.EXPAND|wx.ALL, 5)
+		self.btnGetImagesPath = wx.Button(self, label='Browse')
+		self.Bind(wx.EVT_BUTTON, self.OnGetImagesPath, self.btnGetImagesPath)
+		sizer.Add(self.btnGetImagesPath, 0, wx.RIGHT, 5)
+		sbsizer.Add(sizer,0, wx.ALIGN_RIGHT|wx.ALL, 5)
 		
 		panelsizer.Add(sbsizer, 0, wx.EXPAND|wx.ALL, 4)
 		
@@ -100,7 +109,7 @@ class DatabaseSettings(wx.Panel):
 	
 	def Save(self):
 		settings.dir_imagepacks = self.dirImagePacks.GetValue()
-	
+		
 	def Import(self):
 		try:
 			importer = database.XMLImporter(settings.cardsource)
@@ -113,17 +122,27 @@ class DatabaseSettings(wx.Panel):
 			return False
 		return True
 	
+	def OnGetImagesPath(self, event):
+		fdlg = wx.DirDialog(None, message='Please select the directory containing the images', \
+						    defaultPath=settings.dir_imagepacks, name='Select Images Path')
+		if fdlg.ShowModal() == wx.ID_OK:
+			self.dirImagePacks.SetValue(fdlg.GetPath() if fdlg.GetPath().endswith('\\') else fdlg.GetPath() + '\\')
+	
 	def OnChangeDatabase(self, event):
 		fdlg = wx.FileDialog(None, wildcard='XML card database (*.xml)|*.xml|All files (*.*)|*.*', style=wx.OPEN|wx.FILE_MUST_EXIST)
 		if fdlg.ShowModal() == wx.ID_OK:
 			oldsrc = settings.cardsource
 			settings.cardsource = fdlg.GetPath()
+			settings.WriteSettingsFile()
 			if self.Import():
 				wx.MessageDialog(self, 'The card database source was changed and re-imported.\n' \
 					'These changes will take effect next time you run Egg of P\'an Ku.', \
 					'Card reload successful', wx.ICON_INFORMATION).ShowModal()
+				
+				self.lblCardDB.SetLabel(settings.cardsource)
 			else:
 				settings.cardsource = oldsrc  # Best to reset it, so it's not invalid.
+				settings.WriteSettingsFile()				
 		
 	def OnReloadDatabase(self, event):
 		if self.Import():
@@ -236,6 +255,7 @@ class SettingsDialog(wx.Dialog):
 	def SaveSettings(self, event):
 		for title, page in self.pages:
 			page.Save()
+		settings.WriteSettingsFile()
 		event.Skip()
 
 

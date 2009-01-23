@@ -31,7 +31,8 @@ import random
 import game
 import database
 import dragdrop
-from settings import settings
+#from settings import settings
+from xmlsettings import settings
 
 
 CANVAS_MOVE_SNAP = 5.0  # Distance, in world units, to snap when dragging on the playfield.

@@ -20,7 +20,8 @@ import wx
 import os.path
 
 import database
-from settings import settings
+#from settings import settings
+from xmlsettings import settings
 
 def EnsureExists():
 	"""Ensure that the database is loaded by prompting the user to load
@@ -39,6 +40,7 @@ def EnsureExists():
 				fdlg = wx.FileDialog(None, wildcard='XML card database (*.xml)|*.xml|All files (*.*)|*.*', style=wx.OPEN|wx.FILE_MUST_EXIST)
 				if fdlg.ShowModal() == wx.ID_OK:
 					settings.cardsource = fdlg.GetPath()
+					settings.WriteSettingsFile()
 					should_import = True
 				else:
 					return False

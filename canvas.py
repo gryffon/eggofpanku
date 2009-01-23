@@ -30,7 +30,8 @@ import random
 import game
 import database
 import dragdrop
-from settings import settings
+#from settings import settings
+from xmlsettings import settings
 
 
 CANVAS_CARD_W = 10.5

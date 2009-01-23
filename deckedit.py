@@ -28,7 +28,8 @@ import StringIO
 import win32clipboard
 from enums import Enumeration
 
-from settings import settings
+#from settings import settings
+from xmlsettings import settings
 import dbimport
 import card_filters
 
