@@ -442,7 +442,7 @@ class Server(threading.Thread):
 		"Handles a request sent from the specified client."
 		action, parameters = simplejson.loads(data)
 
-		#print 'Data:\r\n%s' % (data)
+##		print '[Server] Data:\r\n%s' % (data)
 		
 		# Figure out handler name.
 		name = 'Handle' + ''.join(part.capitalize() for part in action.split('-'))
@@ -524,8 +524,15 @@ class Server(threading.Thread):
 		except NoSuchCardException:
 			return
 
-		self.RevealCard(card)
-		
+		for opponentPid in self.clients:
+			try:
+				oPid = opponentPid.clid
+				
+				if oPid != client.clid:
+					self.RevealCard(card, opponentPid.player)
+			except Exception, e:
+				print '[HandlePeekOpponent] problem revealing a card. \r\n %s' % e
+			
 		self.Broadcast(Msg('peek-opponent', pid=pid, cgid=cgid))
 	
 	@MustBePlayer
@@ -998,7 +1005,7 @@ class Client(threading.Thread):
 		oldzone = card.location
 		oldzonepos = oldzone.cards.index(cgid)
 		oldzonesize = len(card.location)
-		
+
 		# Move card to the appropriate zone.
 		if top is None and oldzone is zone:
 			pass

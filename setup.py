@@ -158,7 +158,8 @@ markerimagefiles = glob.glob('images\\markers\\*.png')
 
 setup(
 	windows=[{
-			'script': 'EoPK.py',
+			'script': 'program.py',
+			'dest_base': 'EoPK',
 			'icon_resources': [(0, 'icon.ico')],
 			'other_resources': [(24, 1, manifestxml % guids.EOPK_APPNAME)],
 			'name': guids.EOPK_APPNAME,

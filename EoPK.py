@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
-"""Main module."""
+"""Egg of Pan Ku module."""
 
 
 from xmlsettings import settings
@@ -2593,21 +2593,21 @@ class MainWindow(wx.Frame):
 			self.PrintToChat('%s %sreveals %s from their %s.' % \
 				(self.client.gameState.FindPlayer(event.pid).name, \
 				 'randomly ' if event.random else '', cardstr, game.zoneNames[event.zid]))
-
-if __name__ == "__main__":
-	# If we've got psyco, we should use it.
-	try:
-		import psyco
-		psyco.profile()
-	except ImportError:
-		pass
-
-	
-
-	try:
-		app = wx.PySimpleApp()
-		if dbimport.EnsureExists():
-			frame = MainWindow(None, ID_MAIN_WINDOW, EOPK_APPNAME)
-			app.MainLoop()
-	finally:
-		del app
+##
+##if __name__ == "__main__":
+##	# If we've got psyco, we should use it.
+##	try:
+##		import psyco
+##		psyco.profile()
+##	except ImportError:
+##		pass
+##
+##	
+##
+##	try:
+##		app = wx.PySimpleApp()
+##		if dbimport.EnsureExists():
+##			frame = MainWindow(None, ID_MAIN_WINDOW, EOPK_APPNAME)
+##			app.MainLoop()
+##	finally:
+##		del app
