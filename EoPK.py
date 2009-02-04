@@ -602,7 +602,7 @@ class ViewDeckDialog(ViewCardsDialog):
 			else:
 				name += ' (dead)'		
 		try:
-			if card.data.type == 'holdings' and 'Legacy.' in card.data.text:
+			if card.data.type == 'holdings' and 'Legacy' in card.data.text:
 				name += ' (Legacy Holding)'
 		except AttributeError:
 			pass
