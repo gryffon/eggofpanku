@@ -119,17 +119,17 @@ class ServerGameState(game.GameState):
 
 	def ShuffleZone(self, pid, zid):
 		"""Shuffle a zone, that is, randomly permute what cdid is associated with each cgid in it."""
-		# We're doing Fisher-Yates shuffling.
+		# We're doing Knuth-Fisher-Yates shuffling.
 		zone = self.FindZone(pid, zid)
-		n = len(zone.cards)
-		while n > 1:
-			k = random.randrange(n)
-			n -= 1
-			card_k = self.FindCard(zone.cards[k])
+		for i in range(len(zone.cards)):
+			n = random.randrange(i + 1)
+			while n > len(zone.cards):
+				n = random.randrange(i + 1)	
 			card_n = self.FindCard(zone.cards[n])
-			temp = card_k.data
-			card_k.data = card_n.data
-			card_n.data = temp
+			card_i = self.FindCard(zone.cards[i])
+			temp = card_n.data
+			card_n.data = card_i.data
+			card_i.data = temp
 
 
 class ClientCard(game.Card):
