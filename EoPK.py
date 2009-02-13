@@ -695,6 +695,8 @@ class ChatCtrl(wx.TextCtrl):
 		self.last_link = None
 
 	def WriteToLogFile(self, text):
+		if not settings.log_multiplayer_games:
+			return
 		if MainWindow.LogFile is None:
 			return
 		try:
@@ -740,7 +742,7 @@ class ChatCtrl(wx.TextCtrl):
 
 		#And write  to chatbox (and Log)
 		outputString = ''.join(newText)
-		self.WriteToLogFile(outputString);
+		self.WriteToLogFile(text=outputString);
 		self.AppendText(outputString)
 		# Mark up card links.
 		if new_links:
@@ -781,7 +783,7 @@ class MainWindow(wx.Frame):
 	CLI_COLUMN_HONOR = 1
 	CLI_COLUMN_HAND = 2
 	
-	LogFile = None	
+	LogFile = None
 	
 	def __init__(self, parent, id=wx.ID_ANY, title=None):
 		# Basic initialization
@@ -1734,7 +1736,7 @@ class MainWindow(wx.Frame):
 	def OnDoubleClickCard(self, evt):
 		"""Process a double click on a card on the playfield canvas."""
 		if evt.card.faceUp == False:
-			self.client.Send(netcore.Msg('set-card-property', cgid=evt.card.cgid, property='faceUp', value=true))
+			self.client.Send(netcore.Msg('set-card-property', cgid=evt.card.cgid, property='faceUp', value=True))
 		else:
 			self.client.Send(netcore.Msg('set-card-property', cgid=evt.card.cgid, property='tapped', value=not evt.card.tapped))
 
@@ -2161,11 +2163,16 @@ class MainWindow(wx.Frame):
 	
 	def OnClientDisconnect(self, event):
 		"Callback for when the client is forcibly disconnected."
+		if not MainWindow.LogFile is None:
+			MainWindow.LogFile.close()
+
 		self.StopClient()
 		self.StopServer()
 		self.PrintToChat('Disconnected.')
 	
 	def OnClientQuit(self, event):
+		if not MainWindow.LogFile is None:
+			MainWindow.LogFile.close()
 		idx = self.lstClients.FindItemData(-1, event.clid)
 		self.lstClients.DeleteItem(idx)
 		self.PrintToChat('%s has disconnected.' % self.client.clientNames[event.clid])
@@ -2212,12 +2219,14 @@ class MainWindow(wx.Frame):
 
 		logFilename = ''
 		try:
-			if self.logFile is None:
+			if settings.log_multiplayer_games == True and self.LogFile is None:
 				if len(self.client.gameState.players) > 1:
 					logFilename = "_".join([self.client.GetClientName(clid - 1) for clid in self.client.gameState.players]) + '.txt'
 					currentdir = os.curdir
-					logdir = os.path.join(currentdir, "logs") +'\\'
-					self.LogFile = open(logdir + logFilename,'w')
+					logdir = os.path.join(currentdir, "logs")
+					if not os.path.exists(logdir):
+						os.makedirs(logdir)
+					MainWindow.LogFile = open(logdir +'\\' + logFilename,'w')
 
 		except AttributeError, error:
 			print error

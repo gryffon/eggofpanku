@@ -22,6 +22,7 @@ DEFAULT_SETTINGS = {
     'attach_ok': ('personalities',),
     'matchuser':'',
     'matchpassword':'1234',
+    'log_multiplayer_games':False,
 }
 
 class _XMLSettings:

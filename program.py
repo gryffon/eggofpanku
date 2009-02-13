@@ -44,4 +44,7 @@ if __name__ == "__main__":
 			frame = EoPK.MainWindow(None, ID_MAIN_WINDOW, EOPK_APPNAME)
 			app.MainLoop()
 	finally:
+		if not EoPK.MainWindow.LogFile is None:
+			EoPK.MainWindow.LogFile.close()
+			EoPK.MainWindow.LogFile = None
 		del app

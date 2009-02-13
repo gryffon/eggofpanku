@@ -280,6 +280,7 @@ News & Changes
 
   2008-Feb-12 Egg of P'an Ku 0.9.01
 
+	* Added a setting in the preferences to log multiplayer games to a file.
 	* Moved a lot of the souce code to files that can be updated without reinstalling.
 	* Changed Shuffling algorithm to shuffle better
 	* Fixed problem with showing opponent a face down card (revealed to player also).

@@ -40,6 +40,14 @@ class GeneralSettings(wx.Panel):
 		sizer.Add(wx.StaticText(self, label='Name:'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
 		sizer.Add(self.txtName, 1, 0, 0)
 		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
+
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sizer.Add(wx.StaticText(self, label='Logging'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		
+		self.chkRecordLog = wx.CheckBox(self, label='Log multiplayer games')
+		self.chkRecordLog.SetValue(settings.log_multiplayer_games)
+		sizer.Add(self.chkRecordLog , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
 		
 		#self.cmbStartup = wx.ComboBox(self, style=wx.CB_READONLY)
 		#self.cmbStartup.Append('Do nothing')
@@ -58,6 +66,7 @@ class GeneralSettings(wx.Panel):
 	
 	def Save(self):
 		settings.playername = self.txtName.GetValue()
+		settings.log_multiplayer_games = self.chkRecordLog.GetValue();
 		#settings.start_procedure = self.cmbStartup.GetSelection()
 	
 class DatabaseSettings(wx.Panel):
