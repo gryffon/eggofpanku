@@ -693,14 +693,26 @@ class ChatCtrl(wx.TextCtrl):
 		self._link_attr = wx.TextAttr((0, 128, 0), font=wx.Font(-1, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False))
 		self.card_links = []
 		self.last_link = None
+
+	def WriteToLogFile(self, text):
+		if MainWindow.LogFile is None:
+			return
+		try:
+			MainWindow.LogFile.write(text)
+		except AttributeError, error:
+			print error
+
 	
 	def AppendLine(self, text):
 		new_links = []
 		bits = text.split('#')
+
+		newText = []
 		db = database.get()
 		while bits:
 			# Append the first plain text bit
-			self.AppendText(bits.pop(0))
+			newText.append(bits.pop(0))
+			#self.AppendText(bits.pop(0))
 			
 			# If we still have bits, then the next one is a link of some sort.
 			if bits:
@@ -708,19 +720,28 @@ class ChatCtrl(wx.TextCtrl):
 					key = bits.pop(0)[5:]
 					try:
 						startpos = self.GetLastPosition()
-						self.AppendText(db[key].name)
+						newText.append(db[key].name)
+						#self.AppendText(db[key].name)
 						endpos = self.GetLastPosition()
 						new_links.append((startpos, endpos, key))
 					except KeyError:
-						self.AppendText('<unknown card>')
+						newText.append('<unknown card>')
+						#self.AppendText('<unknown card>')
 				else:
-					self.AppendText('#%s' % bits.pop(0))
+					newText.append('#%s' % bits.pop(0))
+					#self.AppendText('#%s' % bits.pop(0))
 					if bits:  # In case there's a trailing one too; would be swallowed.
-						self.AppendText('#')
+						newText.append('#')
+						#self.AppendText('#')
 		
 		# Finally, the line break.
-		self.AppendText('\n')
-		
+		newText.append('\n')
+		#self.AppendText('\n')
+
+		#And write  to chatbox (and Log)
+		outputString = ''.join(newText)
+		self.WriteToLogFile(outputString);
+		self.AppendText(outputString)
 		# Mark up card links.
 		if new_links:
 			for start, end, key in new_links:
@@ -760,12 +781,18 @@ class MainWindow(wx.Frame):
 	CLI_COLUMN_HONOR = 1
 	CLI_COLUMN_HAND = 2
 	
+	LogFile = None	
+	
 	def __init__(self, parent, id=wx.ID_ANY, title=None):
 		# Basic initialization
 		style = wx.DEFAULT_FRAME_STYLE
 		if settings.maximize:
 			style |= wx.MAXIMIZE
 		wx.Frame.__init__(self, parent, id, title, size=settings.mainwindow_size, style=style)
+		
+		#set server and client attributes
+		self.server = None
+		self.client = None
 		
 		# Splitter hand/playfield
 		splitterHorzMid = wx.SplitterWindow(self, -1, style=wx.CLIP_CHILDREN|wx.SP_3D)
@@ -943,10 +970,8 @@ class MainWindow(wx.Frame):
 			" under certain conditions; see license.txt for details." % EOPK_APPNAME)
 		self.PrintToChat("Database %s ok, containing %d cards." % (db.date, len(db)))
 		self.PrintToChat("----------")
-		
-		self.server = None
-		self.client = None
-	
+
+
 	def SetupToolbars(self):
 		toolbar = self.CreateToolBar()
 		
@@ -1708,7 +1733,10 @@ class MainWindow(wx.Frame):
 	
 	def OnDoubleClickCard(self, evt):
 		"""Process a double click on a card on the playfield canvas."""
-		self.client.Send(netcore.Msg('set-card-property', cgid=evt.card.cgid, property='tapped', value=not evt.card.tapped))
+		if evt.card.faceUp == False:
+			self.client.Send(netcore.Msg('set-card-property', cgid=evt.card.cgid, property='faceUp', value=true))
+		else:
+			self.client.Send(netcore.Msg('set-card-property', cgid=evt.card.cgid, property='tapped', value=not evt.card.tapped))
 
 	def OnWheelClickCard(self, evt):
 		self.client.Send(netcore.Msg('set-card-property', cgid=evt.card.cgid, property='faceUp', value=not evt.card.faceUp))
@@ -2181,6 +2209,18 @@ class MainWindow(wx.Frame):
 			self.discardFate.SetGameState(None)
 			self.rfgZone.SetGameState(None)
 			self.EnableGameMenus(False)
+
+		logFilename = ''
+		try:
+			if self.logFile is None:
+				if len(self.client.gameState.players) > 1:
+					logFilename = "_".join([self.client.GetClientName(clid - 1) for clid in self.client.gameState.players]) + '.txt'
+					currentdir = os.curdir
+					logdir = os.path.join(currentdir, "logs") +'\\'
+					self.LogFile = open(logdir + logFilename,'w')
+
+		except AttributeError, error:
+			print error
 		
 		self.PrintToChat('A new game round is starting.')
 		self.PrintToChat('Players: ' + ', '.join(p.name for (pid,p) in self.client.gameState.players.iteritems()))
@@ -2593,21 +2633,3 @@ class MainWindow(wx.Frame):
 			self.PrintToChat('%s %sreveals %s from their %s.' % \
 				(self.client.gameState.FindPlayer(event.pid).name, \
 				 'randomly ' if event.random else '', cardstr, game.zoneNames[event.zid]))
-##
-##if __name__ == "__main__":
-##	# If we've got psyco, we should use it.
-##	try:
-##		import psyco
-##		psyco.profile()
-##	except ImportError:
-##		pass
-##
-##	
-##
-##	try:
-##		app = wx.PySimpleApp()
-##		if dbimport.EnsureExists():
-##			frame = MainWindow(None, ID_MAIN_WINDOW, EOPK_APPNAME)
-##			app.MainLoop()
-##	finally:
-##		del app

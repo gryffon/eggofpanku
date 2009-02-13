@@ -1,6 +1,6 @@
 
 
-                    EGG OF P'AN KU 0.8.6 (2008-Dec-05)
+                    EGG OF P'AN KU 0.9.01 (2009-Feb-12)
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -277,6 +277,19 @@ Technical details
 
 
 News & Changes
+
+  2008-Feb-12 Egg of P'an Ku 0.9.01
+
+	* Moved a lot of the souce code to files that can be updated without reinstalling.
+	* Changed Shuffling algorithm to shuffle better
+	* Fixed problem with showing opponent a face down card (revealed to player also).
+	* Fixed issue 26 (Deck Editor needs to be able to filter on "CE" edition cards.)
+	* Fixed issue 28 (Add "Celestial Edition" to the filters list)
+	* Fixed issue 30 (Legacy keyword) - should not appear in dialogs 
+	* Fixed issue 33 (Remove 'Monkey' from minor clan list)
+	* Fixed issue 35 (Manipulating discard and dead piles) - you can now rehonor a dead card.
+
+
 
   2008-Dec-11 Egg of P'an Ku 0.9.0
 
