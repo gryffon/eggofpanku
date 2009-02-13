@@ -280,7 +280,7 @@ News & Changes
 
   2008-Feb-12 Egg of P'an Ku 0.9.01
 
-	* Double clicking a face down card will not turn it face up.  Double clicking face up
+	* Double clicking a face down card will now turn it face up.  Double clicking face up
 		cards will bow/straighten them.
 	* Added a setting in the preferences to log multiplayer games to a file.
 	* Moved a lot of the souce code to files that can be updated without reinstalling.
