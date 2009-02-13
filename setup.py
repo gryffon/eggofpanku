@@ -94,6 +94,8 @@ Var StartMenuFolder
 ;--------------------------------------------------------
 Section ""
   SetOutPath "$INSTDIR"
+
+  Delete "$INSTDIR\\settings.xml"
   
   %%%FILES%%%
   
@@ -119,6 +121,7 @@ Section "Uninstall"
   
   Delete "$INSTDIR\\cards.db"
   Delete "$INSTDIR\\eopk-settings"
+  Delete "$INSTDIR\\settings.xml"
   Delete "$INSTDIR\\EoPK.exe.log"
   Delete "$INSTDIR\\eopk.log"
   Delete "$INSTDIR\\Uninstall.exe"
