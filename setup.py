@@ -52,7 +52,7 @@ nsis_template = '''
 !include "MUI.nsh"
 ;--------------------------------------------------------
 Name "%%%APPNAME%%%"
-OutFile "eopk-%%%VERSION%%%-win32.exe"
+OutFile "eopk-install-%%%VERSION%%%.exe"
 
 InstallDir "$PROGRAMFILES\%%%APPNAME%%%"
 InstallDirRegKey HKCU "Software\%%%APPNAME%%%" ""
@@ -128,6 +128,7 @@ Section "Uninstall"
   RMDir "$INSTDIR\\images"
   RMDir "$INSTDIR\\decks"
   RMDir "$INSTDIR\\sys"
+  RMDir "$INSTDIR\\logs"
   RMDir "$INSTDIR"
 
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
@@ -181,7 +182,7 @@ setup(
 	options={
 		'py2exe':{
 			'excludes':['doctest', '_ssl', 'optparse', 'Numeric', 'simplejson._speedups',
-						"Tkinter","tcl" ], #"Tkconstants",
+						"Tkinter","tcl" ],
 			'packages':['OpenGL'],
 			'optimize':2,
 		},
