@@ -713,8 +713,9 @@ class ChatCtrl(wx.TextCtrl):
 		db = database.get()
 		while bits:
 			# Append the first plain text bit
-			newText.append(bits.pop(0))
-			#self.AppendText(bits.pop(0))
+			tempStr=bits.pop(0)
+			newText.append(tempStr)
+			self.AppendText(tempStr)
 			
 			# If we still have bits, then the next one is a link of some sort.
 			if bits:
@@ -723,27 +724,28 @@ class ChatCtrl(wx.TextCtrl):
 					try:
 						startpos = self.GetLastPosition()
 						newText.append(db[key].name)
-						#self.AppendText(db[key].name)
+						self.AppendText(db[key].name)
 						endpos = self.GetLastPosition()
 						new_links.append((startpos, endpos, key))
 					except KeyError:
 						newText.append('<unknown card>')
-						#self.AppendText('<unknown card>')
+						self.AppendText('<unknown card>')
 				else:
-					newText.append('#%s' % bits.pop(0))
-					#self.AppendText('#%s' % bits.pop(0))
+					tempStr=bits.pop(0)
+					newText.append('#%s' % tempStr)
+					self.AppendText('#%s' % tempStr)
 					if bits:  # In case there's a trailing one too; would be swallowed.
 						newText.append('#')
-						#self.AppendText('#')
+						self.AppendText('#')
 		
 		# Finally, the line break.
 		newText.append('\n')
-		#self.AppendText('\n')
+		self.AppendText('\n')
 
 		#And write  to chatbox (and Log)
 		outputString = ''.join(newText)
 		self.WriteToLogFile(text=outputString);
-		self.AppendText(outputString)
+		
 		# Mark up card links.
 		if new_links:
 			for start, end, key in new_links:
