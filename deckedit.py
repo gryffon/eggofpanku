@@ -723,6 +723,9 @@ class MainWindow(wx.Frame):
 	def OpenDeck(self, filename):
 		try:
 			self.deck = deck.Deck.load(file(filename, 'rb'))
+		except deck.LoadCardsNotFoundError, ei:
+			wx.MessageDialog(self, '%s\n' % ei, 'Load Deck Error', wx.ICON_ERROR).ShowModal()
+			self.deck = ei.loadedDeck
 		except deck.InvalidCardError, e:
 			wx.MessageDialog(self, 'A card in the deck (%s) was not found in the card database.\n' \
 				'This could be because your card database is outdated, missing some cards, or ' \

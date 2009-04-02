@@ -193,7 +193,15 @@ class PlayfieldSettings(wx.Panel):
 		sizer.Add(self.chkBackgroundImage, 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
 		sizer.Add(self.fileBackgroundImage, 1, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 0)
 		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
+
+		self.spinCardSpacing = wx.SpinCtrl(self, initial=settings.canvas_card_spacing)
+		self.spinCardSpacing.SetRange(minVal=1, maxVal=5)
 		
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sizer.Add(wx.StaticText(self, label='Province Spacing:'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		sizer.Add(self.spinCardSpacing, 1, 0, 0)
+		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
+				
 		psizer.Add(sbsizer, 0, wx.CENTRE|wx.EXPAND|wx.ALL, 4)
 
 
@@ -231,6 +239,9 @@ class PlayfieldSettings(wx.Panel):
 		settings.playfield_bg_color2 = self.clrBackground2.GetColour().Get()
 		settings.playfield_bg_image_display = self.chkBackgroundImage.GetValue()
 		settings.playfield_bg_image = self.fileBackgroundImage.GetPath()
+
+		settings.canvas_card_spacing = self.spinCardSpacing.GetValue()
+		
 		settings.attach_ok = [type for type, ctrl in self.attachBoxes.iteritems() if ctrl.GetValue()]
 	
 

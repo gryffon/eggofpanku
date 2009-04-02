@@ -33,6 +33,13 @@ class ImportCardsNotFoundError(DeckException):
 		errorStr = (''.join(['%s\r\n' % line for line in self.problemCards]))
 		return "These cards were unable to be imported:\r\n%s" % errorStr
 			
+class LoadCardsNotFoundError(DeckException):
+	def __init__(self, cardErrors, deck):
+		self.problemCards = cardErrors
+		self.loadedDeck = deck
+	def __str__(self):
+		errorStr = (''.join(['%s\r\n' % line for line in self.problemCards]))
+		return "These cards were not found in the card database:\r\n%s" % errorStr
 	
 class InvalidCardError(DeckException):
 	def __init__(self, card):
@@ -71,6 +78,8 @@ class Deck:
 		Returns a deck object.
 		
 		"""
+		cardErrors=[]
+		
 		db = database.get()
 		deck = Deck()
 		for c in fp:
@@ -79,8 +88,12 @@ class Deck:
 				cardname = cardname.strip()
 				try:
 					deck.cards.append((int(count), db.FindCardByName(cardname).id))
-				except KeyError:
-					raise InvalidCardError(cardname)
+				except (ValueError, KeyError):
+					cardErrors.append(cardname)
+
+		if len(cardErrors) >0:
+			raise LoadCardsNotFoundError(cardErrors, deck)
+		
 		return deck
 
 	@classmethod

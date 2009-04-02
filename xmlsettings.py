@@ -23,6 +23,7 @@ DEFAULT_SETTINGS = {
     'matchuser':'',
     'matchpassword':'1234',
     'log_multiplayer_games':False,
+    'canvas_card_spacing:':3,
 }
 
 class _XMLSettings:

@@ -31,6 +31,8 @@ import random
 import canvas
 import playfield
 
+from xmlsettings import settings
+
 
 DEFAULT_PORT = 18072
 DEFAULT_GAMEMATCH_PORT = 1023
@@ -119,17 +121,23 @@ class ServerGameState(game.GameState):
 
 	def ShuffleZone(self, pid, zid):
 		"""Shuffle a zone, that is, randomly permute what cdid is associated with each cgid in it."""
-		# We're doing Knuth-Fisher-Yates shuffling.
+		# We're doing Fisher-Yates shuffling.
+		# random between 1 and 3 times
 		zone = self.FindZone(pid, zid)
-		for i in range(len(zone.cards)):
-			n = random.randrange(i + 1)
-			while n > len(zone.cards):
-				n = random.randrange(i + 1)	
-			card_n = self.FindCard(zone.cards[n])
-			card_i = self.FindCard(zone.cards[i])
-			temp = card_n.data
-			card_n.data = card_i.data
-			card_i.data = temp
+		i = 0
+		random_shuffle =random.randint(1,3)
+		
+		while i < random_shuffle:
+			i += 1
+			n = len(zone.cards)
+			while n > 1:
+				k = random.randrange(n)
+				n -= 1
+				card_k = self.FindCard(zone.cards[k])
+				card_n = self.FindCard(zone.cards[n])
+				temp = card_k.data
+				card_k.data = card_n.data
+				card_n.data = temp
 
 
 class ClientCard(game.Card):
@@ -407,7 +415,12 @@ class Server(threading.Thread):
 			
 			#Added 01/07/2009 by BSB
 			#draw 4 Dynasty cards per player
-			CANVAS_CARD_AND_GRID = ((canvas.CANVAS_CARD_W*2) + playfield.CANVAS_MOVE_SNAP)
+			cardSpacing = settings.canvas_card_spacing
+			CANVAS_CARD_AND_GRID = ((canvas.CANVAS_CARD_W*2) + (playfield.CANVAS_MOVE_SNAP * cardSpacing))
+
+			print "cardSpacing: %s" % (cardSpacing)
+			print "CANVAS_CARD_AND_GRID: %s" % (CANVAS_CARD_AND_GRID)
+
 			provToDraw = 4
 			dynDeck = player.zones[game.ZONE_DECK_DYNASTY]
 			
@@ -420,7 +433,11 @@ class Server(threading.Thread):
 			
 			# Find their Stronghold.
 			bothDecks = player.zones[game.ZONE_DECK_FATE].cards + player.zones[game.ZONE_DECK_DYNASTY].cards
-			strongLoc = 0 - (leftProv + CANVAS_CARD_AND_GRID)
+			if cardSpacing == 1:
+				strongLoc = 0 - (leftProv + CANVAS_CARD_AND_GRID)
+			else:
+				strongLoc = 0 - (leftProv + (CANVAS_CARD_AND_GRID * (cardSpacing)))
+				
 			for cgid in bothDecks:
 				card = self.gameState.FindCard(cgid)
 				if card.data.type == 'strongholds':
