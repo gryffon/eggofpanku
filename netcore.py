@@ -388,10 +388,15 @@ class Server(threading.Thread):
 		
 		# First, create a brand new game state.
 		self.gameState = ServerGameState(self.cardDB)
+
 		self.Broadcast(('game-setup', {}))
 		
 		# Add those clients who have submitted decks as players.
 		for c in self.clients:
+	
+			self.gameState.favor = None
+			self.Broadcast(Msg('set-favor', pid=-1))
+
 			if c.HasDeck():
 				c.player = self.gameState.AddPlayer(c.name, c.dynastyDeck, c.fateDeck)
 				c.player.client = c
