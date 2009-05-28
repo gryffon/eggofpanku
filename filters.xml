@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<filterList>
+	
+	<!-- Card Types -->
+	<filter>
+		<type>cardtype</type>
+		<name>strongholds</name>
+		<displayName>Strongholds</displayName>
+		<deckType>fate</deckType>
+		<hasCost>false</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>regions</name>
+		<displayName>Regions</displayName>
+		<deckType>dynasty</deckType>
+		<hasCost>false</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>holdings</name>
+		<displayName>Holdings</displayName>
+		<deckType>dynasty</deckType>
+		<hasCost>true</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>events</name>
+		<displayName>Events</displayName>
+		<deckType>dynasty</deckType>
+		<hasCost>false</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>personalities</name>
+		<displayName>Personalities</displayName>
+		<deckType>dynasty</deckType>
+		<hasCost>true</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>actions</name>
+		<displayName>Actions</displayName>
+		<deckType>fate</deckType>
+		<hasCost>true</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>items</name>
+		<displayName>Items</displayName>
+		<deckType>fate</deckType>
+		<hasCost>true</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>followers</name>
+		<displayName>Followers</displayName>
+		<deckType>fate</deckType>
+		<hasCost>true</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>spells</name>
+		<displayName>Spells</displayName>
+		<deckType>fate</deckType>
+		<hasCost>true</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>rings</name>
+		<displayName>Rings</displayName>
+		<deckType>fate</deckType>
+		<hasCost>false</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>ancestors</name>
+		<displayName>Ancestors</displayName>
+		<deckType>none</deckType>
+		<hasCost>false</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>senseis</name>
+		<displayName>Senseis</displayName>
+		<deckType>none</deckType>
+		<hasCost>false</hasCost>
+	</filter>
+	<filter>
+		<type>cardtype</type>
+		<name>winds</name>
+		<displayName>Winds</displayName>
+		<deckType>none</deckType>
+		<hasCost>false</hasCost>
+	</filter>
+	
+	<!-- Factions -->
+	<filter>
+		<type>faction</type>		
+		<name>phoenix</name>
+		<displayName>Phoenix</displayName>
+	</filter>
+	<filter>
+		<type>faction</type>		
+		<name>dragon</name>
+		<displayName>Dragon</displayName>
+	</filter>
+	<filter>
+		<type>faction</type>		
+		<name>mantis</name>
+		<displayName>Mantis</displayName>
+	</filter>
+	<filter>
+		<type>faction</type>		
+		<name>crab</name>
+		<displayName>Crab</displayName>
+	</filter>
+	<filter>
+		<type>faction</type>		
+		<name>spider</name>
+		<displayName>Spider</displayName>
+	</filter>
+	<filter>
+		<type>faction</type>		
+		<name>scorpion</name>
+		<displayName>Scorpion</displayName>
+	</filter>
+	<filter>
+		<type>faction</type>		
+		<name>lion</name>
+		<displayName>Lion</displayName>
+	</filter>
+	<filter>
+		<type>faction</type>		
+		<name>unicorn</name>
+		<displayName>Unicorn</displayName>
+	</filter>
+	<filter>
+		<type>faction</type>		
+		<name>crane</name>
+		<displayName>Crane</displayName>
+	</filter>
+	<filter>
+		<type>faction</type>		
+		<name>shadowlands</name>
+		<displayName>Shadowlands</displayName>
+	</filter>
+	
+	<!-- Minor Clans -->
+	<filter>
+		<type>minorClan</type>
+		<name>ratling</name>
+		<displayName>Ratling</displayName>
+	</filter>
+	<filter>
+		<type>minorClan</type>
+		<name>naga</name>
+		<displayName>Naga</displayName>
+	</filter>
+	<filter>
+		<type>minorClan</type>
+		<name>monk</name>
+		<displayName>Monk</displayName>
+	</filter>
+	<filter>
+		<type>minorClan</type>
+		<name>ninja</name>
+		<displayName>Ninja</displayName>
+	</filter>
+	<filter>
+		<type>minorClan</type>
+		<name>hare</name>
+		<displayName>Hare</displayName>
+	</filter>
+	<filter>
+		<type>minorClan</type>
+		<name>toturi</name>
+		<displayName>Toturi</displayName>
+	</filter>
+	<filter>
+		<type>minorClan</type>
+		<name>spirit</name>
+		<displayName>Spirit</displayName>
+	</filter>
+	
+	<!-- Legality -->
+	<filter>
+		<type>legality</type>
+		<name>celestial</name>
+		<displayName>Celestial</displayName>
+	</filter>
+	<filter>
+		<type>legality</type>
+		<name>samurai</name>
+		<displayName>Samurai</displayName>
+	</filter>
+	<filter>
+		<type>legality</type>
+		<name>lotus</name>
+		<displayName>Lotus</displayName>
+	</filter>
+	<filter>
+		<type>legality</type>
+		<name>diamond</name>
+		<displayName>Diamond</displayName>
+	</filter>
+	<filter>
+		<type>legality</type>
+		<name>gold</name>
+		<displayName>Gold</displayName>
+	</filter>
+	<filter>
+		<type>legality</type>
+		<name>jade</name>
+		<displayName>Jade</displayName>
+	</filter>
+	<filter>
+		<type>legality</type>
+		<name>open</name>
+		<displayName>Open</displayName>
+	</filter>
+	
+	<!-- Sets -->
+	<filter>
+		<type>set</type>
+		<name>P</name>
+		<displayName>Promos</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>IE</name>
+		<displayName>Imperial Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>EE</name>
+		<displayName>Emerald Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>OE</name>
+		<displayName>Obsidian Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SoSM</name>
+		<displayName>Seige of Sleeping Mountain</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HoR</name>
+		<displayName>Heroes of Rokugan</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>GE</name>
+		<displayName>Gold Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>APC</name>
+		<displayName>A Perfect Cut</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>AOF</name>
+		<displayName>An Oni's Fury</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>BB</name>
+		<displayName>Broken Blades</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>KOD</name>
+		<displayName>1000 Years of Darkness</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>FOE</name>
+		<displayName>Fall of Otosan Uchi</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HaE</name>
+		<displayName>Heaven &amp; Earth</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>WaC</name>
+		<displayName>Winds of Change</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>DE</name>
+		<displayName>Diamond Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>TG</name>
+		<displayName>The Training Grounds</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>RoB</name>
+		<displayName>Reign of Blood</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HC</name>
+		<displayName>The Hidden City</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>WoE</name>
+		<displayName>Wrath of the Emperor</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>DotE</name>
+		<displayName>Dawn of the Empire</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>WoL</name>
+		<displayName>Web of Lies</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>EoME</name>
+		<displayName>Enemy of My Enemy</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>CoB</name>
+		<displayName>Code of Bushido</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>LE</name>
+		<displayName>Lotus Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>PoH</name>
+		<displayName>Path of Hope</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>DoW</name>
+		<displayName>Drums of War</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>TG2</name>
+		<displayName>The Training Grounds 2</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>ToE</name>
+		<displayName>Test of Enlightenment</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>RotS</name>
+		<displayName>Rise of the Shogun</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>KD</name>
+		<displayName>Khan's Defiance</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>Tomorrow</name>
+		<displayName>Tomorrow</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>TTT</name>
+		<displayName>The Truest Test</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SE</name>
+		<displayName>Samurai Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>STS</name>
+		<displayName>Stronger Than Steel</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>EJC</name>
+		<displayName>Emerald &amp; Jade Championship</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HV</name>
+		<displayName>Honor's Veil</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>WaD</name>
+		<displayName>Words and Deeds</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>CotM</name>
+		<displayName>Clan of the Month</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>THW</name>
+		<displayName>The Heavens Will</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>IG1</name>
+		<displayName>Imperial Gift 1</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>GotE</name>
+		<displayName>Glory of the Empire</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>DaK</name>
+		<displayName>Death at Koten</displayName>
+	</filter>
+</filterList>

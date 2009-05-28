@@ -21,30 +21,43 @@ import xml.parsers.expat
 import os
 import cPickle
 import odict
+import xmlfilters
+import wx
 
 cardAttrs = ("name", "force", "chi", "text", "cost", "focus", \
 	"personal_honor", "honor_req", "starting_honor", \
 	"province_strength", "gold_production")
-cardTypes = ['Strongholds', 'Regions', 'Holdings', 'Events', \
-	'Personalities', 'Actions', 'Items', 'Followers', 'Spells', 'Rings', \
-	'Ancestors', 'Senseis', 'Winds']
-factions = ['Phoenix', 'Dragon', 'Mantis', 'Crab', 'Spider', 'Scorpion', \
-	'Lion', 'Unicorn', 'Crane','Shadowlands']
-minorClans = ['Ratling', 'Naga', 'Monk', \
-	'Ninja', 'Hare', 'Toturi', 'Spirit']
+
+cardTypes = []
+factions = []
+minorClans = []
+legalityFormats = []
+cardSets = odict.OrderedDict()
+
+filterList = xmlfilters.FilterReader().Filters
+
+for filterItem in filterList["cardtype"]:
+	cardTypes.append(filterItem.displayName)
+
+for filterItem in filterList["faction"]:
+	factions.append(filterItem.displayName)
+
+for filterItem in filterList["minorClan"]:
+	minorClans.append(filterItem.displayName)
+
 #sort the factions
 minorClans.sort()
 factions.sort()
 #add the minors to the list
 factions.extend(minorClans)
-
-legalityFormats = ('Celestial', 'Samurai', 'Lotus', 'Diamond', 'Gold', 'Jade', 'Open') 
-
-cardSets = odict.OrderedDict([line.strip().split(':') for line in file('sets.dat', 'rb')])
+	
+for filterItem in filterList["legality"]:
+	legalityFormats.append(filterItem.displayName)
+	
+for filterItem in filterList["set"]:
+	cardSets.insert(0, filterItem.displayName, filterItem.name)
 
 LOCALDATABASE = 'cards.db'
-
-
 
 class CardData:
 	def __init__(self):
@@ -106,6 +119,7 @@ class CardData:
 		return self.type == 'senseis'
 	
 	def hasGoldCost(self):
+		#return self.cost != ''
 		return self.type in ['actions', 'followers', 'items', \
 			'holdings', 'personalities', 'spells']
 
