@@ -388,6 +388,8 @@ class Server(threading.Thread):
 		
 		# First, create a brand new game state.
 		self.gameState = ServerGameState(self.cardDB)
+		self.gameState.favor = None
+		
 
 		self.Broadcast(('game-setup', {}))
 		
