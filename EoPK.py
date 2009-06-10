@@ -2201,6 +2201,7 @@ class MainWindow(wx.Frame):
 	def OnClientGameSetup(self, event):
 		self.lstFateHand.DeleteAllItems()
 		
+		
 	def OnClientGameBegin(self, event):
 		if self.client.Playing():  # Only if we're participating.
 			self.gameTable.Setup(self.client.gameState, self.client.localPlayer)
@@ -2211,6 +2212,7 @@ class MainWindow(wx.Frame):
 			self.rfgZone.SetGameState(self.client.gameState)
 			self.EnableGameMenus(True)
 		else:
+			self.CreatedCards = []
 			self.gameTable.Setup(self.client.gameState, None)
 			self.deckDynasty.SetGameState(None)
 			self.discardDynasty.SetGameState(None)
