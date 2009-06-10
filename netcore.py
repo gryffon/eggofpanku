@@ -456,7 +456,18 @@ class Server(threading.Thread):
 			#Added 1/5/2009 by PCW
 			#draw 5 Fate cards per player
 			zone = player.zones[game.ZONE_DECK_FATE]
-			for cgid in reversed(zone.TopCards(5)):
+
+			#Added change to card draw.
+			cardDraw = 6
+			print "cardDraw: %s" % (cardDraw)
+
+			if settings.legacy_card_draw == True:
+				cardDraw = 5
+				print "cardDraw: %s" % (cardDraw)
+				print "settings.legacy_card_draw: %s" % (settings.legacy_card_draw)
+				
+				
+			for cgid in reversed(zone.TopCards(cardDraw)):
 				self.HandleMoveCard(player.client,cgid,player.pid,game.ZONE_HAND,x=0,y=0,faceup=True)
 
 		

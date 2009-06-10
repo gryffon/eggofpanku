@@ -48,6 +48,19 @@ class GeneralSettings(wx.Panel):
 		self.chkRecordLog.SetValue(settings.log_multiplayer_games)
 		sizer.Add(self.chkRecordLog , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
 		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
+
+		psizer.Add(sbsizer, 0, wx.CENTRE|wx.EXPAND|wx.ALL, 4)
+
+		#Card Draw settings
+		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Game'), wx.VERTICAL)
+		
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sizer.Add(wx.StaticText(self, label='Legacy Rules:'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		
+		self.chkLegacyDraw = wx.CheckBox(self, label='Draw Only 5 Cards')
+		self.chkLegacyDraw.SetValue(settings.legacy_card_draw)
+		sizer.Add(self.chkLegacyDraw , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
 		
 		#self.cmbStartup = wx.ComboBox(self, style=wx.CB_READONLY)
 		#self.cmbStartup.Append('Do nothing')
@@ -67,6 +80,7 @@ class GeneralSettings(wx.Panel):
 	def Save(self):
 		settings.playername = self.txtName.GetValue()
 		settings.log_multiplayer_games = self.chkRecordLog.GetValue();
+		settings.legacy_card_draw = self.chkLegacyDraw.GetValue();
 		#settings.start_procedure = self.cmbStartup.GetSelection()
 	
 class DatabaseSettings(wx.Panel):
@@ -262,7 +276,7 @@ class SettingsDialog(wx.Dialog):
 		self.pages = [(title, page(notebook)) for title, page in self.pages]
 		for title, page in self.pages:
 			notebook.AddPage(page, title)
-		
+			
 		# Buttons
 		buttonsizer = self.CreateButtonSizer(wx.OK|wx.CANCEL)
 		
@@ -271,6 +285,7 @@ class SettingsDialog(wx.Dialog):
 		self.SetSizer(sizer)
 		
 		wx.EVT_BUTTON(self, self.GetAffirmativeId(), self.SaveSettings)
+		
 	
 	def SaveSettings(self, event):
 		for title, page in self.pages:
