@@ -1,6 +1,6 @@
 
 
-                    EGG OF P'AN KU 0.9.01 (2009-Feb-12)
+                    EGG OF P'AN KU 0.9.10 (2009-July-1)
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -278,7 +278,14 @@ Technical details
 
 News & Changes
 
-  2008-Feb-12 Egg of P'an Ku 0.9.01
+  2009-July-1 Egg of P'an Ku 0.9.10
+
+	* CE Settings added to draw 6. (You can change back to 5 in preferences).
+	* "Border Keep" and "Bamboo Harvesters" are automatically put into play.
+		- This can be turned off in the preferences.
+	* Fixed the Shuffling (back to before) and added a random counter to it.
+
+  2009-Feb-12 Egg of P'an Ku 0.9.01
 
 	* Double clicking a face down card will now turn it face up.  Double clicking face up
 		cards will bow/straighten them.
