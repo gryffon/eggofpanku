@@ -431,4 +431,14 @@
 		<name>DaK</name>
 		<displayName>Death at Koten</displayName>
 	</filter>
+	<filter>
+		<type>set</type>
+		<name>CE</name>
+		<displayName>Celestial Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>IG2</name>
+		<displayName>Imperial Gift 2</displayName>
+	</filter>
 </filterList>
