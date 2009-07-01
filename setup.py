@@ -153,8 +153,10 @@ if len(sys.argv) == 1:
 	sys.argv.append("-q")
 
 
-deckfiles = ['decks\\Crab Followers.l5d', 'decks\\Dragon Ring Honor.l5d', \
-			'decks\\Spider Enlightenment.l5d', 'decks\\Scorpion Ninja.l5d']
+deckfiles = ['decks\\Crab Followers.l5d', 'decks\\Dragon Kensai.l5d', \
+			'decks\\Spider Breeder.l5d', 'decks\\Scorpion Ninja.l5d', \
+			 'decks\\Pheonix Military.l5d', 'decks\\Unicorn Battle Maidens.l5d']
+
 imagefiles = glob.glob('images\\*.jpg') + glob.glob('images\\*.png')
 cardimagefiles = glob.glob('images\\cards\\*.jpg')
 tokenimagefiles = glob.glob('images\\tokens\\*.png')
@@ -191,7 +193,7 @@ setup(
 		},
 	},
 	data_files=[
-		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat']),
+		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml']),
 		('decks', deckfiles),
 		('images', imagefiles),
 		('images\\cards', cardimagefiles),
@@ -202,7 +204,7 @@ setup(
 
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR71.dll', 'msvcp71.dll', 'gdiplus.dll', 'python25.dll',
-		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt']),
+		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt', 'filters.xml']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images\\cards', cardimagefiles),
