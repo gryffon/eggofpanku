@@ -41,27 +41,35 @@ class GeneralSettings(wx.Panel):
 		sizer.Add(self.txtName, 1, 0, 0)
 		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
 
+		psizer.Add(sbsizer, 0, wx.CENTRE|wx.EXPAND|wx.ALL, 4)
+
+		#Card Draw settings
+		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Game Options'), wx.VERTICAL)
+
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
-		sizer.Add(wx.StaticText(self, label='Logging'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		sizer.Add(wx.StaticText(self, label='Holdings:'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		
+		self.chkCEHoldings = wx.CheckBox(self, label='Use CE Holdings')
+		self.chkCEHoldings.SetValue(settings.use_celestial_holdings)
+		sizer.Add(self.chkCEHoldings , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
+		
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sizer.Add(wx.StaticText(self, label='Cards:'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		
+		self.chkLegacyDraw = wx.CheckBox(self, label='Draw Only 5 Cards (Legacy Rules)')
+		self.chkLegacyDraw.SetValue(settings.legacy_card_draw)
+		sizer.Add(self.chkLegacyDraw , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
+		
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sizer.Add(wx.StaticText(self, label='Logging:'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
 		
 		self.chkRecordLog = wx.CheckBox(self, label='Log multiplayer games')
 		self.chkRecordLog.SetValue(settings.log_multiplayer_games)
 		sizer.Add(self.chkRecordLog , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
 		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
 
-		psizer.Add(sbsizer, 0, wx.CENTRE|wx.EXPAND|wx.ALL, 4)
-
-		#Card Draw settings
-		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Game'), wx.VERTICAL)
-		
-		sizer = wx.BoxSizer(wx.HORIZONTAL)
-		sizer.Add(wx.StaticText(self, label='Legacy Rules:'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
-		
-		self.chkLegacyDraw = wx.CheckBox(self, label='Draw Only 5 Cards')
-		self.chkLegacyDraw.SetValue(settings.legacy_card_draw)
-		sizer.Add(self.chkLegacyDraw , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
-		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
-		
 		#self.cmbStartup = wx.ComboBox(self, style=wx.CB_READONLY)
 		#self.cmbStartup.Append('Do nothing')
 		#self.cmbStartup.Append('Fetch Stronghold only')
@@ -81,6 +89,7 @@ class GeneralSettings(wx.Panel):
 		settings.playername = self.txtName.GetValue()
 		settings.log_multiplayer_games = self.chkRecordLog.GetValue();
 		settings.legacy_card_draw = self.chkLegacyDraw.GetValue();
+		settings.use_celestial_holdings = self.chkCEHoldings.GetValue();
 		#settings.start_procedure = self.cmbStartup.GetSelection()
 	
 class DatabaseSettings(wx.Panel):

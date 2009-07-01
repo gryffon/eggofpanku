@@ -25,6 +25,7 @@ DEFAULT_SETTINGS = {
     'log_multiplayer_games':False,
     'canvas_card_spacing':3,
     'legacy_card_draw':False,
+    'use_celestial_holdings':True,
 }
 
 class _XMLSettings:

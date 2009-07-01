@@ -92,18 +92,31 @@ class ServerGameState(game.GameState):
 		game.GameState.__init__(self, db)
 		self.nextPid = 1
 		self.nextCgid = 1
+		
 	
 	def AddPlayer(self, name, dynasty = None, fate = None):
 		"""Add a new player to the game and return it. Optionally, supply the player's decks as arguments."""
 		p = game.Player(self.nextPid, name)
 		self.players[p.pid] = p
 		self.nextPid += 1
+
 		
+		borderKeep = self.FindCardByName('Border Keep')
+		keepcard = self.AddCard(borderKeep)
+		p.zones[game.ZONE_DUMMY].PutTop(keepcard)
+		
+		bambooHarvetsters= self.FindCardByName('Bamboo Harvesters')	
+		bamboocard = self.AddCard(bambooHarvetsters)
+		p.zones[game.ZONE_DUMMY].PutTop(bamboocard)
+
 		# Submit cards, too.
 		if dynasty:
 			for cdid in dynasty:
 				card = self.AddCard(self.cardDB[cdid])  # Create the card...
-				card.MoveToTop(p.zones[game.ZONE_DECK_DYNASTY])  # ... and move it into the deck.
+				if (card.data.name != 'Border Keep') and (card.data.name != 'Bamboo Harvesters'):
+					card.MoveToTop(p.zones[game.ZONE_DECK_DYNASTY])  # ... and move it into the deck.
+				else:
+					print 'Card \'%s\' removed from deck' % (card.data.name)
 		if fate:
 			for cdid in fate:
 				card = self.AddCard(self.cardDB[cdid])  # Create the card...
@@ -413,6 +426,7 @@ class Server(threading.Thread):
 
 		# Ready to go!
 		self.Broadcast(('game-start', {}))
+
 		
 		# Post game start, do some more processing.
 		for player in self.gameState.players.itervalues():
@@ -425,14 +439,11 @@ class Server(threading.Thread):
 			cardSpacing = settings.canvas_card_spacing
 			CANVAS_CARD_AND_GRID = ((canvas.CANVAS_CARD_W*2) + (playfield.CANVAS_MOVE_SNAP * cardSpacing))
 
-			print "cardSpacing: %s" % (cardSpacing)
-			print "CANVAS_CARD_AND_GRID: %s" % (CANVAS_CARD_AND_GRID)
-
 			provToDraw = 4
 			dynDeck = player.zones[game.ZONE_DECK_DYNASTY]
 			
 			leftProv = (provToDraw - (provToDraw // 2)) * CANVAS_CARD_AND_GRID
-			prov = 0			
+			prov = 2
 			for	cgid in reversed(dynDeck.TopCards(provToDraw)):
 				prov_loc_x = (prov * CANVAS_CARD_AND_GRID) - leftProv
 				self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=prov_loc_x, y=0, faceup=False)
@@ -441,19 +452,35 @@ class Server(threading.Thread):
 			# Find their Stronghold.
 			bothDecks = player.zones[game.ZONE_DECK_FATE].cards + player.zones[game.ZONE_DECK_DYNASTY].cards
 			if cardSpacing == 1:
-				strongLoc = 0 - (leftProv + CANVAS_CARD_AND_GRID)
+				strongLoc = 2 - (leftProv + CANVAS_CARD_AND_GRID)
 			else:
-				strongLoc = 0 - (leftProv + (CANVAS_CARD_AND_GRID * (cardSpacing)))
+				strongLoc = 2 - (leftProv + (CANVAS_CARD_AND_GRID * (cardSpacing)))
 				
 			for cgid in bothDecks:
 				card = self.gameState.FindCard(cgid)
 				if card.data.type == 'strongholds':
 					# Found it!
-					#self.RevealCard(card, player)
 					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=strongLoc, y=0, faceup=True)
 					# Also set family honor.
 					self.HandleSetFamilyHonor(player.client, honor=int(card.data.starting_honor))
 					break
+
+			#Put Bamboo Harversters and Border Keep into play
+			if settings.use_celestial_holdings == True:
+				borderKeepLoc = (strongLoc - (CANVAS_CARD_AND_GRID))
+				bambooLoc = (borderKeepLoc - (CANVAS_CARD_AND_GRID))
+
+				#Get Border Keep and put it in play
+				keepCgid = player.zones[game.ZONE_DUMMY].cards[0]
+				keepcard = self.gameState.FindCard(keepCgid)
+				#Get harvesters and put it in play
+				bambooCgid = player.zones[game.ZONE_DUMMY].cards[1]
+				bamboocard = self.gameState.FindCard(bambooCgid)
+
+				self.HandleMoveCard(player.client, keepCgid, player.pid, game.ZONE_PLAY, x=borderKeepLoc, y=0, faceup=True)
+				self.HandleMoveCard(player.client, bambooCgid, player.pid, game.ZONE_PLAY, x=bambooLoc, y=0, faceup=True)
+				#Bow Harvesters
+				self.HandleSetCardProperty(player.client,bambooCgid, property='tapped', value=True)
 				
 			#Added 1/5/2009 by PCW
 			#draw 5 Fate cards per player
@@ -461,13 +488,9 @@ class Server(threading.Thread):
 
 			#Added change to card draw.
 			cardDraw = 6
-			print "cardDraw: %s" % (cardDraw)
 
 			if settings.legacy_card_draw == True:
 				cardDraw = 5
-				print "cardDraw: %s" % (cardDraw)
-				print "settings.legacy_card_draw: %s" % (settings.legacy_card_draw)
-				
 				
 			for cgid in reversed(zone.TopCards(cardDraw)):
 				self.HandleMoveCard(player.client,cgid,player.pid,game.ZONE_HAND,x=0,y=0,faceup=True)
