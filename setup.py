@@ -155,7 +155,8 @@ if len(sys.argv) == 1:
 
 deckfiles = ['decks\\Crab Followers.l5d', 'decks\\Dragon Kensai.l5d', \
 			'decks\\Spider Breeder.l5d', 'decks\\Scorpion Ninja.l5d', \
-			 'decks\\Pheonix Military.l5d', 'decks\\Unicorn Battle Maidens.l5d']
+			 'decks\\Pheonix Military.l5d', 'decks\\Unicorn Battle Maidens.l5d',
+			 'decks\\Crane Dueling.l5d' ]
 
 imagefiles = glob.glob('images\\*.jpg') + glob.glob('images\\*.png')
 cardimagefiles = glob.glob('images\\cards\\*.jpg')
