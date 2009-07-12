@@ -223,213 +223,8 @@
 	<!-- Sets -->
 	<filter>
 		<type>set</type>
-		<name>P</name>
-		<displayName>Promos</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>IE</name>
-		<displayName>Imperial Edition</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>EE</name>
-		<displayName>Emerald Edition</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>OE</name>
-		<displayName>Obsidian Edition</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>SoSM</name>
-		<displayName>Seige of Sleeping Mountain</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>HoR</name>
-		<displayName>Heroes of Rokugan</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>GE</name>
-		<displayName>Gold Edition</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>APC</name>
-		<displayName>A Perfect Cut</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>AOF</name>
-		<displayName>An Oni's Fury</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>BB</name>
-		<displayName>Broken Blades</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>KOD</name>
-		<displayName>1000 Years of Darkness</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>FOE</name>
-		<displayName>Fall of Otosan Uchi</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>HaE</name>
-		<displayName>Heaven &amp; Earth</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>WaC</name>
-		<displayName>Winds of Change</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>DE</name>
-		<displayName>Diamond Edition</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>TG</name>
-		<displayName>The Training Grounds</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>RoB</name>
-		<displayName>Reign of Blood</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>HC</name>
-		<displayName>The Hidden City</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>WoE</name>
-		<displayName>Wrath of the Emperor</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>DotE</name>
-		<displayName>Dawn of the Empire</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>WoL</name>
-		<displayName>Web of Lies</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>EoME</name>
-		<displayName>Enemy of My Enemy</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>CoB</name>
-		<displayName>Code of Bushido</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>LE</name>
-		<displayName>Lotus Edition</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>PoH</name>
-		<displayName>Path of Hope</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>DoW</name>
-		<displayName>Drums of War</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>TG2</name>
-		<displayName>The Training Grounds 2</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>ToE</name>
-		<displayName>Test of Enlightenment</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>RotS</name>
-		<displayName>Rise of the Shogun</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>KD</name>
-		<displayName>Khan's Defiance</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>Tomorrow</name>
-		<displayName>Tomorrow</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>TTT</name>
-		<displayName>The Truest Test</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>SE</name>
-		<displayName>Samurai Edition</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>STS</name>
-		<displayName>Stronger Than Steel</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>EJC</name>
-		<displayName>Emerald &amp; Jade Championship</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>HV</name>
-		<displayName>Honor's Veil</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>WaD</name>
-		<displayName>Words and Deeds</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>CotM</name>
-		<displayName>Clan of the Month</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>THW</name>
-		<displayName>The Heavens Will</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>IG1</name>
-		<displayName>Imperial Gift 1</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>GotE</name>
-		<displayName>Glory of the Empire</displayName>
-	</filter>
-	<filter>
-		<type>set</type>
-		<name>DaK</name>
-		<displayName>Death at Koten</displayName>
+		<name>IG2</name>
+		<displayName>The Imperial Gift, Part 2</displayName>
 	</filter>
 	<filter>
 		<type>set</type>
@@ -438,7 +233,297 @@
 	</filter>
 	<filter>
 		<type>set</type>
-		<name>IG2</name>
-		<displayName>Imperial Gift 2</displayName>
+		<name>DaK</name>
+		<displayName>Death at Koten</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>GotE</name>
+		<displayName>Glory of the Empire</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>IG1</name>
+		<displayName>The Imperial Gift, Part 1</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>WD</name>
+		<displayName>Words and Deeds</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HV</name>
+		<displayName>Honor's Veil</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>EJC</name>
+		<displayName>The Emerald and Jade Champions</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>STS</name>
+		<displayName>Stronger than Steel</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SE</name>
+		<displayName>Samurai Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>TTT</name>
+		<displayName>The Truest Test</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>Tomorrow</name>
+		<displayName>Tomorrow</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>KD</name>
+		<displayName>Khan's Defiance</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>RotS</name>
+		<displayName>Rise of the Shogun</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>ToE</name>
+		<displayName>Test of Enlightenment</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>DOW</name>
+		<displayName>Drums of War</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>PoH</name>
+		<displayName>Path of Hope</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>LE</name>
+		<displayName>Lotus Edition</displayName>
+	</filter>	
+	<filter>
+		<type>set</type>
+		<name>CoB</name>
+		<displayName>Code of Bushido</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>WoL</name>
+		<displayName>Web of Lies</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>DotE</name>
+		<displayName>Dawn of the Empire</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>WoE</name>
+		<displayName>Wrath of the Emperor</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HC</name>
+		<displayName>The Hidden City</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>RoB</name>
+		<displayName>Reign of Blood</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>DE</name>
+		<displayName>Diamond Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>WoC</name>
+		<displayName>Winds of Change</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>FOU</name>
+		<displayName>Fall of Otosan Uchi</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>KYD</name>
+		<displayName>1,000 Years of Darkness</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>BB</name>
+		<displayName>Broken Blades</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>DA</name>
+		<displayName>Dark Allies</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>AOF</name>
+		<displayName>An Oni's Fury</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>APC</name>
+		<displayName>A Perfect Cut</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>GE</name>
+		<displayName>Gold Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SW</name>
+		<displayName>Spirit Wars</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SotE</name>
+		<displayName>Soul of the Empire</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SoMP</name>
+		<displayName>Storms over Matsu Palace</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HoR</name>
+		<displayName>Heroes of Rokugan</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>FS</name>
+		<displayName>Fire and Shadow</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>AD</name>
+		<displayName>Ambition's Debt</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HB</name>
+		<displayName>Honor Bound</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SoSM</name>
+		<displayName>Siege of Sleeping Mountain</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>PE</name>
+		<displayName>Pearl Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HE5</name>
+		<displayName>The Hidden Emperor, Episode 5</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HE4</name>
+		<displayName>The Hidden Emperor, Episode 4</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HE3</name>
+		<displayName>The Hidden Emperor, Episode 3</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HE2</name>
+		<displayName>The Hidden Emperor, Episode 2</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>HE1</name>
+		<displayName>The Hidden Emperor, Episode 1</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>JE</name>
+		<displayName>Jade Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SCC3</name>
+		<displayName>Scorpion Clan Coup, Scroll 3</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SCC2</name>
+		<displayName>Scorpion Clan Coup, Scroll 2</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SCC1</name>
+		<displayName>Scorpion Clan Coup, Scroll 1</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>TOV</name>
+		<displayName>Time of the Void</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>OE</name>
+		<displayName>Obsidian Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>CJ</name>
+		<displayName>Crimson and Jade</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>AoD</name>
+		<displayName>Anvil of Despair</displayName>
+	</filter>	
+	<filter>
+		<type>set</type>
+		<name>BoBP</name>
+		<displayName>Battle of Beiden Pass</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>FK</name>
+		<displayName>Forbidden Knowledge</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>EE</name>
+		<displayName>Emerald Edition</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>SL</name>
+		<displayName>Shadowlands</displayName>
+	</filter>
+	<filter>
+		<type>set</type>
+		<name>IE</name>
+		<displayName>Imperial Edition</displayName>
+	</filter>
+		<filter>
+		<type>set</type>
+		<name>P</name>
+		<displayName>Promos</displayName>
 	</filter>
 </filterList>
