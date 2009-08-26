@@ -100,7 +100,7 @@ class Deck:
 	def loadFromClipboard(cls, data):
 		#set up a holder for unknown cards
 		cardErrors= []
-		importLineHeaders = ['stronghold','dynasty','holdings','regions','personalities','events','fate','actions','spells','items','followers','rings']
+		importLineHeaders = ['stronghold','dynasty','holdings','regions','personalities','events', 'celestials', 'fate','strategies','spells','items','followers','rings']
 		
 		db = database.get()
 		deck = Deck()
@@ -165,6 +165,9 @@ class Deck:
 		eventcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isEvent()]
 		self.WriteCardsToTypeList(fp,eventcards,'Events', savetype)
 
+		celestialcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isCelestial()]
+		self.WriteCardsToTypeList(fp,celestialcards,'Celestials', savetype)
+
 		regioncards = [(count, db[cdid]) for count, cdid in self if db[cdid].isRegion()]
 		self.WriteCardsToTypeList(fp,regioncards,'Regions', savetype)
 
@@ -191,7 +194,7 @@ class Deck:
 		self.WriteCardsToTypeList(fp,ancestorcards,'Ancestors', savetype)
 
 		actioncards = [(count, db[cdid]) for count, cdid in self if db[cdid].isAction()]
-		self.WriteCardsToTypeList(fp,actioncards,'Actions', savetype)
+		self.WriteCardsToTypeList(fp,actioncards,'Strategies', savetype)
 
 		followercards = [(count, db[cdid]) for count, cdid in self if db[cdid].isFollower()]
 		self.WriteCardsToTypeList(fp,followercards,'Followers', savetype)

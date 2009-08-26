@@ -26,18 +26,19 @@ import database
 
 # More interesting names for the various card types.
 typeNames = {
-	'personalities':'Personality',
-	'events':'Event',
-	'regions':'Region',
-	'holdings':'Holding',
-	'actions':'Action',
-	'items':'Item',
-	'followers':'Follower',
-	'ancestors':'Ancestor',
-	'rings':'Ring',
-	'senseis':'Sensei',
-	'strongholds':'Stronghold',
-	'winds':'Wind',
+	'personality':'Personality',
+	'event':'Event',
+	'region':'Region',
+	'holding':'Holding',
+	'strategy':'Strategy',
+	'item':'Item',
+	'follower':'Follower',
+	'ancestor':'Ancestor',
+	'ring':'Ring',
+	'sensei':'Sensei',
+	'stronghold':'Stronghold',
+	'wind':'Wind',
+	'celestial':'Celestial',
 }
 
 class CardPreviewCanvas(canvas.L5RCanvas):
@@ -155,16 +156,16 @@ class CardPreviewWindow(wx.SplitterWindow):
 		except KeyError:
 			pass
 		
-		if card.type in ('personalities', 'followers', 'items'): # Force and chi.
+		if card.type in ('personality', 'follower', 'item'): # Force and chi.
 			html.append('<br>Force: <b>%s</b>  Chi: <b>%s</b>' % (card.force, card.chi))
-		elif card.type == 'holdings' and card.force != '':
+		elif card.type == 'holding' and card.force != '':
 			html.append('<br>Gold Production: <b>%s</b>' % card.force)
 		
-		if card.type == 'personalities': # Gold cost, honor req, phonor.
+		if card.type == 'personality': # Gold cost, honor req, phonor.
 			html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>  PH: <b>%s</b>' % (card.honor_req, card.cost, card.personal_honor))
-		elif card.type == 'followers': # Gold cost, honor req.
+		elif card.type == 'followe': # Gold cost, honor req.
 			html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>' % (card.honor_req, card.cost))
-		elif card.type == 'strongholds': # Production, honor, etc.
+		elif card.type == 'stronghold': # Production, honor, etc.
 			html.append('<br>Province Strength: <b>%s</b><br>Gold Production: <b>%s</b><br>Starting Honor: <b>%s</b>' %  \
 				(card.province_strength, card.gold_production, card.starting_honor))
 		elif card.hasGoldCost(): # Gold cost.

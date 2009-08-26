@@ -52,11 +52,11 @@ CreatedCards = []  # A mapping helper for the 'Create card' menu.
 
 class CreateCardDialog(wx.Dialog):
 	cardTypes = {
-		'Personality':'personalities',
-		'Follower':'followers',
-		'Item':'items',
-		'Region':'regions',
-		'Holding':'holdings',
+		'Personality':'personality',
+		'Follower':'follower',
+		'Item':'item',
+		'Region':'region',
+		'Holding':'holding',
 	}
 	
 	def GetType(self):
@@ -671,7 +671,7 @@ class ViewDynastyDiscardDialog(ViewDeckDialog):
 	def OnListRightClick(self, evt):
 		self.card = self.gameState.FindCard(evt.GetData())
 		try:
-			if self.card.data.type != 'personalities':
+			if self.card.data.type != 'personality':
 				return
 		except AttributeError:
 			return
@@ -1762,7 +1762,7 @@ class MainWindow(wx.Frame):
 		cardMenu.AppendSeparator()
 		cardMenu.Append(ID_MNU_CARDPOPUP_DISCARD, 'Discard')
 		try:
-			if evt.card.data.type == 'personalities':
+			if evt.card.data.type == 'personality':
 				cardMenu.Append(ID_MNU_CARDPOPUP_KILL_DISCARD, 'Destroy and discard', 'Mark this personality dead and then discard him.')
 		except AttributeError:
 			pass
@@ -2366,11 +2366,16 @@ class MainWindow(wx.Frame):
 		#Added 1/6/09 by PCW
 		card = self.client.gameState.FindCard(event.cgid)
 		player = self.client.gameState.GetPlayer(event.pid)
-	
-		if self.client.IsLocalPlayer(event.pid):
+
+		if not self.client.IsLocalPlayer(event.pid):
 			self.PrintToChat('%s peeks at your facedown card.' % (player.name))		
 		else:
 			self.PrintToChat('%s shows you a face down card: %s.' % (player.name, card.GetStyledName()))
+	
+##		if self.client.IsLocalPlayer(event.pid):
+##			self.PrintToChat('%s peeks at your facedown card.' % (player.name))		
+##		else:
+##			self.PrintToChat('%s shows you a face down card: %s.' % (player.name, card.GetStyledName()))
 			#wx.FindWindowById(ID_CARD_PREVIEW).SetCard()
 	
 	def OnClientPeekCard(self, event):

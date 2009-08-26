@@ -155,7 +155,7 @@ class TextFilter(RegexFilter):
 class TypeFilter(ChoiceFilter):
 	name = 'Card Type'
 	options = database.cardTypes
-	default_enabled = True
+	##default_enabled = False #was True
 	def match(self, card):
 		return self.value.lower() == card.type
 

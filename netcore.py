@@ -458,7 +458,7 @@ class Server(threading.Thread):
 				
 			for cgid in bothDecks:
 				card = self.gameState.FindCard(cgid)
-				if card.data.type == 'strongholds':
+				if card.data.type == 'stronghold':
 					# Found it!
 					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=strongLoc, y=0, faceup=True)
 					# Also set family honor.

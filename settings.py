@@ -33,7 +33,7 @@ DEFAULT_SETTINGS = {
 	'playfield_bg_color2':(0, 190, 16),
 	'playfield_bg_image':'',
 	'playfield_bg_image_display':False,
-	'attach_ok': ('personalities',),
+	'attach_ok': ('personality',),
 	'matchuser':'',
 	'matchpassword':'1234',
 }

@@ -528,7 +528,7 @@ class DeckEditPanel(wx.Panel):
 			self.lstCards.SetStringItem(idx, self.CARDLIST_COL_TYPE, card.type.capitalize())  # Type
 			self.lstCards.SetStringItem(idx, self.CARDLIST_COL_CLANS, ', '.join(clan.capitalize() for clan in card.clans))  # Clans
 			self.lstCards.SetStringItem(idx, self.CARDLIST_COL_COST, card.cost)  # Cost
-			if card.type in ['personalities', 'items', 'followers', 'ancestors']:
+			if card.type in ['personality', 'item', 'follower', 'ancestor']:
 				self.lstCards.SetStringItem(idx, self.CARDLIST_COL_FORCECHI, '%sF/%sC' % (card.force, card.chi))
 			self.lstCards.SetStringItem(idx, self.CARDLIST_COL_PH, card.personal_honor)
 			self.lstCards.SetStringItem(idx, self.CARDLIST_COL_HR, card.honor_req)
@@ -705,7 +705,7 @@ class MainWindow(wx.Frame):
 		db = database.get()
 		self.SetStatusText('%d Fate/%d Dynasty' % (self.deck.NumFate(), self.deck.NumDynasty()), 1)
 		self.SetStatusText('%d Holdings' %
-			sum([num for num, c in self.deck if db[c].type == "holdings"]), 2)
+			sum([num for num, c in self.deck if db[c].type == "holding"]), 2)
 		if self.deckName is not None:
 			self.SetTitle(MAIN_TITLE + ' - %s%s' % (self.deckName, '*' if self.deck.modified else ''))
 		else:

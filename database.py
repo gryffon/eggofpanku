@@ -76,52 +76,55 @@ class CardData:
 		return cl in self.clans
 	
 	def isDynasty(self):
-		return self.type in ['holdings', 'personalities', 'regions', \
-			'events', 'winds']
+		return self.type in ['holding', 'personality', 'region', \
+			'event', 'wind', 'celestial']
 	def isHolding(self):
-		return self.type == 'holdings'
+		return self.type == 'holding'
 
 	def isPersonality(self):
-		return self.type == 'personalities'
+		return self.type == 'personality'
 
 	def isRegion(self):
-		return self.type == 'regions'
+		return self.type == 'region'
 
 	def isEvent(self):
-		return self.type == 'events'
+		return self.type == 'event'
 
 	def isWind(self):
-		return self.type == 'winds'
+		return self.type == 'wind'
+
+	def isCelestial(self):
+		return self.type == 'celestial'
 
 	def isFate(self):
-		return self.type in ['actions', 'followers', 'items', \
-			'spells', 'ancestors', 'rings', 'senseis']
+		return self.type in ['strategy', 'follower', 'item', \
+			'spell', 'ancestor', 'ring', 'sensei']
 
 	def isAction(self):
-		return self.type == 'actions'
+		return self.type == 'strategy'
 
 	def isFollower(self):
-		return self.type == 'followers'
+		return self.type == 'follower'
 
 	def isItem(self):
-		return self.type == 'items'
+		return self.type == 'item'
 
 	def isAncestor(self):
-		return self.type == 'ancestors'
+		return self.type == 'ancestor'
 
 	def isRing(self):
-		return self.type == 'rings'
+		return self.type == 'ring'
 
 	def isSpell(self):
-		return self.type == 'spells'
+		return self.type == 'spell'
 
 	def isSensei(self):
-		return self.type == 'senseis'
+		return self.type == 'sensei'
 	
 	def hasGoldCost(self):
 		#return self.cost != ''
-		return self.type in ['actions', 'followers', 'items', \
-			'holdings', 'personalities', 'spells']
+		return self.type in ['strategy', 'follower', 'item', \
+			'holding', 'personality', 'spell']
 
 class XMLImporter:
 	def __init__(self, filename):
