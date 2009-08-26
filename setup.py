@@ -1,8 +1,3 @@
-#
-# I apologize for the mess this thing is; it's not really meant to work well
-# on any system other than my own (right now, anyway). It's really only useful
-# if you plan on distributing your own Egg of P'an Ku binaries.
-#
 from distutils.core import setup
 import py2exe
 import sys
@@ -57,8 +52,8 @@ OutFile "eopk-install-%%%VERSION%%%.exe"
 InstallDir "$PROGRAMFILES\%%%APPNAME%%%"
 InstallDirRegKey HKCU "Software\%%%APPNAME%%%" ""
 
-LangString Homepage ${LANG_ENGLISH} "Visit http://code.google.com/p/eopk/ for more information."
-LangString HomepageLink ${LANG_ENGLISH} "http://code.google.com/p/eopk/"
+LangString Homepage ${LANG_ENGLISH} "Visit http://www.eggofpanku.com for more information."
+LangString HomepageLink ${LANG_ENGLISH} "http://www.eggofpanku.com"
 
 ;--------------------------------------------------------
 XPStyle on

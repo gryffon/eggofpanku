@@ -1,6 +1,6 @@
 
 
-                    EGG OF P'AN KU 0.9.10 (2009-July-1)
+                    EGG OF P'AN KU 0.9.20 (2009-August-24)
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -278,6 +278,10 @@ Technical details
 
 News & Changes
 
+  2009-August-24 Egg of P'an Ku 0.9.20
+	* Added "Celestial" card type
+	* changed code to work with new version of the cards.xml with singular card types and "strategy" instead of "actions"
+
   2009-July-1 Egg of P'an Ku 0.9.10
 
 	* CE Settings added to draw 6. (You can change back to 5 in preferences).
@@ -471,7 +475,8 @@ Egg of P'an Ku is Copyright (C) 2008 Peter C O Johansson.
 
 Modifications to this source were done by Paige Watson
 
-Download new versions at http://code.google.com/p/eopk/
-Origianl website is http://www.monkeyblah.com.
+Download new versions at http://www.eggofpanku.com
+Source code is available at http://code.google.com/p/eopk
+
 
 
