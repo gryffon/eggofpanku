@@ -188,7 +188,7 @@ class Deck:
 			fateCount += int(item[0])
 
 		#fatecards.sort(lambda a, b: cmp(a[1].type, b[1].type))
-		fp.write(headerString % ('Fate',dynCount))
+		fp.write(headerString % ('Fate',fateCount))
 
 		ancestorcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isAncestor()]
 		self.WriteCardsToTypeList(fp,ancestorcards,'Ancestors', savetype)
