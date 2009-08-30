@@ -140,7 +140,7 @@ Section "Uninstall"
 SectionEnd
 '''
 
-sys.stdout = open('py2exe-output.log','w')
+##sys.stdout = open('py2exe-output.log','w')
 
 
 if len(sys.argv) == 1:
