@@ -149,7 +149,8 @@ class Deck:
 		
 		for count, cdid in self:
 			card = db[cdid]
-			if card.type == 'strongholds':
+			print 'card.type = %s' % (card.type)
+			if card.type == 'stronghold':
 				shString = {OUTPUT_TYPES.Text:'\n1 %s\n',
 							OUTPUT_TYPES.HTML:'\n<h3><u>%s</u></h3>\n',
 							OUTPUT_TYPES.BBCode:'\n[size=150]%s[/size]\n'}[savetype]
