@@ -97,7 +97,7 @@ Download Link: http://sourceforge.net/project/showfiles.php?group_id=15583
 
 NSIS is a Windows installation packaging program that makes a program installer to deploy the program to other users.
 
-Download Link: http://nsis.sourceforge.net/Download NSIS] will make the installation files.
+Download Link: http://nsis.sourceforge.net/Download] will make the installation files.
 
 4c. UPX
 
