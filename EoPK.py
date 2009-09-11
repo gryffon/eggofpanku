@@ -2367,15 +2367,15 @@ class MainWindow(wx.Frame):
 		card = self.client.gameState.FindCard(event.cgid)
 		player = self.client.gameState.GetPlayer(event.pid)
 
-##		if not self.client.IsLocalPlayer(event.pid):
-##			self.PrintToChat('%s peeks at your facedown card.' % (player.name))		
-##		else:
-##			self.PrintToChat('%s shows you a face down card: %s.' % (player.name, card.GetStyledName()))
-	
-		if self.client.IsLocalPlayer(event.pid):
+		if not self.client.IsLocalPlayer(event.pid):
 			self.PrintToChat('%s peeks at your facedown card.' % (player.name))		
 		else:
 			self.PrintToChat('%s shows you a face down card: %s.' % (player.name, card.GetStyledName()))
+	
+##		if self.client.IsLocalPlayer(event.pid):
+##			self.PrintToChat('%s peeks at your facedown card.' % (player.name))		
+##		else:
+##			self.PrintToChat('%s shows you a face down card: %s.' % (player.name, card.GetStyledName()))
 			#wx.FindWindowById(ID_CARD_PREVIEW).SetCard()
 	
 	def OnClientPeekCard(self, event):

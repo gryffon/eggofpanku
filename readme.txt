@@ -1,6 +1,6 @@
 
 
-                    EGG OF P'AN KU 0.9.20 (2009-September-7)
+                    EGG OF P'AN KU 0.9.22 (2009-September-11)
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -278,8 +278,8 @@ Technical details
 
 News & Changes
 
-  2009-September-7 Egg of P'an Ku 0.9.22
-	* Fixed a problem (r57) with showing a face down card to your opponent.
+  2009-August-24 Egg of P'an Ku 0.9.21
+	* Fixed problem with strongholds not being added to new decks.
 
   2009-August-24 Egg of P'an Ku 0.9.21
 	* Added "Celestial" card type
