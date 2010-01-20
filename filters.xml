@@ -578,9 +578,4 @@
     <name>TH</name>
     <displayName>The Harbinger</displayName>
   </filter>
-  <filter>
-    <type>set</type>
-    <name>IG3</name>
-    <displayName>Imperial Gift 3</displayName>
-  </filter>
 </filterList>
