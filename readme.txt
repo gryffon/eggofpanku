@@ -280,6 +280,8 @@ News & Changes
 
   2010-January-26 Egg of P'an Ku 0.9.3
 	* Fixed issue with honor Req for Followers not showing up.
+	* Fixed problem with the "Show card to Opponent" menu option not working preoperly.
+
 
   2009-August-24 Egg of P'an Ku 0.9.21
 	* Fixed problem with strongholds not being added to new decks.
