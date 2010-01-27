@@ -86,7 +86,7 @@ class Deck:
 			if not c.startswith('#') and c.strip() != '':
 				(count, cardname) = c.strip().split(' ', 1)
 				cardname = cardname.strip()
-				print 'cardname = %s' % (cardname)
+				#print 'cardname = %s' % (cardname)
 				try:
 					deck.cards.append((int(count), db.FindCardByName(cardname).id))
 				except (ValueError, KeyError):

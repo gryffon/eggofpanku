@@ -1,6 +1,6 @@
 
 
-                    EGG OF P'AN KU 0.9.22 (2009-September-11)
+                    EGG OF P'AN KU 0.9.3 (2010-January-26)
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -278,6 +278,9 @@ Technical details
 
 News & Changes
 
+  2010-January-26 Egg of P'an Ku 0.9.3
+	* Fixed issue with honor Req for Followers not showing up.
+
   2009-August-24 Egg of P'an Ku 0.9.21
 	* Fixed problem with strongholds not being added to new decks.
 
@@ -478,6 +481,7 @@ News & Changes
 Egg of P'an Ku is Copyright (C) 2008 Peter C O Johansson.
 
 Modifications to this source were done by Paige Watson
+Copryright (C) 2010 Paige C. Watson
 
 Download new versions at http://www.eggofpanku.com
 Source code is available at http://code.google.com/p/eopk

@@ -163,7 +163,7 @@ class CardPreviewWindow(wx.SplitterWindow):
 		
 		if card.type == 'personality': # Gold cost, honor req, phonor.
 			html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>  PH: <b>%s</b>' % (card.honor_req, card.cost, card.personal_honor))
-		elif card.type == 'followe': # Gold cost, honor req.
+		elif card.type == 'follower': # Gold cost, honor req.
 			html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>' % (card.honor_req, card.cost))
 		elif card.type == 'stronghold': # Production, honor, etc.
 			html.append('<br>Province Strength: <b>%s</b><br>Gold Production: <b>%s</b><br>Starting Honor: <b>%s</b>' %  \
