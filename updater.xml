@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<eggupdater fileurl="http://www.eggofpanku.com/portals/2/updates/eggupdater/updater.xml"  date="01/1/2010 11:37:00PM">
+  <application name="EggUpdater" date="01/10/2010 00:00:01AM" version="1.0.0.0">
+      <URL><![CDATA[http://www.eggofpanku.com/portals/2/updates/eggupdater/]]></URL>
+      <file restart="true" date="01/01/2010 00:00:01AM">
+        <filename>eggupdater.exe</filename>
+        <path><![CDATA[]]></path>
+        <displayname>Egg Updater Application</displayname>
+      </file>
+    </application>
+  <application name="Egg of Pan Ku" date="01/10/2010 00:00:01AM" version="0.9.30">
+      <URL><![CDATA[http://www.eggofpanku.com/portals/2/updates/eopk/]]></URL>
+      <file restart="true" date="01/01/2010 00:00:01AM">
+        <filename>library.zip</filename>
+        <path><![CDATA[\sys]]></path>
+        <displayname>EoPK Python library file</displayname>
+      </file>
+    </application>
+</eggupdater>
