@@ -47,7 +47,7 @@ nsis_template = '''
 !include "MUI.nsh"
 ;--------------------------------------------------------
 Name "%%%APPNAME%%%"
-OutFile "eopk-install-%%%VERSION%%%.exe"
+OutFile "eopk-install.exe"
 
 InstallDir "$PROGRAMFILES\%%%APPNAME%%%"
 InstallDirRegKey HKCU "Software\%%%APPNAME%%%" ""
@@ -103,8 +103,8 @@ Section ""
     CreateDirectory "$SMPROGRAMS\\$StartMenuFolder"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\%%%APPNAME%%%.lnk" "$INSTDIR\\EoPK.exe"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Deck Editor.lnk" "$INSTDIR\\deckedit.exe"
-    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk" "$INSTDIR\\Uninstall.exe"
-    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Readme.txt.lnk" "$INSTDIR\\readme.txt"
+    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Egg Updater.lnk" "$INSTDIR\\eggupdater.exe"
+    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk" "$INSTDIR\\Uninstall.exe"    
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -120,6 +120,9 @@ Section "Uninstall"
   Delete "$INSTDIR\\EoPK.exe.log"
   Delete "$INSTDIR\\eopk.log"
   Delete "$INSTDIR\\Uninstall.exe"
+  Delete "$INSTDIR\\*.exe"
+  Delete "$INSTDIR\\*.dll"
+  Delete "$INSTDIR\\logs\*.*"
   RMDir "$INSTDIR\\images\\cards"
   RMDir "$INSTDIR\\images\\tokens"
   RMDir "$INSTDIR\\images\\markers"
@@ -134,13 +137,14 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Deck Editor.lnk"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Readme.txt.lnk"
+  Delete "$SMPROGRAMS\\$StartMenuFolder\\Egg Updater.lnk"
   RMDir "$SMPROGRAMS\\$StartMenuFolder"
 
   DeleteRegKey /ifempty HKCU "Software\%%%APPNAME%%%"
 SectionEnd
 '''
 
-##sys.stdout = open('py2exe-output.log','w')
+sys.stdout = open('py2exe-output.log','w')
 
 
 if len(sys.argv) == 1:
@@ -189,7 +193,7 @@ setup(
 		},
 	},
 	data_files=[
-		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml']),
+		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updater.xml','ICSharpCode.SharpZipLib.dll','eggupdater.exe',]),
 		('decks', deckfiles),
 		('images', imagefiles),
 		('images\\cards', cardimagefiles),
@@ -200,7 +204,8 @@ setup(
 
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR71.dll', 'msvcp71.dll', 'gdiplus.dll', 'python25.dll',
-		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt', 'filters.xml']),
+		   'ICSharpCode.SharpZipLib.dll','eggupdater.exe',
+		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt', 'filters.xml','updater.xml']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images\\cards', cardimagefiles),
@@ -210,7 +215,7 @@ nsisfiles = [
 ]
 
 # Copy additional DLLs
-for f in ('msvcp71.dll', 'gdiplus.dll'):
+for f in ('msvcp71.dll', 'gdiplus.dll', 'ICSharpCode.SharpZipLib.dll', 'eggupdater.exe'):
 	shutil.copy(f, 'dist')
 
 # UPX executables
@@ -241,7 +246,7 @@ except:
 
 # Copy files
 srcfiles = [
-	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcp71.dll']),
+	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcp71.dll','ICSharpCode.SharpZipLib.dll','eggupdater.exe']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images/cards', cardimagefiles),
