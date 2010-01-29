@@ -39,6 +39,8 @@ import settings_ui
 import deckpanel
 import deckedit
 import dbimport
+import subprocess
+
 from guids import *
 
 logging.basicConfig(level=logging.DEBUG,
@@ -974,6 +976,16 @@ class MainWindow(wx.Frame):
 			" under certain conditions; see license.txt for details." % EOPK_APPNAME)
 		self.PrintToChat("Database %s ok, containing %d cards." % (db.date, len(db)))
 		self.PrintToChat("----------")
+		
+
+
+	def CheckForUpdates(self):
+		self.PrintToChat("Checking for updates.....")
+		p = subprocess.Popen("eggupdater.exe", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+##		print "%s" % (p.stdout.readlines())
+		for line in p.stdout.readlines():
+			self.PrintToChat("%s" % (line))
+		p.wait()
 
 
 	def SetupToolbars(self):
@@ -1094,6 +1106,8 @@ class MainWindow(wx.Frame):
 		mnuFile.AppendSeparator()
 		mnuFile.Append(ID_MNU_DECK_EDIT, "Launch Deck &Editor",  "Open the deck editor where you can build or edit decks.")
 		mnuFile.AppendSeparator()
+		mnuFile.Append(ID_MNU_LAUNCH_EGGUPDATER, "Check for updates",  "Launch EggUpdater to check for application updates.")
+		mnuFile.AppendSeparator()
 		mnuFile.Append(ID_MNU_EXIT, "E&xit", "")
 		
 		mnuGame = wx.Menu()
@@ -1197,6 +1211,8 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, ID_MNU_START_GAME, self.OnMenuStartGame)
 		wx.EVT_MENU(self, ID_MNU_PREFERENCES, self.OnMenuPreferences)
 		wx.EVT_MENU(self, ID_MNU_DECK_EDIT, self.OnMenuDeckEditor)
+		wx.EVT_MENU(self, ID_MNU_LAUNCH_EGGUPDATER, self.OnMenuUpdateEgg)
+		
 		wx.EVT_MENU(self, ID_MNU_EXIT, self.OnMenuExit)
 		
 		wx.EVT_MENU(self, ID_MNU_FAMILY_HONOR_SET, self.OnMenuSetHonor)
@@ -1317,6 +1333,9 @@ class MainWindow(wx.Frame):
 		
 	def OnMenuDeckEditor(self, event):
 		win = deckedit.MainWindow()
+
+	def OnMenuUpdateEgg(self,event):
+		self.CheckForUpdates()
 	
 	def OnMenuSetHonor(self, event):
 		if self.client and self.client.Playing():
