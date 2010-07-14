@@ -1,6 +1,6 @@
 
 
-                    EGG OF P'AN KU 0.9.3 (2010-January-26)
+                    EGG OF P'AN KU 0.9.32 (2010-January-28)
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -278,9 +278,10 @@ Technical details
 
 News & Changes
 
-  2010-January-26 Egg of P'an Ku 0.9.3
+  2010-January-28 Egg of P'an Ku 0.9.32
 	* Fixed issue with honor Req for Followers not showing up.
 	* Fixed problem with the "Show card to Opponent" menu option not working preoperly.
+	* Added the EggUpdater application and functionality
 
 
   2009-August-24 Egg of P'an Ku 0.9.21
