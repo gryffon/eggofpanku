@@ -174,6 +174,9 @@ class CardPreviewWindow(wx.SplitterWindow):
 		textArr = []
 		for text in card.text.split("<br>"):
 			textArr.append('<p>%s</p>' % text)
+		
+		textArr.append('<p><font size="-1"><i>%s</i></font></p>' % card.flavor)
+		
 		cardText = '<hr><font size="-1">%s</font><hr>' % ('\n'.join(textArr))
 
 		html.append(cardText)
@@ -185,7 +188,12 @@ class CardPreviewWindow(wx.SplitterWindow):
 		if card.id[0] == '_':
 			html.append('<br><font size="-1">Created card</font>')
 		else:
-			html.append('<br><font size="-1">%s</font> <img height=8 width=8 src=\'images/%s.png\' />' % (card.id, card.rarity))
+			html.append('<br><font size="-1">%s</font>' % card.id)
+			if card.rarity != "":
+				html.append('<img src=\'images/rarity_%s.png\' />' % card.rarity)
+				
+		if card.artist != "":
+			html.append('<br><font size="-1">Artist: %s</font>' % card.artist)
 		
 		#rarity flavor and artist to go in.
 		html.append('</center></body></html>')

@@ -66,7 +66,7 @@ class CardData:
 	def __init__(self):
 		self.type = "none"
 		self.name = "none"
-		self.rarity = "common"
+		self.rarity = ""
 		self.flavor = ""
 		self.artist = ""
 		self.legal = []
@@ -204,10 +204,16 @@ class XMLImporter:
 			self.cCard.clans.append(self.cdata)
 		elif name == "image":
 			self.cCard.images[self.imageEdition] = self.cdata
-		elif name in cardAttrs:
-			setattr(self.cCard, name, self.cdata.encode("latin-1"))
 		elif name == "rulings":
 			self.cCard.rulings.append(self.cdata)
+		elif name == "rarity":
+			setattr(self.cCard, "rarity", self.cdata.encode("latin-1"))
+		elif name == "flavor":
+			setattr(self.cCard, "flavor", self.cdata.encode("latin-1"))
+		elif name == "artist":
+			setattr(self.cCard, "artist", self.cdata.encode("latin-1"))
+		elif name in cardAttrs:
+			setattr(self.cCard, name, self.cdata.encode("latin-1"))
 		elif name == "card":
 			self.cards[self.cCard.id] = self.cCard
 		
