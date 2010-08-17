@@ -1500,7 +1500,7 @@ class MainWindow(wx.Frame):
 		self.GetMenuBar().Enable(ID_MNU_LEAVE_GAME, False)
 		self.GetToolBar().EnableTool(ID_MNU_LEAVE_GAME, False)
 		
-	def OnMenuStartGame(self, event):
+	def OnMenuStartGame(self, event):	
 		if not self.server:  # Only if we are the server
 			return
 		
@@ -1508,11 +1508,12 @@ class MainWindow(wx.Frame):
 		if self.server.gameState is not None and wx.MessageDialog(self, 'A game is already running. Do you want to start a new one?', \
 			'Start Game', wx.ICON_QUESTION|wx.YES_NO).ShowModal() == wx.ID_NO:
 			return
-		
+
 		if not any(client for client in self.server.clients if client.HasDeck()):
 			wx.MessageDialog(self, 'There are no players ready to play. The game cannot start.', 'Start Game', wx.ICON_ERROR).ShowModal()
 			return
-		
+
+		self.client.Send(netcore.Msg('discard-favor'))		
 		self.server.RequestStartGame()
 	
 	def OnChatEntry(self, evt):

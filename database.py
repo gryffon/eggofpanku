@@ -22,7 +22,9 @@ import os
 import cPickle
 import odict
 import xmlfilters
-import wx
+#import wx
+import base64
+from xmlsettings import settings
 
 cardAttrs = ("name", "force", "chi", "text", "cost", "focus", \
 	"personal_honor", "honor_req", "starting_honor", \
@@ -58,16 +60,38 @@ for filterItem in filterList["set"]:
 	cardSets.insert(0, filterItem.displayName, filterItem.name)
 
 LOCALDATABASE = 'cards.db'
+FILENAME = os.path.basename(settings.cardsource)
 
 class CardData:
 	def __init__(self):
 		self.type = "none"
+		self.name = "none"
+		self.rarity = "common"
+		self.flavor = ""
+		self.artist = ""
 		self.legal = []
 		self.clans = []
 		self.rulings = []
 		self.images = {}
+		self.isencrypted = False
+		
 		for x in cardAttrs:
 			setattr(self, x, '')
+
+	def DecryptAttribute(self, x):
+		outputstring = ''
+		print 'Decrypting attribute: %s' % x
+		input = base64.decodestring(getattr(self,x))
+		longkey = FILENAME.rpartition('-')[2]
+		key = longkey[:longkey.find('.')]
+		keylength = len(key)
+		for i in range(0,len(input)):
+			curchar = input[i]
+			keychar = key[(i % keylength)-1] #((i % keylength) - 1)
+			decodedchar = chr(ord(curchar)-ord(keychar))
+			outputstring += decodedchar
+					
+		return outputstring
 	
 	def isLegal(self, ed):
 		return ed in self.legal
@@ -120,6 +144,9 @@ class CardData:
 
 	def isSensei(self):
 		return self.type == 'sensei'
+
+	def IsEncrypted(self):
+		return self.isencrypted == True
 	
 	def hasGoldCost(self):
 		#return self.cost != ''
@@ -149,7 +176,7 @@ class XMLImporter:
 		# Finally, dump it.
 		if outfile is None:
 			outfile = file(LOCALDATABASE, mode='wb')
-		cPickle.dump((self.date, self.cards), outfile, cPickle.HIGHEST_PROTOCOL)
+		cPickle.dump((self.filename, self.date, self.cards), outfile, cPickle.HIGHEST_PROTOCOL)		
 
 	def parseStartElem(self, name, attrs):
 		if name == "cards":
@@ -157,12 +184,20 @@ class XMLImporter:
 		elif name == "card":
 			self.cCard = CardData()
 			self.cCard.id = attrs["id"]
-			self.cCard.type = attrs["type"]
+			#self.cCard.rarity = attrs["rarity"]
+			_cardType = attrs["type"]
+			if _cardType.find("encrypted-") != -1:
+				self.cCard.isencrypted = True
+				_typeName = attrs["type"].replace('encrypted-','')
+				self.cCard.type = _typeName
+				#self.cCard.type = attrs["type"]			
+			else:
+				self.cCard.type = attrs["type"]
 		elif name == "image":
 			self.imageEdition = attrs["edition"]
 		self.cdata = ""
 		
-	def parseEndElem(self, name):
+	def parseEndElem(self, name):	
 		if name == "legal":
 			self.cCard.legal.append(self.cdata)
 		elif name == "clan":
@@ -186,10 +221,20 @@ class CardDB:
 		self.cards = {}
 		self.cardNames = {}
 		self.createIndex = 1  # Next available index for created cards
+
+		(self.filename, self.date, self.cards) = cPickle.load(file(LOCALDATABASE, mode='rb'))
+		print 'filename: %s --- Card.db filename: %s' % (settings.cardsource, self.filename)													 
+		if self.filename != settings.cardsource:
+			raise NameError, 'Cards.db was created from a different xml file.  Please reload the card database.'
 		
-		(self.date, self.cards) = cPickle.load(file(LOCALDATABASE, mode='rb'))
 		for x in self.cards.values():
-			self.cardNames[x.name] = x
+			cardName = x.name			
+			if x.IsEncrypted():
+				cardName = x.DecryptAttribute('name')
+				x.name = cardName
+				x.text = x.DecryptAttribute('text')
+				print 'Decrypted card name: %s' % cardName
+			self.cardNames[cardName] = x
 
 	def __getitem__(self, key):
 		return self.cards[key]

@@ -1,6 +1,6 @@
 
 
-                    EGG OF P'AN KU 0.9.32 (2010-January-28)
+                    EGG OF P'AN KU 0.9.39 (2010-August-16)
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -277,6 +277,10 @@ Technical details
 
 
 News & Changes
+
+  2010-August-16 Egg of P'an Ku 0.9.39
+	* Added playtest encryption functionality
+
 
   2010-January-28 Egg of P'an Ku 0.9.32
 	* Fixed issue with honor Req for Followers not showing up.

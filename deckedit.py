@@ -17,16 +17,16 @@
 # 02110-1301, USA.
 """Deck editor module for Egg of P'an Ku."""
 
-import wx
+#import wx
 import wx.lib.newevent
 import preview
 import database
 import deck
-import re
+#import re
 import sys
 import StringIO
 import win32clipboard
-from enums import Enumeration
+#from enums import Enumeration
 
 #from settings import settings
 from xmlsettings import settings

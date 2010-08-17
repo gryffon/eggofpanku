@@ -185,8 +185,9 @@ class CardPreviewWindow(wx.SplitterWindow):
 		if card.id[0] == '_':
 			html.append('<br><font size="-1">Created card</font>')
 		else:
-			html.append('<br><font size="-1">%s</font>' % card.id)
+			html.append('<br><font size="-1">%s</font> <img height=8 width=8 src=\'images/%s.png\' />' % (card.id, card.rarity))
 		
+		#rarity flavor and artist to go in.
 		html.append('</center></body></html>')
 		
 		self.cardText.SetPage('\n'.join(html))
