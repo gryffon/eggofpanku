@@ -409,8 +409,9 @@ class Server(threading.Thread):
 		# Add those clients who have submitted decks as players.
 		for c in self.clients:
 	
-			self.gameState.favor = None
-			self.Broadcast(Msg('set-favor', pid=-1))
+			#self.gameState.favor = None
+			
+			#self.Broadcast(Msg('set-favor', pid=-1))
 
 			if c.HasDeck():
 				c.player = self.gameState.AddPlayer(c.name, c.dynastyDeck, c.fateDeck)

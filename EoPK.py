@@ -2254,7 +2254,8 @@ class MainWindow(wx.Frame):
 
 		except AttributeError, error:
 			print error
-		
+			
+		self.client.Send(netcore.Msg('discard-favor'))
 		self.PrintToChat('A new game round is starting.')
 		self.PrintToChat('Players: ' + ', '.join(p.name for (pid,p) in self.client.gameState.players.iteritems()))
 	
