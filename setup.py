@@ -91,14 +91,15 @@ Section ""
   SetOutPath "$INSTDIR"
 
   Delete "$INSTDIR\\settings.xml"
-  
+  Delete "$INSTDIR\\cards.db"
+    
   %%%FILES%%%
   
   SetOutPath "$INSTDIR"
   
   WriteRegStr HKCU "Software\\%%%APPNAME%%%" "" $INSTDIR
   WriteUninstaller "$INSTDIR\\Uninstall.exe"
-  
+
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     CreateDirectory "$SMPROGRAMS\\$StartMenuFolder"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\%%%APPNAME%%%.lnk" "$INSTDIR\\EoPK.exe"
@@ -193,7 +194,7 @@ setup(
 		},
 	},
 	data_files=[
-		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updater.xml','ICSharpCode.SharpZipLib.dll','eggupdater.exe','updaterlib.dll']),
+		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updates.xml','DataHandler.dll','eggupdater.exe','Ionic.Zip.dll','UpdaterClasses.dll']),
 		('decks', deckfiles),
 		('images', imagefiles),
 		('images\\cards', cardimagefiles),
@@ -204,8 +205,8 @@ setup(
 
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR71.dll', 'msvcp71.dll', 'gdiplus.dll', 'python25.dll',
-		   'ICSharpCode.SharpZipLib.dll','eggupdater.exe','updaterlib.dll',
-		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt', 'filters.xml','updater.xml']),
+		   'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll',
+		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt', 'filters.xml','updates.xml']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images\\cards', cardimagefiles),
@@ -215,7 +216,7 @@ nsisfiles = [
 ]
 
 # Copy additional DLLs
-for f in ('msvcp71.dll', 'gdiplus.dll', 'ICSharpCode.SharpZipLib.dll', 'eggupdater.exe','updaterlib.dll'):
+for f in ('msvcp71.dll', 'gdiplus.dll', 'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll'):
 	shutil.copy(f, 'dist')
 
 # UPX executables
@@ -246,7 +247,7 @@ except:
 
 # Copy files
 srcfiles = [
-	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcp71.dll','ICSharpCode.SharpZipLib.dll','eggupdater.exe','updaterlib.dll']),
+	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcp71.dll','DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images/cards', cardimagefiles),
