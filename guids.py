@@ -26,6 +26,14 @@ EOPK_VERSION_FULL = '%d.%d.%d%s' % (EOPK_VERSION_MAJOR, EOPK_VERSION_MINOR, EOPK
 EOPK_VERSION_STRING = EOPK_VERSION_FULL + ' (2010-August-17)'
 EOPK_COPYRIGHT = 'Copyright (C) 2010 Paige C. Watson'
 
+EOPK_UNOFFICIAL_TEXT = " -- an unofficial Legend of the Five Rings online tabletop"
+EOPK_WARRANTY_TEXT = "comes with ABSOLUTELY NO WARRANTY." \
+            " This is free software, and you are welcome to redistribute it" \
+            " under certain conditions; see license.txt for details."
+            
+EOPK_WEBSITE_URL = "http://www.eggofpanku.com"
+EOPK_DONATE_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6977381"
+
 ID_MAIN_WINDOW = 20000
 ID_CARD_PREVIEW = 20001
 ID_CLIENT_LIST = 20002
@@ -85,7 +93,10 @@ ID_MNU_CREATE_CARD_CUSTOM = 600  # 601-699 are specific ones.
 
 ID_MNU_FOCUS_CREATE = 700
 
-
+ID_MNU_HELP = 800
+ID_MNU_HELP_ABOUT = 801
+ID_MNU_HELP_WEB = 802
+ID_MNU_HELP_DONATE = 803
 
 ID_LIST_HAND = 1000
 ID_TRAY_DISCARD_FATE = 1001

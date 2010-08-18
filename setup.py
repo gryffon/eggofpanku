@@ -77,8 +77,8 @@ Var StartMenuFolder
 
 !insertmacro MUI_PAGE_INSTFILES
 
-!define MUI_FINISHPAGE_RUN "$INSTDIR\\EoPK.exe"
-!define MUI_FINISHPAGE_RUN_TEXT "Run %%%APPNAME%%% now"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\\eggupdater.exe -startegg"
+!define MUI_FINISHPAGE_RUN_TEXT "Update and run %%%APPNAME%%% now"
 !insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -104,7 +104,8 @@ Section ""
     CreateDirectory "$SMPROGRAMS\\$StartMenuFolder"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\%%%APPNAME%%%.lnk" "$INSTDIR\\EoPK.exe"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Deck Editor.lnk" "$INSTDIR\\deckedit.exe"
-    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Egg Updater.lnk" "$INSTDIR\\eggupdater.exe"
+    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (Required only).lnk" "$INSTDIR\\eggupdater.exe"
+    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (including optional ).lnk" "$INSTDIR\\eggupdater.exe -optional"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk" "$INSTDIR\\Uninstall.exe"    
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
@@ -138,7 +139,8 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Deck Editor.lnk"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Readme.txt.lnk"
-  Delete "$SMPROGRAMS\\$StartMenuFolder\\Egg Updater.lnk"
+  Delete "$SMPROGRAMS\\$StartMenuFolder\\Update (Required only).lnk"
+  Delete "$SMPROGRAMS\\$StartMenuFolder\\Update (including optional ).lnk"
   RMDir "$SMPROGRAMS\\$StartMenuFolder"
 
   DeleteRegKey /ifempty HKCU "Software\%%%APPNAME%%%"
@@ -194,7 +196,7 @@ setup(
 		},
 	},
 	data_files=[
-		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updates.xml','DataHandler.dll','eggupdater.exe','Ionic.Zip.dll','UpdaterClasses.dll']),
+		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updates.xml','DataHandler.dll','eggupdater.exe','Ionic.Zip.dll','copyninja.exe','UpdaterClasses.dll']),
 		('decks', deckfiles),
 		('images', imagefiles),
 		('images\\cards', cardimagefiles),
@@ -205,7 +207,7 @@ setup(
 
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR71.dll', 'msvcp71.dll', 'gdiplus.dll', 'python25.dll',
-		   'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll',
+		   'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe',
 		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt', 'filters.xml','updates.xml']),
 	('decks', deckfiles),
 	('images', imagefiles),
@@ -216,7 +218,7 @@ nsisfiles = [
 ]
 
 # Copy additional DLLs
-for f in ('msvcp71.dll', 'gdiplus.dll', 'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll'):
+for f in ('msvcp71.dll', 'gdiplus.dll', 'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe'):
 	shutil.copy(f, 'dist')
 
 # UPX executables
@@ -247,7 +249,7 @@ except:
 
 # Copy files
 srcfiles = [
-	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcp71.dll','DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll']),
+	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcp71.dll','DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images/cards', cardimagefiles),

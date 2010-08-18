@@ -24,6 +24,7 @@ from xmlsettings import settings
 import cPickle
 import sys
 import os
+import webbrowser
 import socket
 import wx
 import logging
@@ -252,11 +253,7 @@ class AddTokenDialog(wx.Dialog):
 	def GetNumber(self):
 		return int(self.txtTokenNumber.GetValue())
 	
-#-----------------------------------
-# Added 08-23-2008 by PCW
-# This is the Game Match Service Connection Dialog
-# This class is derived from ConnectionDialog
-#-----------------------------------
+
 class AddMarkerDialog(wx.Dialog):
 
 	MarkerTypes =  {
@@ -340,6 +337,82 @@ class AddMarkerDialog(wx.Dialog):
 	def GetNumber(self):
 		return int(self.txtMarkerNumber.GetValue())
 
+class HelpAboutDialog(wx.Dialog):
+	def __init__(self,parent):
+		self.getOptionalItems = True
+		wx.Dialog.__init__(self, parent, wx.ID_ANY, 'Egg of P\'an Ku Information', size=(400,300))
+		sbDeck = wx.StaticBox(self, -1, 'About Egg')
+		sbsizer = wx.StaticBoxSizer(sbDeck, wx.VERTICAL)
+		aboutData = []
+		
+		aboutData.append(EOPK_APPNAME)
+		aboutData.append('Version: %s\n' % EOPK_VERSION_STRING)
+		aboutData.append(EOPK_COPYRIGHT)
+		aboutData.append("\n%s %s" % (EOPK_APPNAME,EOPK_WARRANTY_TEXT))
+		
+		lblHelp = wx.StaticText(self, wx.ID_ANY, '\n'.join(aboutData))
+		lblHelp.Wrap(300)
+		sbsizer.Add(lblHelp, 0, wx.ALL | wx.ALIGN_CENTRE, 5)
+		
+	
+		buttonsizer = wx.StdDialogButtonSizer()
+		self.btnSubmit = wx.Button(self, wx.ID_OK, 'Okay')
+		wx.EVT_BUTTON(self, wx.ID_OK, self.OnSubmit)
+		self.btnSubmit.SetDefault()
+		buttonsizer.Add(self.btnSubmit, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 5)
+		buttonsizer.Realize()
+		
+		sizer = wx.BoxSizer(wx.VERTICAL)
+		sizer.Add(sbsizer, 0, wx.EXPAND | wx.ALL, 5)
+		sizer.Add(buttonsizer, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 0)
+		self.SetSizer(sizer)
+		sizer.Fit(self)
+		
+	def GetOptional(self):
+		return self.getOptionalItems
+		
+	def OnSubmit(self, event):
+		self.EndModal(wx.ID_OK)
+
+class UpdateDialog(wx.Dialog):
+	def __init__(self,parent):
+		self.getOptionalItems = True
+		wx.Dialog.__init__(self, parent, wx.ID_ANY, 'Update Egg of P\'an Ku', size=(340,126))
+		sbDeck = wx.StaticBox(self, -1, '')
+		sbsizer = wx.StaticBoxSizer(sbDeck, wx.VERTICAL)
+		lblDeck = wx.StaticText(self, wx.ID_ANY, 'Egg of P\'an Ku will close while the updates are installed. Please make sure you end all current games before running the update')
+		lblDeck.Wrap(300)
+		sbsizer.Add(lblDeck, 0, wx.ALL | wx.ALIGN_CENTRE, 5)
+		
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sizer.Add(wx.StaticText(self, label='Optional:'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		
+		self.chkCEHoldings = wx.CheckBox(self, label='Update optional files (cards.xml, card images, etc)')
+		self.chkCEHoldings.SetValue(self.getOptionalItems)
+		sizer.Add(self.chkCEHoldings , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
+		
+		buttonsizer = wx.StdDialogButtonSizer()
+		self.btnCancel = wx.Button(self, wx.ID_CANCEL, 'Cancel')
+		self.btnSubmit = wx.Button(self, wx.ID_OK, 'Update')
+		wx.EVT_BUTTON(self, wx.ID_OK, self.OnSubmit)
+		self.btnSubmit.SetDefault()
+		buttonsizer.Add(self.btnSubmit, 1, wx.EXPAND | wx.ALL, 5)
+		buttonsizer.Add(self.btnCancel, 1, wx.EXPAND | wx.ALL, 5)
+		buttonsizer.Realize()
+		
+		sizer = wx.BoxSizer(wx.VERTICAL)
+		sizer.Add(sbsizer, 0, wx.EXPAND | wx.ALL, 5)
+		sizer.Add(buttonsizer, 0, wx.EXPAND | wx.ALL, 0)
+		self.SetSizer(sizer)
+		sizer.Fit(self)
+		
+	def GetOptional(self):
+		return self.getOptionalItems
+		
+	def OnSubmit(self, event):
+		self.EndModal(wx.ID_OK)
+		
 class SubmitDeckDialog(wx.Dialog):
 	def __init__(self, parent):
 		wx.Dialog.__init__(self, parent, wx.ID_ANY, 'Join Game', size=(340,126))
@@ -968,25 +1041,21 @@ class MainWindow(wx.Frame):
 		
 		#
 		db = database.get()
-		self.PrintToChat("%s %s -- an unofficial" \
-			" Legend of the Five Rings online tabletop Copyright (C) 2008" \
-			" Peter C O Johansson" % (EOPK_APPNAME, EOPK_VERSION_STRING))
-		self.PrintToChat("%s comes with ABSOLUTELY NO WARRANTY." \
-			" This is free software, and you are welcome to redistribute it" \
-			" under certain conditions; see license.txt for details." % EOPK_APPNAME)
-		self.PrintToChat("Database %s ok, containing %d cards." % (db.date, len(db)))
+		self.PrintToChat("%s %s \nVersion %s" \
+			"\n\n%s\n" % (EOPK_APPNAME,EOPK_UNOFFICIAL_TEXT, EOPK_VERSION_STRING,  EOPK_COPYRIGHT ))
+		self.PrintToChat("%s %s" % (EOPK_APPNAME, EOPK_WARRANTY_TEXT))
+		self.PrintToChat("Database %s, containing %d cards." % (db.date, len(db)))
 		self.PrintToChat("----------")
 		
 
 
-	def CheckForUpdates(self):
-		self.PrintToChat("Checking for updates.....")
-		p = subprocess.Popen("eggupdater.exe", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-##		print "%s" % (p.stdout.readlines())
-		for line in p.stdout.readlines():
-			self.PrintToChat("%s" % (line))
-		p.wait()
-
+	def CheckForUpdates(self, updateOptional):
+		updatePath = "eggupdater.exe -wait -startegg"
+		if updateOptional:
+			updatePath = updatePath + ' -optional'
+			
+		p = subprocess.Popen(updatePath, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		self.Close()
 
 	def SetupToolbars(self):
 		toolbar = self.CreateToolBar()
@@ -1112,16 +1181,6 @@ class MainWindow(wx.Frame):
 		
 		mnuGame = wx.Menu()
 		self.mnuGame = mnuGame
-		#mnuGame.Append(ID_MNU_PHASE_NEXT, "Next Phase\tF8", "Move on to the next phase.")
-		#mnuGame.Append(ID_MNU_TURN_PASS, "Pass Turn\tF9", "End the current turn.")
-		#mnuGame.AppendSeparator()
-		#mnuGame.Append(ID_MNU_PHASE_STRAIGHTEN, "Straighten Phase", "Go to the straighten phase.")
-		#mnuGame.Append(ID_MNU_PHASE_EVENTS, "Events Phase", "Go to the events phase.")
-		#mnuGame.Append(ID_MNU_PHASE_ACTION, "Action Phase", "Go to the action phase.")
-		#mnuGame.Append(ID_MNU_PHASE_COMBAT, "Combat Phase", "Go to the combat phase.")
-		#mnuGame.Append(ID_MNU_PHASE_DYNASTY, "Dynasty Phase", "Go to the dynasty phase.")
-		#mnuGame.Append(ID_MNU_PHASE_CLEANUP, "Cleanup Phase", "Go to the cleanup phase.")
-		#mnuGame.AppendSeparator()
 		mnuGame.Append(ID_MNU_STRAIGHTEN_ALL, "&Straighten All\tCtrl+U", "Straighten all your cards in play.")
 		mnuGame.Append(ID_MNU_REMOVE_MARKERS, "Remove All &Markers\tCtrl+M", "Remove all the markers your cards.")
 		mnuGame.AppendSeparator()
@@ -1173,12 +1232,20 @@ class MainWindow(wx.Frame):
 		mnuFateHand.Append(ID_MNU_HAND_DISCARD, "Discard", "Discard your entire fate hand.")
 		mnuFateHand.Append(ID_MNU_HAND_DISCARD_RANDOM, "Discard random card", "Discard a random card from your fate hand.")
 		
+		mnuHelp = wx.Menu()
+		self.mnuHelp = mnuHelp
+		mnuHelp.Append(ID_MNU_HELP_ABOUT,"About", "Information about Egg of P'an Ku")
+		mnuHelp.Append(ID_MNU_HELP_WEB,"Web Site", "Go to the Egg of P'an Ku website")
+		mnuHelp.AppendSeparator()
+		mnuHelp.Append(ID_MNU_HELP_DONATE,"Donate", "Donate via PayPal to the Egg of P'an Ku project")
+		
 		menuBar = wx.MenuBar()
 		menuBar.Append(mnuFile, "&File")
 		menuBar.Append(mnuGame, "&Game")
 		menuBar.Append(mnuDynasty, "&Dynasty Deck")
 		menuBar.Append(mnuFate, "F&ate Deck")
 		menuBar.Append(mnuFateHand, "Fate &Hand")
+		menuBar.Append(mnuHelp, "&Help")
 		self.SetMenuBar(menuBar)
 		
 		# Disable Game, Dynasty, Fate, and Hand until we start a game.
@@ -1244,6 +1311,10 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, ID_MNU_DYN_LOOK_BOTTOM, self.OnMenuDynastyLook)
 		
 		wx.EVT_MENU(self, ID_MNU_FOCUS_CREATE, self.OnMenuCreateFocusPool)
+		
+		wx.EVT_MENU(self,ID_MNU_HELP_ABOUT, self.OnMenuShowHelpAbout)
+		wx.EVT_MENU(self,ID_MNU_HELP_WEB, self.OnMenuHelpWebSite)
+		wx.EVT_MENU(self,ID_MNU_HELP_DONATE, self.OnMenuHelpDonate)
 		
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_TAP, self.OnMenuCardTap)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_FLIP, self.OnMenuCardFlip)
@@ -1325,6 +1396,16 @@ class MainWindow(wx.Frame):
 		settings.WriteSettingsFile()
 		event.Skip()
 	
+	def OnMenuShowHelpAbout(self,event):
+		dlg = HelpAboutDialog(self)
+		dlg.ShowModal()
+	
+	def OnMenuHelpWebSite(self,event):
+		webbrowser.open_new(EOPK_WEBSITE_URL)
+	
+	def OnMenuHelpDonate(self,event):
+		webbrowser.open_new(EOPK_DONATE_URL)
+	
 	def OnMenuExit(self, event):
 		self.Close()
 	
@@ -1335,7 +1416,10 @@ class MainWindow(wx.Frame):
 		win = deckedit.MainWindow()
 
 	def OnMenuUpdateEgg(self,event):
-		self.CheckForUpdates()
+		dlg = UpdateDialog(self)
+		if dlg.ShowModal() == wx.ID_OK:
+			updateOptional = dlg.GetOptional
+			self.CheckForUpdates(updateOptional)
 	
 	def OnMenuSetHonor(self, event):
 		if self.client and self.client.Playing():
