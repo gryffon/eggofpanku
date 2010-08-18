@@ -228,6 +228,11 @@ class HRFilter(MinMaxFilter):
 		except ValueError:
 			return False
 
+class RarityFilter(ChoiceFilter):
+	name = 'rarity'
+	options = database.rarityFormats.keys()
+	def match(self, card):
+		return database.rarityFormats[self.value] == card.rarity
 
 class LegalityFilter(ChoiceFilter):
 	name = 'Legality'
@@ -250,7 +255,7 @@ def AllFilters():
 		]),
 	('Card Stats', [
 		ForceFilter(), ChiFilter(), CostFilter(),
-		HRFilter(), PHFilter(), FocusFilter(),
+		HRFilter(), PHFilter(), FocusFilter(), RarityFilter(),
 		]),
 	('Sets and Formats', [
 		LegalityFilter(), SetFilter(),

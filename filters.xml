@@ -221,6 +221,32 @@
 		<name>jade</name>
 		<displayName>Jade</displayName>
 	</filter>
+	<!-- Rarity -->
+	<filter>
+		<type>rarity</type>
+		<name>r</name>
+		<displayName>Rare</displayName>
+	</filter>
+	<filter>
+		<type>rarity</type>
+		<name>u</name>
+		<displayName>Uncommon</displayName>
+	</filter>
+	<filter>
+		<type>rarity</type>
+		<name>c</name>
+		<displayName>Common</displayName>
+	</filter>
+	<filter>
+		<type>rarity</type>
+		<name>f</name>
+		<displayName>Fixed</displayName>
+	</filter>
+	<filter>
+		<type>rarity</type>
+		<name>p</name>
+		<displayName>Promo</displayName>
+	</filter>
 	
 	<!-- Sets -->
 	<filter>

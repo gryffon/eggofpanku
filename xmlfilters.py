@@ -17,7 +17,7 @@ class FilterData:
         self.displayName = None
         self.deckType = None
         self.hasCost = None
-        self.legal = []
+        self.legal = []        
 
 class FilterReader:
     '''

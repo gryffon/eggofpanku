@@ -34,6 +34,7 @@ cardTypes = []
 factions = []
 minorClans = []
 legalityFormats = []
+rarityFormats = {}
 cardSets = odict.OrderedDict()
 
 filterList = xmlfilters.FilterReader().Filters
@@ -52,6 +53,10 @@ minorClans.sort()
 factions.sort()
 #add the minors to the list
 factions.extend(minorClans)
+
+for filterItem in filterList["rarity"]:
+	rarityFormats[filterItem.displayName]=filterItem.name
+
 	
 for filterItem in filterList["legality"]:
 	legalityFormats.append(filterItem.displayName)
