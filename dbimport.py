@@ -69,6 +69,7 @@ def EnsureExists():
 		try:
 			importer = database.XMLImporter(settings.cardsource)
 			importer.convert()
+						
 		except Exception, e:
 			wx.MessageDialog(None, 'There was a problem importing the card database.\n' \
 				'Consult the manual for possible ways to address this.\n\n%s: %s\n\n' \

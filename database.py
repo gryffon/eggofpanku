@@ -15,6 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
+from dumbdbm import _Database
+import dbimport
 """Card database module for Egg of P'an Ku."""
 
 import xml.parsers.expat
@@ -29,6 +31,8 @@ from xmlsettings import settings
 cardAttrs = ("name", "force", "chi", "text", "cost", "focus", \
 	"personal_honor", "honor_req", "starting_honor", \
 	"province_strength", "gold_production")
+
+_database = None
 
 cardTypes = []
 factions = []
@@ -234,7 +238,6 @@ class CardDB:
 		self.createIndex = 1  # Next available index for created cards
 
 		(self.filename, self.date, self.cards) = cPickle.load(file(LOCALDATABASE, mode='rb'))
-		print 'filename: %s --- Card.db filename: %s' % (settings.cardsource, self.filename)													 
 		if self.filename != settings.cardsource:
 			raise NameError, 'Cards.db was created from a different xml file.  Please reload the card database.'
 		
@@ -281,12 +284,22 @@ class CardDB:
 		
 		return id
 
+def reset():
+	global _database
+	os.remove(LOCALDATABASE)
+	importer = XMLImporter(settings.cardsource)
+	importer.convert()
+	_database = CardDB()
+
 
 def get():
-	global _database
+
 	try:
+		global _database
+		if _database == None:
+			_database = CardDB()
 		return _database
-	except NameError:
+	except (NameError, AttributeError):
 		_database = CardDB()
 		return _database
 

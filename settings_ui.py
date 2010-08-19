@@ -144,8 +144,10 @@ class DatabaseSettings(wx.Panel):
 		
 	def Import(self):
 		try:
-			importer = database.XMLImporter(settings.cardsource)
-			importer.convert()
+#			importer = database.XMLImporter(settings.cardsource)
+#			importer.convert()
+			database.reset()
+			
 		except Exception, e:
 			wx.MessageDialog(self, 'There was a problem importing the card database.\n' \
 				'Consult the manual for possible ways to address this.\n\n%s: %s\n\n' \
@@ -165,22 +167,23 @@ class DatabaseSettings(wx.Panel):
 		if fdlg.ShowModal() == wx.ID_OK:
 			oldsrc = settings.cardsource
 			settings.cardsource = fdlg.GetPath()
+					
 			settings.WriteSettingsFile()
 			if self.Import():
-				wx.MessageDialog(self, 'The card database source was changed and re-imported.\n' \
-					'These changes will take effect next time you run Egg of P\'an Ku.', \
-					'Card reload successful', wx.ICON_INFORMATION).ShowModal()
+#				wx.MessageDialog(self, 'The card database source was changed and re-imported.\n' \
+#					'These changes will take effect next time you run Egg of P\'an Ku.', \
+#					'Card reload successful', wx.ICON_INFORMATION).ShowModal()
 				
-				self.lblCardDB.SetLabel(settings.cardsource)
+				self.lblCardDB.SetLabel(settings.cardsource)				
 			else:
 				settings.cardsource = oldsrc  # Best to reset it, so it's not invalid.
 				settings.WriteSettingsFile()				
 		
 	def OnReloadDatabase(self, event):
-		if self.Import():
-			wx.MessageDialog(self, 'The local card database was re-imported from the given\n' \
-				'source XML file. These changes will take effect next time\n' \
-				'you run Egg of P\'an Ku.', 'Card reload successful', wx.ICON_INFORMATION).ShowModal()
+		self.Import()
+#			wx.MessageDialog(self, 'The local card database was re-imported from the given\n' \
+#				'source XML file. These changes will take effect next time\n' \
+#				'you run Egg of P\'an Ku.', 'Card reload successful', wx.ICON_INFORMATION).ShowModal()
 
 class PlayfieldSettings(wx.Panel):
 	def __init__(self, parent):
