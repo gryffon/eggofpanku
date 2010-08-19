@@ -1355,6 +1355,7 @@ class MainWindow(wx.Frame):
 		menuBar = self.GetMenuBar()
 		for x in xrange(1, 5):
 			menuBar.EnableTop(x, enable)
+		
 		# Tools too.
 		self.GetToolBar().EnableTool(ID_MNU_STRAIGHTEN_ALL, enable)
 		#added by PCW, 10/10/2008
@@ -2121,6 +2122,7 @@ class MainWindow(wx.Frame):
 			self.server.Stop()
 			if self.server.isAlive(): self.server.join()
 		self.server = None
+		self.GetMenuBar().Enable(ID_MNU_LAUNCH_EGGUPDATER, True)
 		self.GetMenuBar().Enable(ID_MNU_START_GAME, False)
 		self.GetToolBar().EnableTool(ID_MNU_START_GAME, False)
 	
@@ -2129,6 +2131,7 @@ class MainWindow(wx.Frame):
 		self.server.Setup()
 		self.PrintToChat('Server started (%s).' % self.server.localaddress)
 		self.server.start()  # Thread
+		self.GetMenuBar().Enable(ID_MNU_LAUNCH_EGGUPDATER, False)
 		self.GetMenuBar().Enable(ID_MNU_START_GAME, True)
 		self.GetToolBar().EnableTool(ID_MNU_START_GAME, True)
 	
