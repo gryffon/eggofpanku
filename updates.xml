@@ -1,1 +1,173 @@
-<update date="8/17/2010" updatefileurl="http://www.eggofpanku.com/portals/2/updates/eggupdater/updates.xml"><file unzip="False"><guid>802088f3-3e49-47fb-8838-4876c10d5d10</guid><name>library.zip</name><version>2010.08.17</version><displayname><![CDATA[Library File]]></displayname><lastupdated>1/29/2010</lastupdated><subdirectory><![CDATA[sys]]></subdirectory><url><![CDATA[http://www.eggofpanku.com/portals/2/updates/eopk/]]></url></file></update>
+<update date="8/19/2010" updatefileurl="http://www.eggofpanku.com/portals/2/updates/eggupdater/updates.xml">
+  <file unzip="False" optional="False" copyninja="True">
+	<guid>802088f3-3e49-47fb-8838-4876c10d5d10</guid>
+	<name>library.zip</name>
+	<version>2010.08.17</version>
+	<displayname><![CDATA[Library File]]></displayname>
+	<lastupdated>1/29/2010</lastupdated>
+	<subdirectory><![CDATA[sys]]></subdirectory>
+	<url><![CDATA[http://www.eggofpanku.com/portals/2/updates/eopk/]]></url>
+  </file>
+  <file unzip="False" optional="False" copyninja="False">
+	<guid>e6bfc1fc-5826-43c3-a935-99b523bc636a</guid>
+	<name>readme.txt</name>
+	<version>2010.08.19</version>
+	<displayname><![CDATA[ReadMe.txt]]></displayname>
+	<lastupdated>8/19/2010</lastupdated>
+	<subdirectory><![CDATA[]]></subdirectory>
+	<url><![CDATA[http://www.eggofpanku.com/portals/2/updates/eopk/]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>7c4b7b72-bbe7-43ec-a9a1-8141acd2ee74</guid>
+	<name>cards-celestial.zip</name>
+	<version>2010.08.17</version>
+	<displayname><![CDATA[Celestial Only Cards.XML]]></displayname>
+	<lastupdated>8/1/2010</lastupdated>
+	<subdirectory><![CDATA[]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>e80f803d-cad9-4bc4-831a-1672d5a0d966</guid>
+	<name>P.zip</name>
+	<version>2010.07.31</version>
+	<displayname><![CDATA[Promo Cards Image Pack]]></displayname>
+	<lastupdated>6/2/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>797cdfc9-4a09-476b-b30d-c6efc535ae08</guid>
+	<name>CE.zip</name>
+	<version>2010.08.17</version>
+	<displayname><![CDATA[Celestial Cards Image Pack]]></displayname>
+	<lastupdated>8/17/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>3e0d4cbb-c53f-4f2d-be94-d117962df88c</guid>
+	<name>DaK.zip</name>
+	<version>2010.08.17</version>
+	<displayname><![CDATA[Death at Koten Image Pack]]></displayname>
+	<lastupdated>8/17/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>bf333c95-6bec-4a6a-8317-c5ea7ddd60c3</guid>
+	<name>GotE.zip</name>
+	<version>2010.08.17</version>
+	<displayname><![CDATA[Glroy of the Empire Image Pack]]></displayname>
+	<lastupdated>8/17/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>cee5f9f3-f8a6-4b37-bf11-b484e2ee061f</guid>
+	<name>IG1.zip</name>
+	<version>2010.08.17</version>
+	<displayname><![CDATA[Imperial Gift 1 Image Pack]]></displayname>
+	<lastupdated>8/17/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>41372f42-c76d-4da5-86fa-0531ab833a12</guid>
+	<name>IG2.zip</name>
+	<version>2010.07.31</version>
+	<displayname><![CDATA[Imperial Gift 2 Image Pack]]></displayname>
+	<lastupdated>6/2/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>73f6b97a-22a2-4f8f-b291-98a37d3c5f9e</guid>
+	<name>IG3.zip</name>
+	<version>2010.07.31</version>
+	<displayname><![CDATA[Imperial Gift 3 Image Pack]]></displayname>
+	<lastupdated>6/2/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>95125ec9-86a9-472e-ab36-087aff25a769</guid>
+	<name>PotD.zip</name>
+	<version>2010.07.31</version>
+	<displayname><![CDATA[Path of the Destroyer Image Pack]]></displayname>
+	<lastupdated>6/2/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>984777e5-6a78-4b75-b6a1-187ebee31f9d</guid>
+	<name>TH.zip</name>
+	<version>2010.07.31</version>
+	<displayname><![CDATA[The Harbinger Image Pack]]></displayname>
+	<lastupdated>8/17/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="True" optional="True" copyninja="False">
+	<guid>c210f910-9ba2-45a5-aea1-88d1767d88df</guid>
+	<name>TPW.zip</name>
+	<version>2010.07.31</version>
+	<displayname><![CDATA[The Plague War Image Pack]]></displayname>
+	<lastupdated>8/17/2010</lastupdated>
+	<subdirectory><![CDATA[images\cards]]></subdirectory>
+	<url><![CDATA[http://www.kamisasori.net/files/imagepacks]]></url>
+  </file>
+  <file unzip="False" optional="False" copyninja="False">
+	<guid>3340b3fc-ae1f-49f5-a5ac-1c0560df59a2</guid>
+	<name>copyninja.exe</name>
+	<version>2010.08.18</version>
+	<displayname><![CDATA[Copy Ninja]]></displayname>
+	<lastupdated>8/19/2010</lastupdated>
+	<subdirectory><![CDATA[]]></subdirectory>
+	<url><![CDATA[http://www.eggofpanku.com/portals/2/updates/eggupdater/]]></url>
+  </file>
+  <file unzip="False" optional="False" copyninja="True">
+	<guid>0763f852-7e45-48f7-8867-a798f0f60b1a</guid>
+	<name>DataHandler.dll</name>
+	<version>2010.08.18</version>
+	<displayname><![CDATA[DataHandler Library]]></displayname>
+	<lastupdated>8/19/2010</lastupdated>
+	<subdirectory><![CDATA[]]></subdirectory>
+	<url><![CDATA[http://www.eggofpanku.com/portals/2/updates/eggupdater/]]></url>
+  </file>
+  <file unzip="False" optional="False" copyninja="True">
+	<guid>2c5b658e-14e0-4750-96c4-39da36046ce1</guid>
+	<name>Eggupdater.exe</name>
+	<version>2010.08.18</version>
+	<displayname><![CDATA[Egg Updater Application]]></displayname>
+	<lastupdated>8/19/2010</lastupdated>
+	<subdirectory><![CDATA[]]></subdirectory>
+	<url><![CDATA[http://www.eggofpanku.com/portals/2/updates/eggupdater/]]></url>
+  </file>
+  <file unzip="False" optional="False" copyninja="True">
+	<guid>c6eee3c5-4400-4ded-a378-69ca7d9d236e</guid>
+	<name>Ionic.Zip.dll</name>
+	<version>2010.08.18</version>
+	<displayname><![CDATA[Zip File Library]]></displayname>
+	<lastupdated>8/19/2010</lastupdated>
+	<subdirectory><![CDATA[]]></subdirectory>
+	<url><![CDATA[http://www.eggofpanku.com/portals/2/updates/eggupdater/]]></url>
+  </file>
+  <file unzip="False" optional="False" copyninja="True">
+	<guid>152cc377-840d-46bb-9a05-75c49026a272</guid>
+	<name>UpdaterClasses.dll</name>
+	<version>2010.08.18</version>
+	<displayname><![CDATA[Updater Classes Library]]></displayname>
+	<lastupdated>8/19/2010</lastupdated>
+	<subdirectory><![CDATA[]]></subdirectory>
+	<url><![CDATA[http://www.eggofpanku.com/portals/2/updates/eggupdater/]]></url>
+  </file>
+  <file unzip="False" optional="False" copyninja="False">
+	<guid>8c49daea-5cea-4422-8e38-8197b11b4db4</guid>
+	<name>filters.xml</name>
+	<version>2010.08.18</version>
+	<displayname><![CDATA[Filters XML File]]></displayname>
+	<lastupdated>8/18/2010</lastupdated>
+	<subdirectory><![CDATA[]]></subdirectory>
+	<url><![CDATA[http://www.eggofpanku.com/portals/2/updates/eopk/]]></url>
+  </file>
+</update>
