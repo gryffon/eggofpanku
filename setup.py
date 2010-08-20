@@ -77,8 +77,8 @@ Var StartMenuFolder
 
 !insertmacro MUI_PAGE_INSTFILES
 
-!define MUI_FINISHPAGE_RUN "$INSTDIR\\eggupdater.exe -startegg"
-!define MUI_FINISHPAGE_RUN_TEXT "Update and run %%%APPNAME%%% now"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\\eopk.exe"
+!define MUI_FINISHPAGE_RUN_TEXT "Run %%%APPNAME%%% now"
 !insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -104,8 +104,8 @@ Section ""
     CreateDirectory "$SMPROGRAMS\\$StartMenuFolder"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\%%%APPNAME%%%.lnk" "$INSTDIR\\EoPK.exe"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Deck Editor.lnk" "$INSTDIR\\deckedit.exe"
-    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (Required only).lnk" "$INSTDIR\\eggupdater.exe"
-    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (including optional ).lnk" "$INSTDIR\\eggupdater.exe -optional"
+    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (required only).lnk" "$INSTDIR\\eggupdater.exe"
+    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (include optional updates).lnk" "$INSTDIR\\eggupdater.exe" "-optional"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk" "$INSTDIR\\Uninstall.exe"    
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
@@ -137,10 +137,9 @@ Section "Uninstall"
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
   Delete "$SMPROGRAMS\\$StartMenuFolder\\%%%APPNAME%%%.lnk"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Deck Editor.lnk"
-  Delete "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk"
-  Delete "$SMPROGRAMS\\$StartMenuFolder\\Readme.txt.lnk"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Update (Required only).lnk"
-  Delete "$SMPROGRAMS\\$StartMenuFolder\\Update (including optional ).lnk"
+  Delete "$SMPROGRAMS\\$StartMenuFolder\\Update (include optional updates).lnk"
+  Delete "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk"
   RMDir "$SMPROGRAMS\\$StartMenuFolder"
 
   DeleteRegKey /ifempty HKCU "Software\%%%APPNAME%%%"

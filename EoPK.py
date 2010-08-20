@@ -1175,8 +1175,8 @@ class MainWindow(wx.Frame):
 		mnuFile.AppendSeparator()
 		mnuFile.Append(ID_MNU_DECK_EDIT, "Launch Deck &Editor",  "Open the deck editor where you can build or edit decks.")
 		mnuFile.AppendSeparator()
-		mnuFile.Append(ID_MNU_LAUNCH_EGGUPDATER, "Check for updates",  "Launch EggUpdater to check for application updates.")
-		mnuFile.AppendSeparator()
+		#mnuFile.Append(ID_MNU_LAUNCH_EGGUPDATER, "Check for updates",  "Launch EggUpdater to check for application updates.")
+		#mnuFile.AppendSeparator()
 		mnuFile.Append(ID_MNU_EXIT, "E&xit", "")
 		
 		mnuGame = wx.Menu()
@@ -1278,7 +1278,7 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, ID_MNU_START_GAME, self.OnMenuStartGame)
 		wx.EVT_MENU(self, ID_MNU_PREFERENCES, self.OnMenuPreferences)
 		wx.EVT_MENU(self, ID_MNU_DECK_EDIT, self.OnMenuDeckEditor)
-		wx.EVT_MENU(self, ID_MNU_LAUNCH_EGGUPDATER, self.OnMenuUpdateEgg)
+#		wx.EVT_MENU(self, ID_MNU_LAUNCH_EGGUPDATER, self.OnMenuUpdateEgg)
 		
 		wx.EVT_MENU(self, ID_MNU_EXIT, self.OnMenuExit)
 		
@@ -2122,7 +2122,7 @@ class MainWindow(wx.Frame):
 			self.server.Stop()
 			if self.server.isAlive(): self.server.join()
 		self.server = None
-		self.GetMenuBar().Enable(ID_MNU_LAUNCH_EGGUPDATER, True)
+		#self.GetMenuBar().Enable(ID_MNU_LAUNCH_EGGUPDATER, True)
 		self.GetMenuBar().Enable(ID_MNU_START_GAME, False)
 		self.GetToolBar().EnableTool(ID_MNU_START_GAME, False)
 	
@@ -2131,7 +2131,7 @@ class MainWindow(wx.Frame):
 		self.server.Setup()
 		self.PrintToChat('Server started (%s).' % self.server.localaddress)
 		self.server.start()  # Thread
-		self.GetMenuBar().Enable(ID_MNU_LAUNCH_EGGUPDATER, False)
+		#self.GetMenuBar().Enable(ID_MNU_LAUNCH_EGGUPDATER, False)
 		self.GetMenuBar().Enable(ID_MNU_START_GAME, True)
 		self.GetToolBar().EnableTool(ID_MNU_START_GAME, True)
 	
