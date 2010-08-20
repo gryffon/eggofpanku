@@ -1,6 +1,6 @@
 
 
-                    EGG OF P'AN KU 0.9.40 (2010-August-17)
+                    EGG OF P'AN KU 0.9.42 (2010-August-20)
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -278,9 +278,14 @@ Technical details
 
 News & Changes
 
+  2010-August-20 Egg of P'an Ku 0.9.42
+	* Added a new EggUpdater that will update itself. This now includes copyninja.exe to do some updating of EggUpdater.exe
+	* Added a link to the updater in the start menu and an "Optional" updater that gets everything.
+	* Updates can now be marked "Optional"  these include the current cards.xml and all the image files.
+	* Added a help dialog, a link to the website and a link to donations at paypal.
+
   2010-August-16 Egg of P'an Ku 0.9.40
 	* Icons for Rarity to the preview window.
-	* Added a new EggUpdater that will update itself.
 	* Added support for new cards.xml attributes (artist, flavor text, rarity)
 	* Fixed the discard Favor bug when starting a game while a game is in play.
 
