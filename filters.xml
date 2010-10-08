@@ -614,4 +614,9 @@
 	<name>IG3</name>
 	<displayName>Imperial Gift 3</displayName>
   </filter>
+  <filter>
+	<type>set</type>
+	<name>EaW</name>
+	<displayName>Empire at War</displayName>
+  </filter>
 </filterList>
