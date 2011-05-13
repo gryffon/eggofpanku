@@ -191,6 +191,11 @@
 	</filter>
 	
 	<!-- Legality -->
+		<filter>
+		<type>legality</type>
+		<name>emperor</name>
+		<displayName>Emperor</displayName>
+	</filter>
 	<filter>
 		<type>legality</type>
 		<name>celestial</name>
@@ -616,7 +621,22 @@
   </filter>
   <filter>
 	<type>set</type>
-	<name>EaW</name>
-	<displayName>Empire at War</displayName>
+	<name>FL</name>
+	<displayName>Forgotten Legacy</displayName>
+  </filter>
+    <filter>
+	<type>set</type>
+	<name>TDoW</name>
+	<displayName>The Dead of Winter</displayName>
+  </filter>
+    <filter>
+	<type>set</type>
+	<name>BtD</name>
+	<displayName>Before the Dawn</displayName>
+  </filter>
+    <filter>
+	<type>set</type>
+	<name>BtD</name>
+	<displayName>Before the Dawn</displayName>
   </filter>
 </filterList>
