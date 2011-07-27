@@ -78,17 +78,28 @@ class Deck:
 		Returns a deck object.
 		
 		"""
+		foundDynasty = False
+		foundInPlay = False
+		
 		cardErrors=[]
 		
 		db = database.get()
 		deck = Deck()
 		for c in fp:
+			if c == '#Starts-In-Play':
+				foundInPlay = True
+			if c == '#Dynasty':
+				foundInPlay = False
+				foundDynasty = True
+			
 			if not c.startswith('#') and c.strip() != '':
 				(count, cardname) = c.strip().split(' ', 1)
 				cardname = cardname.strip()
-				#print 'cardname = %s' % (cardname)
+				if foundInPlay:
+					print '%s starts in play.' % (cardname)
+				
 				try:
-					deck.cards.append((int(count), db.FindCardByName(cardname).id))
+					deck.cards.append((int(count), db.FindCardByName(cardname).id), foundInPlay)
 				except (ValueError, KeyError):
 					cardErrors.append(cardname)
 
