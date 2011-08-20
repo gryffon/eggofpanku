@@ -176,7 +176,8 @@ class Deck:
 		for item in inPlayCards:
 			inPlayCount += int(item[0])
 
-		startingcards = [(count, db[cdid]) for count, cdid, inPlay in self if inPlay==True]
+		#show all cars that start InPlay - Except for the Stronghold
+		startingcards = [(count, db[cdid]) for count, cdid, inPlay in self if ((inPlay==True) and (db[cdid].type!='stronghold'))]
 		self.WriteCardsToTypeList(fp,startingcards,'Start In Play', savetype)
 
 

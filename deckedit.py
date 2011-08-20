@@ -646,7 +646,11 @@ class DeckEditPanel(wx.Panel):
 
 	def OnListActivate(self, event):
 		cdid = self.cardMap[self.lstCards.GetItemData(event.GetIndex())]
-		self.AddCard(cdid)
+		card = database.get()[cdid]
+		isStronghold = False
+		if card.type == "stronghold":
+			isStronghold = True
+		self.AddCard(cdid, inPlay = isStronghold)
 
 	def OnListColumnClick(self, event):
 		sorters = {
