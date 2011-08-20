@@ -16,7 +16,7 @@ import guids
 
 
 NSIS_DIR = 'c:\\Program Files\\NSIS'
-UPX_DIR = 'c:\\upx303w'
+UPX_DIR = 'c:\\upx'
 
 manifestxml = '''
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -70,7 +70,7 @@ SetCompressor lzma
 !insertmacro MUI_PAGE_DIRECTORY
 
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKCU
-!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\\%%%APPNAME%%%" 
+!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\\%%%APPNAME%%%"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 Var StartMenuFolder
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
@@ -83,7 +83,7 @@ Var StartMenuFolder
 
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
-  
+
 !insertmacro MUI_LANGUAGE "English"
 
 ;--------------------------------------------------------
@@ -92,11 +92,11 @@ Section ""
 
   Delete "$INSTDIR\\settings.xml"
   Delete "$INSTDIR\\cards.db"
-    
+
   %%%FILES%%%
-  
+
   SetOutPath "$INSTDIR"
-  
+
   WriteRegStr HKCU "Software\\%%%APPNAME%%%" "" $INSTDIR
   WriteUninstaller "$INSTDIR\\Uninstall.exe"
 
@@ -106,7 +106,7 @@ Section ""
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Deck Editor.lnk" "$INSTDIR\\deckedit.exe"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (required only).lnk" "$INSTDIR\\eggupdater.exe"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (include optional updates).lnk" "$INSTDIR\\eggupdater.exe" "-optional"
-    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk" "$INSTDIR\\Uninstall.exe"    
+    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk" "$INSTDIR\\Uninstall.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -115,7 +115,7 @@ SectionEnd
 Section "Uninstall"
 
   %%%DELETEFILES%%%
-  
+
   Delete "$INSTDIR\\cards.db"
   Delete "$INSTDIR\\eopk-settings"
   Delete "$INSTDIR\\settings.xml"
