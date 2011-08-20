@@ -3,14 +3,10 @@ docs/Developer - Installation Guide.txt
 Summary:
 This is a walk-through for developers installing, compiling, and building a
 deployable install file from the Egg of Pan'ku source. This installation guide is 
-assuming the usage of ActiveState's Active Python.
+assuming the usage of PyScripter IDE and Python 2.7
 
 Prerequisites:
 You should have some programming knowledge.
-
-//Author Note: Do we need this line? What are we using VS2k3 for? //
- and it is immensely helpful to have Visual Studio 2003 installed on the computer that you are working on.
-//Author Note//
 
 Step 1: Installing Python
 
@@ -18,23 +14,19 @@ Step 1: Installing Python
 binary. An IDE is also required for proper development. These and other Python components will be required for
 development.
 
-1a. ActivePython (or other Python IDE)
+1a. PyScripter (or other Python IDE)
 
-ActivePython includes Python 2.5 and is a good *free* IDE. Others exist, but this install guide will be dealing
-with this specifically.
+Link to PyScripter download: http://code.google.com/p/pyscripter/
 
-Link to ActivePython: http://www.activestate.com/Products/activepython/index.mhtml
+You can also download Python 2.7 and use the included IDE.
 
-You can also download Python 2.6 and use the included IDE. Some changes will need to be made manually for the 2.6
-version as the code base will require Python 2.5 to compile.
-
-Link to Python 2.6: http://www.python.org/download/releases/2.6/ 
+Link to Python 2.7: http://www.python.org/download/releases/2.7/ 
 
 1b. Easy_Install
 
-Once you have installed ActivePython (or Python 2.6) you'll need to the Python SetupTools.
+Once you have installed PyScripter (or Python 2.7) you'll need to the Python SetupTools.
 
-Link to SetupTools: http://pypi.python.org/packages/2.5/s/setuptools/setuptools-0.6c9.win32-py2.5.exe#md5=602d06054ec1165e995ae54ac30884d7
+Link to SetupTools: http://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11.win32-py2.7.exe#md5=57e1e64f6b7c7f1d2eddfc9746bbaf20
 
 Once you've downloaded the executable, follow the instructions to install SetupTools on the Windows Platform.
 
@@ -43,15 +35,15 @@ Link to Setup Instructions: http://pypi.python.org/pypi/setuptools#windows
 1c. Add Modules
 
 You'll need to install the PyOpenGL, PIL, simplejson and wxPython modules in order to run this project. The modules
-will need to be registered with your Python 2.5 installation. This should occur automatically if only one version
-of Python is installed. Make sure to choose version 2.5 if you have multiple versions of Python installed.
+will need to be registered with your Python 2.7 installation. This should occur automatically if only one version
+of Python is installed. Make sure to choose version 2.7 if you have multiple versions of Python installed.
 
 wxPython and PIL will have their own installers.
 
-1c-1: wxPython for Python 2.5
+1c-1: wxPython for Python 2.7
 Link to Download: http://www.wxpython.org/download.php
   
-1c-2: PIL (Python Image Library) for Python 2.5
+1c-2: PIL (Python Image Library) for Python 2.7
 Link to Download: http://www.pythonware.com/products/pil/
 
 1d. Add Eggs
@@ -61,16 +53,16 @@ command line in order to ensure the module is deployed into the site-packages lo
 Easy_Install can be used to automatically download and install the required files. You can do this by opening a 
 command prompt and typing "easy_install --always-unzip [moduleName]".
 
-1d-1. pyOpenGL for Python 2.5
+1d-1. pyOpenGL for Python 2.7
 Command: easy_install --always-unzip pyOpenGL
   
-1d-2. simplejson for Python 2.5
+1d-2. simplejson for Python 2.7
 Command: easy_install --always-unzip simplejson
 
 This will install all the Eggs needed to build the project. If the project builds in the interpreter but fails 
 as an executable, check to make sure that your modules have not been installed as zipped eggs.
 
-If you have problems running "easy_install", make sure that your Python25/scripts directory is in your PATH
+If you have problems running "easy_install", make sure that your Python27/scripts directory is in your PATH
 environment variable.
 
 2. SVN
@@ -91,13 +83,13 @@ To compile the application to an executable you'll need to download some tools:
 
 Py2exe is a module that converts Python to an executable binary that can be run without the Python interpreter.
 
-Download Link: http://sourceforge.net/project/showfiles.php?group_id=15583
+Download Link: http://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/py2exe-0.6.9.win32-py2.7.exe/download
 
 4b. NSIS
 
 NSIS is a Windows installation packaging program that makes a program installer to deploy the program to other users.
 
-Download Link: http://nsis.sourceforge.net/Download] will make the installation files.
+Download Link: http://nsis.sourceforge.net/Download will make the installation files.
 
 4c. UPX
 
