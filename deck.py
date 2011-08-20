@@ -1,6 +1,6 @@
 # Egg of P'an Ku -- an unofficial client for Legend of the Five Rings
 # Copyright (C) 2008  Peter C O Johansson
-# 
+#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -32,7 +32,7 @@ class ImportCardsNotFoundError(DeckException):
 	def __str__(self):
 		errorStr = (''.join(['%s\r\n' % line for line in self.problemCards]))
 		return "These cards were unable to be imported:\r\n%s" % errorStr
-			
+
 class LoadCardsNotFoundError(DeckException):
 	def __init__(self, cardErrors, deck):
 		self.problemCards = cardErrors
@@ -40,7 +40,7 @@ class LoadCardsNotFoundError(DeckException):
 	def __str__(self):
 		errorStr = (''.join(['%s\r\n' % line for line in self.problemCards]))
 		return "These cards were not found in the card database:\r\n%s" % errorStr
-	
+
 class InvalidCardError(DeckException):
 	def __init__(self, card):
 		self.card = card
@@ -49,40 +49,43 @@ class InvalidCardError(DeckException):
 
 
 class Deck:
-	
-	
+
+
 	def __init__(self):
 		self.cards = []
 		self.modified = False
-	
+
 	def __iter__(self):
 		return self.cards.__iter__()
-	
+
 	def __len__(self):
 		return len(self.cards)
-	
+
 	def NumDynasty(self):
 		"""Return the number of dynasty cards in the deck."""
 		db = database.get()
-		return sum([count for count, id in self.cards if db[id].isDynasty()])
-	
+		return sum([count for count, id, inplay in self.cards if((inplay!=True) and  (db[id].isDynasty()))])
+
 	def NumFate(self):
 		"""Return the number of fate cards in the deck."""
 		db = database.get()
-		return sum([count for count, id in self.cards if db[id].isFate()])
-	
+		return sum([count for count, id, inplay in self.cards if((inplay!=True) and  (db[id].isFate()))])
+
+	def NumInPlay(self):
+		db = database.get()
+		return sum([count for count,id, inplay in self.cards if inplay == True])
+
 	@classmethod
 	def load(cls, fp):
 		"""Read a deck from a list of strings (or a file-like object) and parse it.
-		
+
 		Returns a deck object.
-		
+
 		"""
-		foundDynasty = False
 		foundInPlay = False
-		
+
 		cardErrors=[]
-		
+
 		db = database.get()
 		deck = Deck()
 		for c in fp:
@@ -90,22 +93,21 @@ class Deck:
 				foundInPlay = True
 			if c == '#Dynasty':
 				foundInPlay = False
-				foundDynasty = True
-			
+
 			if not c.startswith('#') and c.strip() != '':
 				(count, cardname) = c.strip().split(' ', 1)
 				cardname = cardname.strip()
 				if foundInPlay:
 					print '%s starts in play.' % (cardname)
-				
+
 				try:
-					deck.cards.append((int(count), db.FindCardByName(cardname).id), foundInPlay)
+					deck.cards.append((int(count), db.FindCardByName(cardname).id, foundInPlay))
 				except (ValueError, KeyError):
 					cardErrors.append(cardname)
 
 		if len(cardErrors) >0:
 			raise LoadCardsNotFoundError(cardErrors, deck)
-		
+
 		return deck
 
 	@classmethod
@@ -113,7 +115,7 @@ class Deck:
 		#set up a holder for unknown cards
 		cardErrors= []
 		importLineHeaders = ['stronghold','dynasty','holdings','regions','personalities','events', 'celestials', 'fate','strategies','spells','items','followers','rings']
-		
+
 		db = database.get()
 		deck = Deck()
 
@@ -130,9 +132,9 @@ class Deck:
 					cardLower = cardStr[0].lower()
 					if  cardLower in importLineHeaders:
 						continue
-					
+
 					count = cardStr[0].strip('x')
-					if count.isdigit():				
+					if count.isdigit():
 						cardname =  cardStr[1].strip()
 					else:
 						count = 1
@@ -148,7 +150,7 @@ class Deck:
 		#If there are errors throw an import error.
 		if len(cardErrors) > 0:
 			raise ImportCardsNotFoundError(cardErrors, deck)
-		
+
 		return deck
 
 	def Save(self, fp, savetype):
@@ -158,8 +160,8 @@ class Deck:
 		headerString = {OUTPUT_TYPES.Text:'\n# %s (%d)\n',
 						OUTPUT_TYPES.HTML:'\n<h3><u>%s (%d)</u></h3>\n',
 						OUTPUT_TYPES.BBCode:'\n[size=150]%s (%d)[/size]\n'}[savetype]
-		
-		for count, cdid in self:
+
+		for count, cdid, inPlay in self:
 			card = db[cdid]
 			print 'card.type = %s' % (card.type)
 			if card.type == 'stronghold':
@@ -167,35 +169,46 @@ class Deck:
 							OUTPUT_TYPES.HTML:'\n<h3><u>%s</u></h3>\n',
 							OUTPUT_TYPES.BBCode:'\n[size=150]%s[/size]\n'}[savetype]
 				fp.write(shString % (card.name))
+
+		#In Play Cards
+		inPlayCards =[(count, db[cdid]) for count, cdid, inPlay in self if inPlay==True]
+		inPlayCount = 0
+		for item in inPlayCards:
+			inPlayCount += int(item[0])
+
+		startingcards = [(count, db[cdid]) for count, cdid, inPlay in self if inPlay==True]
+		self.WriteCardsToTypeList(fp,startingcards,'Start In Play', savetype)
+
+
 		#Dynasty Deck
-		dyncards = [(count, db[cdid]) for count, cdid in self if db[cdid].isDynasty()]
+		dyncards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and  (db[cdid].isDynasty()))]
 		dynCount = 0
 		for item in dyncards:
 			dynCount += int(item[0])
 
 		fp.write(headerString % ('Dynasty',dynCount))
 
-		eventcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isEvent()]
+		eventcards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and   db[cdid].isEvent())]
 		self.WriteCardsToTypeList(fp,eventcards,'Events', savetype)
 
-		celestialcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isCelestial()]
+		celestialcards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and   db[cdid].isCelestial())]
 		self.WriteCardsToTypeList(fp,celestialcards,'Celestials', savetype)
 
-		regioncards = [(count, db[cdid]) for count, cdid in self if db[cdid].isRegion()]
+		regioncards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and   db[cdid].isRegion())]
 		self.WriteCardsToTypeList(fp,regioncards,'Regions', savetype)
 
-		holdingcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isHolding()]
+		holdingcards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and   db[cdid].isHolding())]
 		self.WriteCardsToTypeList(fp,holdingcards,'Holdings', savetype)
 
-		windcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isWind()]
+		windcards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and   db[cdid].isWind())]
 		self.WriteCardsToTypeList(fp,windcards,'Winds', savetype)
 
-		personalitycards = [(count, db[cdid]) for count, cdid in self if db[cdid].isPersonality()]
+		personalitycards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and db[cdid].isPersonality())]
 		self.WriteCardsToTypeList(fp,personalitycards,'Personalities', savetype)
 
 
 		#Fate Deck
-		fatecards = [(count, db[cdid]) for count, cdid in self if db[cdid].isFate()]
+		fatecards = [(count, db[cdid]) for count, cdid, inPlay in self if ((inPlay!=True) and  (db[cdid].isFate()))]
 		fateCount = 0
 		for item in fatecards:
 			fateCount += int(item[0])
@@ -203,26 +216,25 @@ class Deck:
 		#fatecards.sort(lambda a, b: cmp(a[1].type, b[1].type))
 		fp.write(headerString % ('Fate',fateCount))
 
-		ancestorcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isAncestor()]
+		ancestorcards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and db[cdid].isAncestor())]
 		self.WriteCardsToTypeList(fp,ancestorcards,'Ancestors', savetype)
 
-		actioncards = [(count, db[cdid]) for count, cdid in self if db[cdid].isAction()]
+		actioncards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and db[cdid].isAction())]
 		self.WriteCardsToTypeList(fp,actioncards,'Strategies', savetype)
 
-		followercards = [(count, db[cdid]) for count, cdid in self if db[cdid].isFollower()]
+		followercards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and db[cdid].isFollower())]
 		self.WriteCardsToTypeList(fp,followercards,'Followers', savetype)
 
-
-		itemcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isItem()]
+		itemcards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and db[cdid].isItem())]
 		self.WriteCardsToTypeList(fp,itemcards,'Items', savetype)
 
-		spellcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isSpell()]
+		spellcards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and db[cdid].isSpell())]
 		self.WriteCardsToTypeList(fp,spellcards,'Spells', savetype)
 
-		ringcards = [(count, db[cdid]) for count, cdid in self if db[cdid].isRing()]
+		ringcards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and db[cdid].isRing())]
 		self.WriteCardsToTypeList(fp,ringcards,'Rings', savetype)
 
-		senseicards = [(count, db[cdid]) for count, cdid in self if db[cdid].isSensei()]
+		senseicards = [(count, db[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and db[cdid].isSensei())]
 		self.WriteCardsToTypeList(fp,senseicards,'Senseis', savetype)
 
 
@@ -232,7 +244,7 @@ class Deck:
 		#Added 11/24/08 PCW
 		headerString = ''
 		cardString = ''
-			
+
 		if len(cardlist) > 0:
 			cardCount = 0
 			for item in cardlist:
@@ -241,34 +253,34 @@ class Deck:
 			headerString = {OUTPUT_TYPES.Text:'\n# %s (%d)\n',
 							OUTPUT_TYPES.HTML:'\n<br/><b><u>%s (%d)</u></b><br/>\n',
 							OUTPUT_TYPES.BBCode:'\n[b][u]%s (%d)[/u][/b]\n'}[saveType]
-				
+
 			cardlist.sort(lambda a, b: cmp(a[1].type, b[1].type))
 			cardString = {OUTPUT_TYPES.Text:'%d %s\n',
 						  OUTPUT_TYPES.HTML:'%d %s<br/>\n',
 						  OUTPUT_TYPES.BBCode:'%d %s\n'}[saveType]
-			
+
 			fp.write(headerString % (title,cardCount))
 			for count, card in cardlist:
 				fp.write(cardString % (count, card.name))
 
-	def Add(self, cdid, num = 1):
+	def Add(self, cdid, num = 1, inplay=False):
 		"""Add a number of a particular card to the deck.
-		
+
 		Returns the number of that card now in the deck.
-		
+
 		"""
 		for idx, val in enumerate(self.cards):
 			if val[1] == cdid:
-				self.cards[idx] = (val[0] + num, cdid)
+				self.cards[idx] = (val[0] + num, cdid, inplay)
 				return val[0] + num
-		self.cards.append((num, cdid))
+		self.cards.append((num, cdid, inplay))
 		return num
 
 	def Remove(self, cdid, num = 1):
 		"""Remove a number of a particular card from the deck.
-		
+
 		Returns the number of that card now in the deck.
-		
+
 		"""
 		for idx, val in enumerate(self.cards):
 			if val[1] == cdid:
@@ -280,14 +292,14 @@ class Deck:
 					return 0
 		return 0
 
-	
+
 class GempukkuDeckConverter():
 	def __init__(self, filename):
 		self.filename = filename
 
 	def convert(self):
 		"""Import the source file and convert it to a Eopk Deck File."""
-		
+
 		self.parser = xml.parsers.expat.ParserCreate()
 		self.parser.StartElementHandler = self.parseStartElem
 		self.parser.EndElementHandler = self.parseEndElem
@@ -307,26 +319,26 @@ class GempukkuDeckConverter():
 				self.deck.cards.append((v, self.db.FindCardByID(k).id))
 		except (ValueError,KeyError):
 			raise DeckException()
-		
+
 		return self.deck;
 
 	def parseStartElem(self, name, attrs):
 		if name== "card":
 			self.cdata = ""
-		
+
 	def parseEndElem(self, name):
 		if name == "card":
 			self.cards[self.cardId] = self.count
 			self.cardId = None
 			self.count = 0
-			
+
 		elif name == "cardId":
 			self.cardId = self.cdata
 		elif name == "count":
 			self.count = (int(self.cdata))
 
-		self.cdata = ''			
-			
+		self.cdata = ''
+
 	def parseCData(self, data):
 		self.cdata = data
 
@@ -334,7 +346,7 @@ class TheGameDeckConverter():
 	def __init__(self, filename):
 		self.filename = filename
 		self.cards = {}
-		
+
 	def convert(self):
 		self.db = database.get()
 		self.deck = Deck()
@@ -357,4 +369,3 @@ class TheGameDeckConverter():
 			return
 		return self.deck
 
-		

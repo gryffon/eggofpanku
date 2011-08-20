@@ -1,6 +1,6 @@
 # Egg of P'an Ku -- an unofficial client for Legend of the Five Rings
 # Copyright (C) 2008  Peter C O Johansson
-# 
+#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -25,7 +25,8 @@ import deck
 #import re
 import sys
 import StringIO
-import win32clipboard
+#import win32clipboard
+
 #from enums import Enumeration
 
 #from settings import settings
@@ -51,13 +52,17 @@ ID_DE_MNU_RECENT = 9010
 
 ID_MAIN_WINDOW = 8998
 ID_CARD_PREVIEW = 8999
+ID_FILTER_PANEL = 8997
+ID_DECK_LIST_PANEL = 8996
 
 RECENT_FILES_FILE = '.eopkde-recent'
 NUM_RECENT = 4
 
 FiltersChangedEvent, EVT_FILTERS_CHANGED = wx.lib.newevent.NewEvent()
 AddCardEvent, EVT_ADD_CARD = wx.lib.newevent.NewEvent()
+AddInPlayCardEvent, EVT_ADD_IN_PLAY_CARD = wx.lib.newevent.NewEvent()
 RemoveCardEvent, EVT_REMOVE_CARD = wx.lib.newevent.NewEvent()
+RemoveInPlayCardEvent, EVT_REMOVE_IN_PLAY_CARD = wx.lib.newevent.NewEvent()
 SelectCardEvent, EVT_SELECT_CARD = wx.lib.newevent.NewEvent()
 
 
@@ -76,12 +81,12 @@ class CardSorter:
 	def __init__(self, cardmap):
 		self.db = database.get()
 		self.cardmap = cardmap
-	
+
 	def __call__(self, idx1, idx2):
 		card1 = self.db[self.cardmap[idx1]]
 		card2 = self.db[self.cardmap[idx2]]
 		return self.compare(card1, card2)
-	
+
 class CardNameSorter(CardSorter):
 	def compare(self, card1, card2):
 		return cmp(card1.name.lower(), card2.name.lower())
@@ -139,7 +144,7 @@ class CardForceChiSorter(CardSorter):
 			force2 = int_or_zero(card2.force)
 			chi1 = int_or_zero(card1.chi)
 			chi2 = int_or_zero(card2.chi)
-			
+
 			if force1 > force2:
 				return 1
 			elif force2 > force1:
@@ -182,82 +187,110 @@ class DeckPanel(wx.Panel):
 	LST_COL_TYPE = 2
 	LST_COL_COST = 3
 	LST_COL_FOCUS = 4
-	
+
+	lstInPlay = None
+
 	def __init__(self, parent, *args, **kwargs):
 		wx.Panel.__init__(self, parent, *args, **kwargs)
-		
+
 		self.lstFate = wx.ListCtrl(self, style=wx.LC_REPORT|wx.SUNKEN_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES)
 		self.lstFate.InsertColumn(0, "#", wx.LIST_FORMAT_CENTRE, 24)
-		self.lstFate.InsertColumn(self.LST_COL_NAME, "Name", wx.LIST_FORMAT_LEFT, 140)
+		self.lstFate.InsertColumn(self.LST_COL_NAME, "Fate Cards", wx.LIST_FORMAT_LEFT, 140)
 		self.lstFate.InsertColumn(self.LST_COL_TYPE, "Type", wx.LIST_FORMAT_CENTRE, 80)
 		self.lstFate.InsertColumn(self.LST_COL_COST, "Cost", wx.LIST_FORMAT_CENTRE, 48)
 		self.lstFate.InsertColumn(self.LST_COL_FOCUS, "Focus", wx.LIST_FORMAT_CENTRE, 48)
+
 		self.lstDynasty = wx.ListCtrl(self, style=wx.LC_REPORT|wx.SUNKEN_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES)
 		self.lstDynasty.InsertColumn(0, "#", wx.LIST_FORMAT_CENTRE, 24)
-		self.lstDynasty.InsertColumn(self.LST_COL_NAME, "Name", wx.LIST_FORMAT_LEFT, 188)
+		self.lstDynasty.InsertColumn(self.LST_COL_NAME, "Dynasty Cards", wx.LIST_FORMAT_LEFT, 188)
 		self.lstDynasty.InsertColumn(self.LST_COL_TYPE, "Type", wx.LIST_FORMAT_CENTRE, 80)
 		self.lstDynasty.InsertColumn(self.LST_COL_COST, "Cost", wx.LIST_FORMAT_CENTRE, 48)
-		
+
+##		self.lstInPlay = wx.ListCtrl(self, style=wx.LC_REPORT|wx.SUNKEN_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES)
+##		self.lstInPlay.InsertColumn(0, "#", wx.LIST_FORMAT_CENTRE, 24)
+##		self.lstInPlay.InsertColumn(self.LST_COL_NAME, "In Play Cards", wx.LIST_FORMAT_LEFT, 188)
+##		self.lstInPlay.InsertColumn(self.LST_COL_TYPE, "Type", wx.LIST_FORMAT_CENTRE, 80)
+
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		sizer.Add(self.lstFate, 1, wx.EXPAND|wx.ALL, 5)
 		sizer.Add(self.lstDynasty, 1, wx.EXPAND|wx.ALL, 5)
-		
+#	   Add the lstInPlay list to the Filter Panel
+
+##		sizer.Add(self.lstInPlay, 1, wx.EXPAND|wx.ALL, 5)
+
 		self.btnAdd = wx.Button(self, label='Add')
 		self.btnAddMore = wx.Button(self, label='Add 3')
 		self.btnRemove = wx.Button(self, label='Remove')
 		self.btnRemoveMore = wx.Button(self, label='Remove 3')
-		
+		self.btnAddToInPlay = wx.Button(self, label='Starts In Play')
+		self.btnRemoveFromInPlay = wx.Button(self, label='Doesn\'t Start In Play')
+
 		sizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 		sizerButtons.Add(self.btnAdd, 0, wx.CENTRE|wx.ALL, 5)
 		sizerButtons.Add(self.btnAddMore, 0, wx.CENTRE|wx.ALL, 5)
 		sizerButtons.Add(self.btnRemove, 0, wx.CENTRE|wx.ALL, 5)
 		sizerButtons.Add(self.btnRemoveMore, 0, wx.CENTRE|wx.ALL, 5)
-		
+		sizerButtons.Add(self.btnAddToInPlay, 0, wx.CENTRE|wx.ALL, 5)
+		sizerButtons.Add(self.btnRemoveFromInPlay, 0, wx.CENTRE|wx.ALL, 5)
+
 		sizer2 = wx.BoxSizer(wx.VERTICAL)
 		sizer2.Add(sizerButtons, 0, wx.CENTRE|wx.ALL, 0)
 		sizer2.Add(sizer, 1, wx.CENTRE|wx.EXPAND|wx.ALL, 0)
-		
+
 		# Events
 		self.Bind(wx.EVT_BUTTON, self.OnButtonAdd, self.btnAdd)
 		self.Bind(wx.EVT_BUTTON, self.OnButtonAddMore, self.btnAddMore)
 		self.Bind(wx.EVT_BUTTON, self.OnButtonRemove, self.btnRemove)
 		self.Bind(wx.EVT_BUTTON, self.OnButtonRemoveMore, self.btnRemoveMore)
+		self.Bind(wx.EVT_BUTTON, self.OnButtonRemoveFromPlay, self.btnRemoveFromInPlay)
+		self.Bind(wx.EVT_BUTTON, self.OnButtonAddToInPlay, self.btnAddToInPlay)
+
 		self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnListClick, self.lstFate)
 		self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnListClick, self.lstDynasty)
 		self.Bind(wx.EVT_LIST_COL_CLICK, self.OnListColumnClick, self.lstFate)
 		self.Bind(wx.EVT_LIST_COL_CLICK, self.OnListColumnClick, self.lstDynasty)
-		
+
 		self.SetSizer(sizer2)
-		
+
 		self.cardMap = []
 
 	def Deselect(self, ):
 		self.lastCardId = None
-		for lst in (self.lstFate, self.lstDynasty):
+		for lst in (self.lstFate, self.lstDynasty, self.lstInPlay):
 			idx = lst.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
 			if idx != -1:
 				lst.SetItemState(idx, 0, wx.LIST_STATE_SELECTED)
-	
+
 	def OnButtonAdd(self, event):
 		wx.PostEvent(self, AddCardEvent(num=1, id=self.lastCardId))
-	
+
 	def OnButtonAddMore(self, event):
 		wx.PostEvent(self, AddCardEvent(num=3, id=self.lastCardId))
-	
+
+	def OnButtonAddToInPlay(self,event):
+		wx.PostEvent(self, AddInPlayCardEvent(num=1, id=self.lastCardId))
+
+	def OnButtonRemoveFromPlay(self, event):
+		try:
+			wx.PostEvent(self, RemoveInPlayCardEvent(cdid=self.lastCardId, num=1, inPlay=True))
+		except AttributeError:
+			return
+		self.Remove(self.lastCardId, 1, inPlay=True)
+
 	def OnButtonRemove(self, event):
 		try:
 			wx.PostEvent(self, RemoveCardEvent(cdid=self.lastCardId, num=1))
 		except AttributeError:
 			return
 		self.Remove(self.lastCardId, 1)
-		
+
 	def OnButtonRemoveMore(self, event):
 		try:
 			wx.PostEvent(self, RemoveCardEvent(cdid=self.lastCardId, num=3))
 		except AttributeError:
 			return
 		self.Remove(self.lastCardId, 3)
-	
+
 	def OnListColumnClick(self, event):
 		sorters = {
 			self.LST_COL_NAME: CardNameSorter,
@@ -270,62 +303,83 @@ class DeckPanel(wx.Panel):
 		except KeyError:
 			return
 		event.GetEventObject().SortItems(sortobj)
-		
+
 	def ListAddCard(self, widget, card, mapidx, num=1):
 		idx = widget.InsertStringItem(0, str(num))
 		widget.SetStringItem(idx, self.LST_COL_NAME, card.name)  # Name
 		widget.SetStringItem(idx, self.LST_COL_TYPE, card.type.capitalize())  # Type
-		widget.SetStringItem(idx, self.LST_COL_COST, card.cost)  # Cost
+		if (card.isFate() or card.isDynasty()):
+		  widget.SetStringItem(idx, self.LST_COL_COST, card.cost)  # Cost
+
 		if card.isFate():
 			widget.SetStringItem(idx, self.LST_COL_FOCUS, card.focus)  # Focus
 		widget.SetItemData(idx, mapidx)
-	
+
 	def SetDeck(self, deck_):
 		self.cardMap = []
 		self.deck = deck_
 		self.lstFate.DeleteAllItems()
 		self.lstDynasty.DeleteAllItems()
 		db = database.get()
-		for num, cdid in self.deck:
+		for num, cdid, inplay in self.deck:
 			card = db[cdid]
-			if card.isDynasty():
-				widget = self.lstDynasty
-			else:  # Note that strongholds end up here despite being neither.
-				widget = self.lstFate
+			if card.startsInPlay():
+				widget = self.lstInPlay
+			else:
+				if card.isDynasty():
+					widget = self.lstDynasty
+				else:
+					widget = self.lstFate
 			self.ListAddCard(widget, card, len(self.cardMap), num)
 			self.cardMap.append(cdid)
-	
+
 	def OnListClick(self, event):
 		evtobj = event.GetEventObject()
 		cdid = self.cardMap[evtobj.GetItemData(event.GetIndex())]
-		
+
 		# Deselect in the other list.
-		lst = self.lstFate if evtobj == self.lstDynasty else self.lstDynasty
+		lst = self.lstFate
+		secondlst = self.lstInPlay
+
+		if evtobj == self.lstFate:
+			lst = self.lstDynasty
+		elif evtobj == self.lstInPlay:
+			secondlst = self.lstDynasty
+		else:
+			lst = self.lstFate
+
 		idx = lst.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
 		if idx != -1:
 			lst.SetItemState(idx, 0, wx.LIST_STATE_SELECTED)
-		
+
+		idx = secondlst.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
+		if idx != -1:
+			secondlst.SetItemState(idx, 0, wx.LIST_STATE_SELECTED)
+
 		wx.FindWindowById(ID_CARD_PREVIEW).SetCard(cdid)
 		self.lastCardId = cdid
-		
+
 		wx.PostEvent(self, SelectCardEvent(cdid=cdid))
-	
-	def Remove(self, cdid, num=1):
+
+	def Remove(self, cdid, num=1, inPlay=False):
 		try:
 			card = database.get()[cdid]
 		except KeyError:
 			return
-		
-		if card.isDynasty():
-			widget = self.lstDynasty
-		else:  # Note that strongholds end up here despite being neither.
-			widget = self.lstFate
-		
+
+		if inPlay==True:
+			widget = self.lstInPlay
+		else:
+			if card.isDynasty():
+				widget = self.lstDynasty
+			else:
+				widget = self.lstFate
+
 		try:
 			mapidx = self.cardMap.index(cdid)
 		except ValueError:
 			return  # It can't possibly be in our decks.
-		
+
 		idx = widget.FindItemData(-1, mapidx)
 		if idx != -1:
 			newcount = int(widget.GetItemText(idx)) - num
@@ -334,21 +388,25 @@ class DeckPanel(wx.Panel):
 				self.lastCardId = None
 			else:
 				widget.SetStringItem(idx, 0, str(newcount))
-		
-	def Add(self, cdid, num=1):
+
+	def Add(self, cdid, num=1, inPlay=False):
 		card = database.get()[cdid]
-		if card.isDynasty():
-			widget = self.lstDynasty
-		else:  # Note that strongholds end up here despite being neither.
-			widget = self.lstFate
-		
+
+		if inPlay==True:
+			widget = self.lstInPlay
+		else:
+			if card.isDynasty():
+				widget = self.lstDynasty
+			else:  # Note that strongholds end up here despite being neither.
+				widget = self.lstFate
+
 		# Make sure the cdid exists in the card map.
 		try:
 			mapidx = self.cardMap.index(cdid)
 		except ValueError:
 			mapidx = len(self.cardMap)
 			self.cardMap.append(cdid)
-		
+
 		# See if we already have an entry.
 		idx = widget.FindItemData(-1, mapidx)
 		if idx != -1:
@@ -359,13 +417,13 @@ class DeckPanel(wx.Panel):
 class FilterPanel(wx.Panel):
 	def __init__(self, parent, *args, **kwargs):
 		wx.Panel.__init__(self, parent, *args, **kwargs)
-		
+
 		# Set up filters.
 		self.filters = card_filters.AllFilters()
-		
+
 		# Realize filters.
 		panelsizer = wx.BoxSizer(wx.VERTICAL)
-		
+
 		for group, filters in self.filters:
 			sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, group), wx.VERTICAL)
 			gridsizer = wx.FlexGridSizer(0, 2, 2, 4)
@@ -374,18 +432,36 @@ class FilterPanel(wx.Panel):
 				window = self.MakeFilterWindow(f, gridsizer)
 			sbsizer.Add(gridsizer, 0, wx.EXPAND|wx.ALL, 3)
 			panelsizer.Add(sbsizer, 0, wx.EXPAND|wx.ALL, 1)
-		
+
+		self.lstInPlay = wx.ListCtrl(self, style=wx.LC_REPORT|wx.SUNKEN_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES)
+		self.lstInPlay.InsertColumn(0, "#", wx.LIST_FORMAT_CENTRE, 24)
+		self.lstInPlay.InsertColumn(DeckPanel.LST_COL_NAME, "In Play Cards", wx.LIST_FORMAT_LEFT, 188)
+		self.lstInPlay.InsertColumn(DeckPanel.LST_COL_TYPE, "Type", wx.LIST_FORMAT_CENTRE, 80)
+
+		self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnListClick, self.lstInPlay)
+		self.Bind(wx.EVT_LIST_COL_CLICK, self.OnListColumnClick, self.lstInPlay)
+
+		panelsizer.Add(self.lstInPlay, 1, wx.EXPAND|wx.ALL, 5)
 		self.SetSizer(panelsizer)
+
+		self.cardMap = []
+
+
+	def OnListColumnClick(self, event):
+		wx.FindWindowById(ID_DECK_LIST_PANEL).OnListColumnClick(event)
+
+	def OnListClick(self, event):
+		wx.FindWindowById(ID_DECK_LIST_PANEL).OnListClick(event)
 
 	def MakeFilterWindow(self, filter, sizer):
 		"""Create some suitable GUI widgets for some filter and return it."""
 		win = filter.MakeWindow(self)
-		
+
 		filter._chk = wx.CheckBox(self, label=filter.name + (':' if win else ''))
 		filter._chk.SetValue(filter.enabled)
 		self.Bind(wx.EVT_CHECKBOX, self.OnCheck, filter._chk)
 		sizer.Add(filter._chk, 0, wx.EXPAND|wx.CENTER|wx.ALL, 0)
-		
+
 		if win:
 			card_filters.EVT_FILTER_INPUT_CHANGED(win, self.OnFilterInput)
 			sizer.Add(win, 1, wx.EXPAND|wx.CENTER|wx.ALL, 0)
@@ -395,13 +471,13 @@ class FilterPanel(wx.Panel):
 		event.filter._chk.SetValue(True)
 		event.filter.enabled = True
 		wx.PostEvent(self, FiltersChangedEvent())
-		
+
 	def OnCheck(self, event):
 		for f in reduce(lambda a, b: a + b[1], self.filters, []):
 			f.enabled = bool(f._chk.GetValue())
 			f.UpdateValue()
 		wx.PostEvent(self, FiltersChangedEvent())
-		
+
 	def GetFilter(self):
 		filters = reduce(lambda a, b: a + b[1], self.filters, [])
 		return card_filters.AggregateFilter(f for f in filters if f.enabled)
@@ -414,16 +490,16 @@ class DeckStatisticsPanel(wx.Panel):
 
 	def Activate(self):
 		pass
-		
+
 class DeckPlaintextPanel(wx.Panel):
 	"""Deck "plain text" panel."""
 	def __init__(self, *args, **kwargs):
 		wx.Panel.__init__(self, *args, **kwargs)
-		
+
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		self.txtView = wx.TextCtrl(self, style=wx.TE_READONLY|wx.TE_MULTILINE)
 		sizer.Add(self.txtView, 1, wx.EXPAND|wx.ALL, 5)
-		
+
 		self.SetSizer(sizer)
 
 	def Activate(self):
@@ -433,7 +509,7 @@ class DeckPlaintextPanel(wx.Panel):
 
 class DeckEditPanel(wx.Panel):
 	"""Deck editor panel, allowing editing of the deck."""
-	
+
 	CARDLIST_COL_NAME = 0
 	CARDLIST_COL_TYPE = 1
 	CARDLIST_COL_CLANS = 2
@@ -442,37 +518,39 @@ class DeckEditPanel(wx.Panel):
 	CARDLIST_COL_PH = 5
 	CARDLIST_COL_HR = 6
 	CARDLIST_COL_FOCUS = 7
-	
+
 	def __init__(self, *args, **kwargs):
 		wx.Panel.__init__(self, *args, **kwargs)
 
 		# Middle panel with card list and decks
-		
+
 		splitterCards = wx.SplitterWindow(self, style=wx.SP_3D)
-		
+
 		panel = wx.Panel(splitterCards)
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		self.lstCards = wx.ListCtrl(panel, style=wx.LC_REPORT|wx.SUNKEN_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES)
-		self.lstCards.InsertColumn(self.CARDLIST_COL_NAME,     "Name", wx.LIST_FORMAT_LEFT,     140)
-		self.lstCards.InsertColumn(self.CARDLIST_COL_TYPE,     "Type", wx.LIST_FORMAT_CENTRE,   80)
-		self.lstCards.InsertColumn(self.CARDLIST_COL_CLANS,    "Factions", wx.LIST_FORMAT_LEFT, 80)
-		self.lstCards.InsertColumn(self.CARDLIST_COL_COST,     "Cost", wx.LIST_FORMAT_CENTRE,   48)
-		self.lstCards.InsertColumn(self.CARDLIST_COL_FORCECHI, "F/C", wx.LIST_FORMAT_CENTRE,    64)
-		self.lstCards.InsertColumn(self.CARDLIST_COL_PH,       "PH", wx.LIST_FORMAT_CENTRE,     32)
-		self.lstCards.InsertColumn(self.CARDLIST_COL_HR,       "HR", wx.LIST_FORMAT_CENTRE,     32)
-		self.lstCards.InsertColumn(self.CARDLIST_COL_FOCUS,    "FV", wx.LIST_FORMAT_CENTRE,     32)
+		self.lstCards.InsertColumn(self.CARDLIST_COL_NAME,	 "Name", wx.LIST_FORMAT_LEFT,	 140)
+		self.lstCards.InsertColumn(self.CARDLIST_COL_TYPE,	 "Type", wx.LIST_FORMAT_CENTRE,   80)
+		self.lstCards.InsertColumn(self.CARDLIST_COL_CLANS,	"Factions", wx.LIST_FORMAT_LEFT, 80)
+		self.lstCards.InsertColumn(self.CARDLIST_COL_COST,	 "Cost", wx.LIST_FORMAT_CENTRE,   48)
+		self.lstCards.InsertColumn(self.CARDLIST_COL_FORCECHI, "F/C", wx.LIST_FORMAT_CENTRE,	64)
+		self.lstCards.InsertColumn(self.CARDLIST_COL_PH,	   "PH", wx.LIST_FORMAT_CENTRE,	 32)
+		self.lstCards.InsertColumn(self.CARDLIST_COL_HR,	   "HR", wx.LIST_FORMAT_CENTRE,	 32)
+		self.lstCards.InsertColumn(self.CARDLIST_COL_FOCUS,	"FV", wx.LIST_FORMAT_CENTRE,	 32)
 		sizer.Add(self.lstCards, 1, wx.EXPAND|wx.ALL, 5)
 		panel.SetSizer(sizer)
-		
-		self.panelDecks = DeckPanel(splitterCards)
-		
+
+		# Filters
+		self.panelFilters = FilterPanel(self, size=(120, -1), id=ID_FILTER_PANEL)
+		inplayListBox = self.panelFilters.lstInPlay
+		self.panelDecks = DeckPanel(splitterCards, id=ID_DECK_LIST_PANEL)
+
+		self.panelDecks.lstInPlay= inplayListBox
+
 		splitterCards.SetMinimumPaneSize(180)
 		splitterCards.SplitHorizontally(panel, self.panelDecks, 180)
 		splitterCards.SetSashGravity(1.0)
-		
-		# Filters
-		self.panelFilters = FilterPanel(self, size=(120, -1))
-		
+
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		sizer.Add(splitterCards, 1, wx.EXPAND|wx.ALL, 0)
 		sizer.Add(self.panelFilters, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
@@ -482,21 +560,34 @@ class DeckEditPanel(wx.Panel):
 		self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnListClick, self.lstCards)
 		self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnListActivate, self.lstCards)
 		self.Bind(wx.EVT_LIST_COL_CLICK, self.OnListColumnClick, self.lstCards)
-		
+
 		EVT_ADD_CARD(self.panelDecks, self.OnAddCard)
+		EVT_ADD_IN_PLAY_CARD(self.panelDecks, self.OnAddCardInPlay)
 		EVT_REMOVE_CARD(self.panelDecks, self.OnRemoveCard)
+		EVT_REMOVE_IN_PLAY_CARD(self.panelDecks, self.OnRemoveCard)
 		EVT_SELECT_CARD(self.panelDecks, self.OnSelectCard)
-		
+
 		self.UpdateCards()
 
 	def SetDeck(self, deck):
 		self.panelDecks.SetDeck(deck)
-		
-	def AddCard(self, cdid, num=1):
-		GetCurrentDeck().Add(cdid, num)
+
+	def AddCard(self, cdid, num=1, inPlay=False):
+		GetCurrentDeck().Add(cdid, num, inPlay)
 		GetCurrentDeck().modified = True
-		self.panelDecks.Add(cdid, num)
+		self.panelDecks.Add(cdid, num, inPlay)
 		wx.FindWindowById(ID_MAIN_WINDOW).UpdateStatus()
+
+	def OnAddCardInPlay(self, event):
+		if event.id is None:
+			idx = self.lstCards.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
+			if idx == -1:
+				return
+			cdid = self.cardMap[self.lstCards.GetItemData(idx)]
+		else:
+			cdid = event.id
+
+		self.AddCard(cdid, event.num, True)
 
 	def OnAddCard(self, event):
 		if event.id is None:
@@ -506,9 +597,15 @@ class DeckEditPanel(wx.Panel):
 			cdid = self.cardMap[self.lstCards.GetItemData(idx)]
 		else:
 			cdid = event.id
-		
+
 		self.AddCard(cdid, event.num)
-	
+
+##	def OnRemoveCardInPlay(self, event):
+##		deck = GetCurrentDeck()
+##		deck.Remove(event.cdid, event.num)
+##		deck.modified = True
+##		wx.FindWindowById(ID_MAIN_WINDOW).UpdateStatus()
+
 	def OnRemoveCard(self, event):
 		deck = GetCurrentDeck()
 		deck.Remove(event.cdid, event.num)
@@ -518,7 +615,7 @@ class DeckEditPanel(wx.Panel):
 	def UpdateCards(self):
 		filter = self.panelFilters.GetFilter()
 		self.cardMap = []
-		
+
 		self.lstCards.DeleteAllItems()
 		for card in database.get():
 			if not filter(card):
@@ -535,10 +632,10 @@ class DeckEditPanel(wx.Panel):
 			#ctext = re.sub('< */? *\w+ */?\ *>', '', card.text.replace('<br>', '\n'))
 			#self.lstCards.SetStringItem(idx, self.CARDLIST_COL_TEXT, ctext)  # Text -- simple regex to strip simple HTML
 			self.lstCards.SetStringItem(idx, self.CARDLIST_COL_FOCUS, card.focus)
-			
+
 			self.lstCards.SetItemData(idx, len(self.cardMap))
 			self.cardMap.append(card.id)
-		
+
 		self.lstCards.SortItems(CardNameSorter(self.cardMap))
 
 	def OnListClick(self, event):
@@ -546,11 +643,11 @@ class DeckEditPanel(wx.Panel):
 		cdid = self.cardMap[self.lstCards.GetItemData(idx)]
 		self.panelDecks.Deselect()
 		wx.FindWindowById(ID_CARD_PREVIEW).SetCard(cdid)
-	
+
 	def OnListActivate(self, event):
 		cdid = self.cardMap[self.lstCards.GetItemData(event.GetIndex())]
 		self.AddCard(cdid)
-	
+
 	def OnListColumnClick(self, event):
 		sorters = {
 			self.CARDLIST_COL_NAME: CardNameSorter,
@@ -567,7 +664,7 @@ class DeckEditPanel(wx.Panel):
 		except KeyError:
 			return
 		self.lstCards.SortItems(sortobj)
-	
+
 	def OnFiltersChanged(self, event):
 		self.UpdateCards()
 
@@ -583,32 +680,32 @@ class DeckEditPanel(wx.Panel):
 class MainWindow(wx.Frame):
 	def __init__(self, parent=None, id=ID_MAIN_WINDOW, title=MAIN_TITLE):
 		wx.Frame.__init__(self, parent, id, title, size=(960, 580))
-		
+
 		self.CreateStatusBar(number=4)
 		self.GetStatusBar().SetStatusWidths([-65, -15, -10, -10])
-		
+
 		# Splitter between card preview and everything else
 		splitterMain = wx.SplitterWindow(self)
 		self.cardPreview = preview.CardPreviewWindow(splitterMain, id=ID_CARD_PREVIEW)
-		
+
 		# Notebook with the various deck views
 		self.noteViews = wx.Notebook(splitterMain)
 		self.panelEdit = DeckEditPanel(self.noteViews)
 		self.noteViews.AddPage(self.panelEdit, 'Edit Deck')
 		self.noteViews.AddPage(DeckPlaintextPanel(self.noteViews), 'Plaintext')
 		self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnViewChange, self.noteViews)
-		
+
 		# Split the main splitter
 		splitterMain.SetMinimumPaneSize(180)
 		splitterMain.SplitVertically(self.cardPreview, self.noteViews, 180)
 		splitterMain.SetSashGravity(0.0)
-		
+
 		# Menus
 		try:
 			self.recent_files = [line.strip() for line in file(RECENT_FILES_FILE).readlines()]
 		except IOError:
 			self.recent_files = []
-		
+
 		self.mnuFile = wx.Menu()
 		self.mnuFile.Append(ID_DE_MNU_NEW_DECK, 'New deck\tCtrl+N', 'Create a new, empty deck.')
 		self.mnuFile.Append(ID_DE_MNU_OPEN_DECK, 'Open deck...\tCtrl+O', 'Open an existing deck.')
@@ -627,13 +724,13 @@ class MainWindow(wx.Frame):
 		self.mnuEdit.Append(ID_DE_MNU_IMPORT_THEGAME, 'Import \'The Game\' deck', 'Import a deck saved in \'The Game\'.')
 		self.mnuEdit.AppendSeparator()
 		self.mnuEdit.Append(ID_DE_MNU_IMPORT_CLIPBOARD, 'Import from clipboard\tCtrl+Shift+I', 'Import deck list from clipboard.')
-		
+
 		menubar = wx.MenuBar()
 		menubar.Append(self.mnuFile, '&File')
 		menubar.Append(self.mnuEdit, '&Edit')
-		
+
 		self.SetMenuBar(menubar)
-		
+
 		# Events
 		wx.EVT_MENU(self, ID_DE_MNU_NEW_DECK, self.OnMenuNewDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_OPEN_DECK, self.OnMenuOpenDeck)
@@ -647,7 +744,7 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, wx.ID_EXIT, self.OnMenuExit)
 		wx.EVT_MENU_RANGE(self, ID_DE_MNU_RECENT, ID_DE_MNU_RECENT+NUM_RECENT, self.OnMenuRecent)
 		wx.EVT_CLOSE(self, self.OnClose)
-		
+
 		if hasattr(sys, 'frozen'):
 			try:
 				import win32api
@@ -656,10 +753,10 @@ class MainWindow(wx.Frame):
 				self.SetIcon(wx.Icon('iconedit.ico', wx.BITMAP_TYPE_ICO))
 		else:
 			self.SetIcon(wx.Icon('iconedit.ico', wx.BITMAP_TYPE_ICO))
-		
+
 		self.deck = None
 		self.deckName = None
-		
+
 		self.UpdateRecentFiles()
 		self.NewDeck()
 		self.Show()
@@ -671,7 +768,7 @@ class MainWindow(wx.Frame):
 		except:
 			wx.MessageDialog(self, 'There was an error converting the file from \'The Game\' to Egg of P\'an Ku', 'Deck Error', wx.ICON_ERROR).ShowModal()
 			return
-		
+
 		self.panelEdit.SetDeck(self.deck)
 		self.deckName = None
 		self.deck.modified = True
@@ -685,7 +782,7 @@ class MainWindow(wx.Frame):
 		except:
 			wx.MessageDialog(self, 'There was an error converting the file from Gempukku to Egg of P\'an Ku', 'Deck Error', wx.ICON_ERROR).ShowModal()
 			return
-		
+
 		self.panelEdit.SetDeck(self.deck)
 		self.deckName = None
 		self.deck.modified = True
@@ -695,31 +792,31 @@ class MainWindow(wx.Frame):
 	def NewDeck(self):
 		if self.deck and self.deck.modified and not self.QuerySaveFirst():
 			return
-		
+
 		self.deck = deck.Deck()
 		self.deckName = None
 		self.panelEdit.SetDeck(self.deck)
 		self.UpdateStatus()
-	
+
 	def UpdateStatus(self):
 		db = database.get()
 		self.SetStatusText('%d Fate/%d Dynasty' % (self.deck.NumFate(), self.deck.NumDynasty()), 1)
 		self.SetStatusText('%d Holdings' %
-			sum([num for num, c in self.deck if db[c].type == "holding"]), 2)
+			sum([num for num, c, inplay in self.deck if db[c].type == "holding"]), 2)
 		if self.deckName is not None:
 			self.SetTitle(MAIN_TITLE + ' - %s%s' % (self.deckName, '*' if self.deck.modified else ''))
 		else:
 			self.SetTitle(MAIN_TITLE)
-	
+
 	def SaveDeck(self):
 		if not self.deckName and not self.PickSaveName():
 				return
-		
+
 		self.deck.Save(file(self.deckName, 'wb'), deck.OUTPUT_TYPES.Text)
 		self.deck.modified = False
 		self.RecentlyUsed(self.deckName)
 		self.UpdateStatus()
-	
+
 	def OpenDeck(self, filename):
 		try:
 			self.deck = deck.Deck.load(file(filename, 'rb'))
@@ -735,7 +832,7 @@ class MainWindow(wx.Frame):
 			wx.MessageDialog(self, 'The specified deck file could not be opened.\nMake sure the path ' \
 				'entered exists.', 'Deck Error', wx.ICON_ERROR).ShowModal()
 			return
-		
+
 		self.panelEdit.SetDeck(self.deck)
 		self.deckName = filename
 		self.noteViews.GetCurrentPage().Activate()
@@ -745,7 +842,7 @@ class MainWindow(wx.Frame):
 	def OpenDeckFromClipboard(self):
 		try:
 			win32clipboard.OpenClipboard()
-			data = win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)  
+			data = win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)
 			win32clipboard.EmptyClipboard()
 			win32clipboard.CloseClipboard()
 			self.deck = deck.Deck.loadFromClipboard(data)
@@ -777,7 +874,7 @@ class MainWindow(wx.Frame):
 			self.deckName = dlg.GetPath()
 			return True
 		return False
-	
+
 	def QuerySaveFirst(self):
 		"""Ask the user if he wants to save his current deck first."""
 		result = wx.MessageDialog(self, 'Your current deck has changed. Do you want to save it first?', \
@@ -787,7 +884,7 @@ class MainWindow(wx.Frame):
 		elif result == wx.ID_YES:
 			self.SaveDeck()
 		return True
-	
+
 	def UpdateRecentFiles(self):
 		for idx in xrange(NUM_RECENT):
 			obj = self.mnuFile.FindItemById(ID_DE_MNU_RECENT + idx)
@@ -809,36 +906,36 @@ class MainWindow(wx.Frame):
 	def OnViewChange(self, event):
 		self.noteViews.GetCurrentPage().Activate()
 		event.Skip()
-	
+
 	def OnClose(self, event):
 		if event.CanVeto():
 			if self.deck and self.deck.modified and not self.QuerySaveFirst():
 				event.Veto()
 				return
 		self.Destroy()
-		
+
 	def OnMenuNewDeck(self, event):
 		self.NewDeck()
-		
+
 	def OnMenuOpenDeck(self, event):
 		if self.deck and self.deck.modified and not self.QuerySaveFirst():
 			return
-			
+
 		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_WILDCARD, defaultDir=settings.last_deck, style=wx.OPEN|wx.FILE_MUST_EXIST)
 		if dlg.ShowModal() == wx.ID_OK:
 			self.OpenDeck(dlg.GetPath())
-	
+
 	def OnMenuRecent(self, event):
 		idx = event.GetId() - ID_DE_MNU_RECENT
 		self.OpenDeck(self.recent_files[idx])
-		
+
 	def OnMenuSaveDeck(self, event):
 		self.SaveDeck()
-		
+
 	def OnMenuSaveDeckAs(self, event):
 		if self.PickSaveName():
 			self.SaveDeck()
-	
+
 	def OnMenuExit(self, event):
 		self.Close()
 
@@ -856,7 +953,7 @@ class MainWindow(wx.Frame):
 	def OnMenuImportGempukku(self, event):
 		if self.deck and self.deck.modified and not self.QuerySaveFirst():
 			return
-					
+
 		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_GEMPUKKU, defaultDir=settings.last_deck, style=wx.OPEN|wx.FILE_MUST_EXIST)
 		if dlg.ShowModal() == wx.ID_OK:
 			self.ConvertDeckFromGempukku(dlg.GetPath())
@@ -868,7 +965,7 @@ class MainWindow(wx.Frame):
 		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_THEGAME, defaultDir=settings.last_deck, style=wx.OPEN|wx.FILE_MUST_EXIST)
 		if dlg.ShowModal() == wx.ID_OK:
 			self.ConvertDeckFromTheGame(dlg.GetPath())
-		
+
 if __name__ == "__main__":
 	# If we've got psyco, we should use it.
 	try:

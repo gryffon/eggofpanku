@@ -1,6 +1,6 @@
 # Egg of P'an Ku -- an unofficial client for Legend of the Five Rings
 # Copyright (C) 2008  Peter C O Johansson
-# 
+#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -61,10 +61,10 @@ factions.extend(minorClans)
 for filterItem in filterList["rarity"]:
 	rarityFormats[filterItem.displayName]=filterItem.name
 
-	
+
 for filterItem in filterList["legality"]:
 	legalityFormats.append(filterItem.displayName)
-	
+
 for filterItem in filterList["set"]:
 	cardSets.insert(0, filterItem.displayName, filterItem.name)
 
@@ -83,9 +83,10 @@ class CardData:
 		self.rulings = []
 		self.images = {}
 		self.isencrypted = False
-		
+		self.inplay= False
+
 		for x in cardAttrs:
-			setattr(self, x, '')
+		  setattr(self, x, '')
 
 	def DecryptAttribute(self, x):
 		outputstring = ''
@@ -99,15 +100,18 @@ class CardData:
 			keychar = key[(i % keylength)-1] #((i % keylength) - 1)
 			decodedchar = chr(ord(curchar)-ord(keychar))
 			outputstring += decodedchar
-					
+
 		return outputstring
-	
+
+	def startsInPlay(self):
+		return self.inplay==True
+
 	def isLegal(self, ed):
 		return ed in self.legal
-	
+
 	def isClan(self, cl):
 		return cl in self.clans
-	
+
 	def isDynasty(self):
 		return self.type in ['holding', 'personality', 'region', \
 			'event', 'wind', 'celestial']
@@ -156,7 +160,7 @@ class CardData:
 
 	def IsEncrypted(self):
 		return self.isencrypted == True
-	
+
 	def hasGoldCost(self):
 		#return self.cost != ''
 		return self.type in ['strategy', 'follower', 'item', \
@@ -169,7 +173,7 @@ class XMLImporter:
 	def convert(self, outfile=None):
 		"""Import the source file and convert it to a suitable
 		database format, saving it to outfile."""
-		
+
 		self.parser = xml.parsers.expat.ParserCreate()
 		self.parser.StartElementHandler = self.parseStartElem
 		self.parser.EndElementHandler = self.parseEndElem
@@ -179,13 +183,13 @@ class XMLImporter:
 		self.cCard = None
 		self.cards = {}
 		self.date = None
-		
+
 		self.parser.ParseFile(file(self.filename, 'rb'))
-		
+
 		# Finally, dump it.
 		if outfile is None:
 			outfile = file(LOCALDATABASE, mode='wb')
-		cPickle.dump((self.filename, self.date, self.cards), outfile, cPickle.HIGHEST_PROTOCOL)		
+		cPickle.dump((self.filename, self.date, self.cards), outfile, cPickle.HIGHEST_PROTOCOL)
 
 	def parseStartElem(self, name, attrs):
 		if name == "cards":
@@ -199,14 +203,14 @@ class XMLImporter:
 				self.cCard.isencrypted = True
 				_typeName = attrs["type"].replace('encrypted-','')
 				self.cCard.type = _typeName
-				#self.cCard.type = attrs["type"]			
+				#self.cCard.type = attrs["type"]
 			else:
 				self.cCard.type = attrs["type"]
 		elif name == "image":
 			self.imageEdition = attrs["edition"]
 		self.cdata = ""
-		
-	def parseEndElem(self, name):	
+
+	def parseEndElem(self, name):
 		if name == "legal":
 			self.cCard.legal.append(self.cdata)
 		elif name == "clan":
@@ -225,7 +229,7 @@ class XMLImporter:
 			setattr(self.cCard, name, self.cdata.encode("latin-1"))
 		elif name == "card":
 			self.cards[self.cCard.id] = self.cCard
-		
+
 	def parseCData(self, data):
 		self.cdata += data
 
@@ -240,9 +244,9 @@ class CardDB:
 		(self.filename, self.date, self.cards) = cPickle.load(file(LOCALDATABASE, mode='rb'))
 		if self.filename != settings.cardsource:
 			raise NameError, 'Cards.db was created from a different xml file.  Please reload the card database.'
-		
+
 		for x in self.cards.values():
-			cardName = x.name			
+			cardName = x.name
 			if x.IsEncrypted():
 				cardName = x.DecryptAttribute('name')
 				x.name = cardName
@@ -252,25 +256,25 @@ class CardDB:
 
 	def __getitem__(self, key):
 		return self.cards[key]
-	
+
 	def __iter__(self):
 		return self.cards.itervalues()
-	
+
 	def __len__(self):
 		return len(self.cards)
-	
+
 	def FindCardByName(self, name):
 		return self.cardNames[name]
 
 	def FindCardByID(self, cardId):
 		return self.cards[cardId]
-	
+
 	def CreateCard(self, name, id=None, **kwargs):
 		"""Create a temporary card."""
 		if id is None:
 			id = '_%d' % self.createIndex
 			self.createIndex += 1
-		
+
 		if id in self.cards:  # Already exists; update it. Note that we can't just replace it, as other things may have references to the card.
 			for k, v in kwargs.iteritems():
 				setattr(self.cards[id], k, v)
@@ -281,7 +285,7 @@ class CardDB:
 			for k, v in kwargs.iteritems():
 				setattr(card, k, v)
 			self.cards[card.id] = card
-		
+
 		return id
 
 def reset():

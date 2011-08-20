@@ -5,6 +5,7 @@ Created on May 26, 2009
 '''
 
 import xml.parsers.expat
+import os
 
 class FilterData:
     '''
@@ -17,13 +18,13 @@ class FilterData:
         self.displayName = None
         self.deckType = None
         self.hasCost = None
-        self.legal = []        
+        self.legal = []
 
 class FilterReader:
     '''
     The FilterReader class does the heavy lifting for moving
     the xml data into python objects
-    
+
     Because of the initialization structure, you can simply
     assign a variable to the FilterReader().Filters property
     '''
@@ -33,20 +34,22 @@ class FilterReader:
         Constructor
         '''
         self.Filters = {}
-        self.current = None    
+        self.current = None
         self.parser = xml.parsers.expat.ParserCreate()
         self.parser.StartElementHandler = self.parseStartElem
         self.parser.EndElementHandler = self.parseEndElem
         self.parser.CharacterDataHandler = self.parseCData
-        self.parser.ParseFile(file('filters.xml', 'rb'))
-        
+        __dir__ = os.path.dirname(os.path.abspath(__file__))
+        filepath = os.path.join(__dir__, 'filters.xml')
+        self.parser.ParseFile(open(filepath, 'rb'))
+
     def parseStartElem(self, name, attrs):
         if name == "filter":
             self.current = FilterData()
         self.cdata = ""
-    
+
     def parseEndElem(self, name):
-        if name == "type": 
+        if name == "type":
             self.current.type = self.cdata
         elif name == "deckType":
             self.current.deckType = self.cdata
@@ -63,6 +66,6 @@ class FilterReader:
                 self.Filters[self.current.type] = []
             self.Filters[self.current.type].append(self.current)
             self.current = None
-    
+
     def parseCData(self, data):
         self.cdata += data
