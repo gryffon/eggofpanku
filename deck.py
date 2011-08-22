@@ -89,9 +89,8 @@ class Deck:
 		db = database.get()
 		deck = Deck()
 		for c in fp:
-			if c == '#Starts-In-Play':
-				foundInPlay = True
-			if c == '#Dynasty':
+			foundInPlay = True
+			if '# Dynasty' in c:
 				foundInPlay = False
 
 			if not c.startswith('#') and c.strip() != '':

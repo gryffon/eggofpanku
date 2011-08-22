@@ -320,10 +320,12 @@ class DeckPanel(wx.Panel):
 		self.deck = deck_
 		self.lstFate.DeleteAllItems()
 		self.lstDynasty.DeleteAllItems()
+		self.lstInPlay.DeleteAllItems()
+
 		db = database.get()
 		for num, cdid, inplay in self.deck:
 			card = db[cdid]
-			if card.startsInPlay():
+			if (card.startsInPlay()== True):
 				widget = self.lstInPlay
 			else:
 				if card.isDynasty():

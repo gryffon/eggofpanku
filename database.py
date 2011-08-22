@@ -104,7 +104,7 @@ class CardData:
 		return outputstring
 
 	def startsInPlay(self):
-		return self.inplay==True
+		return (self.inplay==True)
 
 	def isLegal(self, ed):
 		return ed in self.legal
