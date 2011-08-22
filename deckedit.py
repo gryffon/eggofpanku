@@ -249,6 +249,8 @@ class DeckPanel(wx.Panel):
 		self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnListClick, self.lstDynasty)
 		self.Bind(wx.EVT_LIST_COL_CLICK, self.OnListColumnClick, self.lstFate)
 		self.Bind(wx.EVT_LIST_COL_CLICK, self.OnListColumnClick, self.lstDynasty)
+		self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnListActivate, self.lstFate)
+		self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnListActivate, self.lstDynasty)
 
 		self.SetSizer(sizer2)
 
@@ -334,6 +336,13 @@ class DeckPanel(wx.Panel):
 					widget = self.lstFate
 			self.ListAddCard(widget, card, len(self.cardMap), num)
 			self.cardMap.append(cdid)
+
+	def OnListActivate(self, event):
+		try:
+			wx.PostEvent(self, RemoveCardEvent(cdid=self.lastCardId, num=1))
+		except AttributeError:
+			return
+		self.Remove(self.lastCardId, 1)
 
 	def OnListClick(self, event):
 		evtobj = event.GetEventObject()
@@ -442,12 +451,15 @@ class FilterPanel(wx.Panel):
 
 		self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnListClick, self.lstInPlay)
 		self.Bind(wx.EVT_LIST_COL_CLICK, self.OnListColumnClick, self.lstInPlay)
+		self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnListActivate, self.lstInPlay)
 
 		panelsizer.Add(self.lstInPlay, 1, wx.EXPAND|wx.ALL, 5)
 		self.SetSizer(panelsizer)
 
 		self.cardMap = []
 
+	def OnListActivate(self,event):
+		wx.FindWindowById(ID_DECK_LIST_PANEL).OnButtonRemoveFromPlay(event)
 
 	def OnListColumnClick(self, event):
 		wx.FindWindowById(ID_DECK_LIST_PANEL).OnListColumnClick(event)
