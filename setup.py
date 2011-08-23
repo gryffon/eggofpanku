@@ -205,7 +205,7 @@ setup(
 )
 
 nsisfiles = [
-	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR71.dll', 'msvcp71.dll', 'gdiplus.dll', 'python25.dll',
+	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'msvcp90.dll', 'gdiplus.dll', 'python25.dll',
 		   'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe',
 		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt', 'filters.xml','updates.xml']),
 	('decks', deckfiles),
@@ -217,7 +217,7 @@ nsisfiles = [
 ]
 
 # Copy additional DLLs
-for f in ('msvcp71.dll', 'gdiplus.dll', 'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe'):
+for f in ('msvcp90.dll', 'msvcr90.dll', 'gdiplus.dll', 'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe'):
 	shutil.copy(f, 'dist')
 
 # UPX executables
@@ -248,7 +248,7 @@ except:
 
 # Copy files
 srcfiles = [
-	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcp71.dll','DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe']),
+	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcr90.dll','msvcp90.dll','DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images/cards', cardimagefiles),
