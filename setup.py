@@ -195,7 +195,7 @@ setup(
 		},
 	},
 	data_files=[
-		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updates.xml','eggupdater.exe','copyninja.exe']),
+		('.', ['README', 'LICENSE', 'CHANGES', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updates.xml','eggupdater.exe','copyninja.exe']),
 		('dlls',['DataHandler.dll','Ionic.Zip.dll','UpdaterClasses.dll'])
 		('decks', deckfiles),
 		('images', imagefiles),
@@ -207,7 +207,7 @@ setup(
 
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python25.dll', 'eggupdater.exe','copyninja.exe',
-		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt', 'filters.xml','updates.xml']),
+		'tokens.dat', 'markers.dat', 'sets.dat', 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']),
 	('dlls',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',])
 	('decks', deckfiles),
 	('images', imagefiles),
@@ -249,7 +249,7 @@ except:
 
 # Copy files
 srcfiles = [
-	('.', glob.glob('*.py') + glob.glob('*.ico') + ['readme.txt', 'license.txt','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcr90.dll','msvcp90.dll','DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe']),
+	('.', glob.glob('*.py') + glob.glob('*.ico') + ['README', 'LICENSE', 'CHANGES','tokens.dat','markers.dat','sets.dat','installer_image.bmp','gdiplus.dll','msvcr90.dll','msvcp90.dll','DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images/cards', cardimagefiles),
