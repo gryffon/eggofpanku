@@ -37,6 +37,10 @@
 ehthumbs.db
 Thumbs.db
 
-#Sublime Project Files
+#Project Specifc Files
+######################
 *.sublime-project
 *.sublime-workspace
+cards.db
+settings.xml
+cards-emperor.xml
