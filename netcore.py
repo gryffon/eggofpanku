@@ -105,8 +105,8 @@ class ServerGameState(game.GameState):
 		keepcard = self.AddCard(borderKeep)
 		p.zones[game.ZONE_DUMMY].PutTop(keepcard)
 		
-		bambooHarvetsters= self.FindCardByName('Bamboo Harvesters')	
-		bamboocard = self.AddCard(bambooHarvetsters)
+		bambooHarvesters= self.FindCardByName('Bamboo Harvesters')	
+		bamboocard = self.AddCard(bambooHarvesters)
 		p.zones[game.ZONE_DUMMY].PutTop(bamboocard)
 
 		# Submit cards, too.
