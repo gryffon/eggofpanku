@@ -96,10 +96,7 @@ News & Changes
 
   2008-Oct-8 Egg of P'an Ku 0.8.2
 
-	* Markers were added to the game. Like Tokens, you can put attach these to a
-	card to show value changes. Unlike tokens, the markers are removed when a 
-	player unbows all his cards (signalling the start of a turn), or they can be
-	removed by the "remove markers" menu item and buttons
+	* Markers were added to the game. Like Tokens, you can put attach these to a card to show value changes. Unlike tokens, the markers are removed when a player unbows all his cards (signalling the start of a turn), or they can be removed by the "remove markers" menu item and buttons
 	* Added Marker images
 	* Added a toolbar item to "remove all markers" from all cards in play on a players side.
 	* Straighten all now removes all markers from a players side as well.
@@ -107,36 +104,27 @@ News & Changes
 
   2008-Jun-4 Egg of P'an Ku 0.8.0
 
-    * They playfield is now split into compartments, one for each player.
-    Playfields belonging to other players are rotated 180 degrees.
+    * They playfield is now split into compartments, one for each player. Playfields belonging to other players are rotated 180 degrees.
     * It is now possible to look at other players' discard piles.
     * Playfields can be zoomed with the scroll wheel.
     * A toolbar with common game actions has been added to the client.
     * The playfield background can be customized with colors and images.
     * A bug with changing control of cards was fixed.
     * Holding cards can now be created.
-    * It is now possible to customize what card types are eligible for
-      attaching cards to.
-    * Hovering over cards in a playfield now displays a tooltip with some
-      additional information.
+    * It is now possible to customize what card types are eligible for attaching cards to.
+    * Hovering over cards in a playfield now displays a tooltip with some additional information.
     * The deck editor how has a "recent decks" section in the File menu.
     * The (first) local network address is now shown when a server is started.
 
   2008-May-24 Egg of P'an Ku 0.7.0
     
-    * It is now possible to attach cards to other cards. Simply drag a card
-      onto another card and they will snap onto each other and will move as
-      a unit. It's only possible to do this with a card that doesn't already
-      have attached cards (because that is just silly).
+    * It is now possible to attach cards to other cards. Simply drag a card onto another card and they will snap onto each other and will move as a unit. It's only possible to do this with a card that doesn't already have attached cards (because that is just silly).
     * A preferences dialog has been added to the main client where a number
       of configuration options can be changed.
-    * If a cards.xml file is defined, and the local database is older, it
-      will now be automatically re-imported on program start.
-    * The dynasty and fate decks were switched around in the main window,
-      so that they are in the same order as in real life.
+    * If a cards.xml file is defined, and the local database is older, it will now be automatically re-imported on program start.
+    * The dynasty and fate decks were switched around in the main window, so that they are in the same order as in real life.
     * Rulings are now available along with card text for cards that have them.
-      NOTE: If upgrading from an older version, the card database needs to be
-      reloaded before this feature will work.
+      NOTE: If upgrading from an older version, the card database needs to be reloaded before this feature will work.
     * Format legality is now shown along with card text.
     * Alt-drag now works properly for focus pools.
     * Added the ability to sort card lists by card attributes in the
@@ -146,12 +134,10 @@ News & Changes
       lists to other media, such as forums.
     * Removing 3 of one card when you had less than 3 already no longer
       results in having a negative number of cards.
-    * A few files were renamed and a sets.dat file was added that contains a
-      list of card sets.
+    * A few files were renamed and a sets.dat file was added that contains a list of card sets.
     * Fixed a bug that prematurely closed deck inspection windows when another
       player shuffled his or her same deck.
-    * Fixed a bug that might result in conflicting network protocol versions
-      not being properly detected.
+    * Fixed a bug that might result in conflicting network protocol versions not being properly detected.
     * Miscellaneous typos were fixed.
     * Fixed inappropriate messages shown when moving cards out of decks.
     
@@ -165,21 +151,17 @@ News & Changes
     * Filter interface changed slightly and a few new filters added.
     * Card name and text filters now accept regular expressions.
     * New chat widget with clickable card names added.
-    * Added a sticky-move option (ctrl-drag or middle-mouse-drag) that moves
-      all overlapping cards in a pile in play at once.
+    * Added a sticky-move option (ctrl-drag or middle-mouse-drag) that moves all overlapping cards in a pile in play at once.
     * Added menu commands for revealing cards from your fate hand.
-    * Changed "drag face down" to shift-drag rather than right-drag. This
-      behavior is now standard throughout the client.
+    * Changed "drag face down" to shift-drag rather than right-drag. This behavior is now standard throughout the client.
     * Made it possible to drag cards to the bottoms of zones by alt-dragging.
-    * For dragging from decks, ctrl-drag now moves the bottom card in that
-      pile rather than the top card.
+    * For dragging from decks, ctrl-drag now moves the bottom card in that pile rather than the top card.
     * When searching through decks, Legacy holdings are now specially marked.
     * Added protocol verification to the network handshake process.
     * Added better save confirmation dialogs for the deck editor.
     * Double-clicking cards in the deck editor now adds them to the deck.
     * Fixed (hopefully) a bug where chat lines could get cut off.
-    * Fixed incorrect messages shown when moving fate cards into a player's
-      hand when the card was coming from a deck.
+    * Fixed incorrect messages shown when moving fate cards into a player's hand when the card was coming from a deck.
     * Fixed errors arising from cards not being in the local database.
     * The exit menu option actually works now.
     
@@ -187,13 +169,11 @@ News & Changes
 
     * Added the Imperial Favor to the game.
     * Made it possible to give control of cards in play to other players.
-    * Made it possible to start a new game without restarting the client and
-      added a confirmation dialog for this.
+    * Made it possible to start a new game without restarting the client and added a confirmation dialog for this.
     * You can now leave the game after submitting a deck.
     * Made it so only one card can be selected at a time in the deck editor.
     * Added filters for gold cost to the deck editor.
-    * A bug where focus pools would end up with cards from the opponent's pool
-      in them was fixed.
+    * A bug where focus pools would end up with cards from the opponent's pool in them was fixed.
     * A deck editor bug where window title wouldn't update properly was fixed.
     * A bug where it was possible to start a game with no players was fixed.
 
@@ -203,13 +183,11 @@ News & Changes
     * A new focus pool zone has been created.
     * A full complement of generic card images has been added.
     * Card previews now show card type in addition to other information.
-    * Context menu options were added for rearranging the Z-order of cards
-      while in play.
+    * Context menu options were added for rearranging the Z-order of cards while in play.
     * Chatting now flashes the play window if not active.
     * Rearranging cards in your hand was disabled.
     * A bug where spells were not listed as fate cards was fixed.
-    * A bug that made it possible to hide the playfield forever with the main
-      splitter window was fixed.
+    * A bug that made it possible to hide the playfield forever with the main splitter window was fixed.
     * Dragging bowed cards in play now shows the correct marker.
   
   2008-Apr-9 Egg of P'an Ku  0.3.0
