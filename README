@@ -1,0 +1,212 @@
+
+
+                    EGG OF P'AN KU 0.9.42 (2010-August-20)
+
+          an unofficial Legend of the Five Rings online tabletop
+
+
+Table of Contents
+
+  - Overview
+  - License
+  - Quickstart
+  - Playing the Game
+  - Communicating
+  - Card Database
+  - Using Image Packs
+  - Technical Details
+  - News & Changes
+
+
+
+Overview
+
+  Egg of P'an Ku is a program for playing the Legend of the Five Rings collectible card game online. It acts as a virtual tabletop to which people can connect and play the game using digital representations of cards.
+
+  Egg of P'an Ku does not enforce any game rules, but merely takes care of the tabletop itself, cards in and out of play, tokens, and players. Other programs that function similarly are The Game or Gempukku for Legend of the Five Rings, and Apprentice for Magic: the Gathering.
+
+  This product is not in any way endorsed by or otherwise associated with the Alderac Entertainment Group or any of their affiliates.
+
+License
+
+  Egg of P'an Ku is copyright (C) 2008 Peter C O Johansson.
+  Paige Watson has been updating the source code from release version 0.8.0 onward. 
+  Ryan Karetas has forked the code as of Dec 2013(latest release 0.9.42)
+  Source code is currently available at https://github.com/gryffon/eggofpanku
+
+  It is Free Software, licensed under the GNU General Public License (version 2). 
+  You are free to use, copy and modify this program subject to certain restrictions.
+  For more information, see license.txt.
+
+  
+
+Installation
+
+Developers ONLY - Please see /docs/Developer Installation Guide.txt for instructions on how to install the source and deveopment resources.
+
+Download the installation executable file
+
+  Latest stable release is still available from the Egg of P'an Ku Google Code site (http://code.google.com/p/eopk).
+  
+
+  The Egg of P'an Ku application is currently only supported on MS Windows.
+
+You need to install a card database (cards.xml). You can download the latest version from the downloads page at Kamisasori (http://www.Kamisasori.net)
+  
+  There are currently two versions, a "Emperor only" version and a "complete" version. "Emperor only" is the reccomended version unless you are playing with legacy cards.
+
+  Unzip the cards.zip into a folder that you can find later.
+
+  **To update your local database (when new cards are released, say), simply replace cards.xml and delete cards.db from the installation directory. The next time you run Egg of P'an Ku, the database will be reloaded.
+  
+
+Run the installer
+
+  After the installer runs, it will ask you to start the application. When you first start the application, it will ask you to point to the cards.xml file.
+
+
+(optional)Download the image packs
+
+  You will probably also want to download the image packs, at least for the edition that you are playing, You can find these on the
+  Kamisasori (http://www.Kamisasori.net) web site. These image packs should be unzipped into the images/cards directory after installing the application.
+
+  For more on the image packs, see "Using Image Packs" below.
+
+
+--------------------------------------------------------------------------------
+ 
+
+Setting up the application
+
+Settings and Properties
+
+  One you've installed the application and started it up, you'll want to look at the Settings dialog to configure the application to suit your play style. You can find this by going to the File\Preferences menu item.
+
+  There are three tabs that will let you customize your game table and play style.
+
+  General
+
+  This tab allows you to change the Player Name. The player name is the name that will appear in the chat box and in the player list, when playing against another person.
+
+  Database/Images
+
+  Database Settings will tell you when the database was made, where it came from and the file path on your computer. You can choose to "Reload" it, if you have downloaded a newer version, or you can choose to change the file you're using by choosing the "Change Database" button. 
+
+  Image Pack is where the application looks for the card images.
+  
+  Change the directory path by editing the text box.  The path should be relative to the application.
+
+  Playfield
+
+  Canvas (or table top) background can be changed by choosing the background setting along with the color.
+  You can also choose a background image by checking the box and choosing the file.
+
+  Attachments allows you to select which cards can have other cards attached. By default, only Personalities can have attached card, but for ease of use, you may want to allow holdings and/or strongholds to have other cards attached. 
+
+  **Don't confuse the ability to attach cards as a rules change. 
+  I attach holdings to other holdings and events to strongholds to save space on the table top.
+
+ Once you are done with setting up the application, you're ready to begin playing.
+
+
+Hosting a table
+
+  To play a game, you must first start a table server.
+
+  Go to the File menu and click "Host Table".
+
+  You will automatically connect to your own table (and so can others if you give them your hostname).
+
+  If you wish to connect to another player hosted game, go to the File 
+  Menu and click "Connect".
+
+  Notice that when you start the host server, the chat area shows your IP address. This is the address that you want to give to any opponent that is trying to connect to your host.  Note that the port is included at the end of the IP address.  You must be on the same port, which by default is set to 18072.
+
+  No game has been started yet, and there are no players; only connected clients.
+  **This is like your local playgroup sitting around the table, but no one has gotten their decks out of their bags yet.
+
+
+--------------------------------------------------------------------------------
+
+ 
+
+Starting a game
+  To start a game, clients must first join the game. Go to the File menu again, and select "Join Game". 
+  
+  You will be prompted to select a deck to play (a few are shipped with Egg of P'an Ku, but of course you'll want to compose your own).
+
+  If you want to test your deck by playing solo, you can just start the game. If not, once all clients interested in joining have done so, the host can start the game.
+
+  Again in the File menu, select "Start Game".
+  
+  The server will set up the game, fetch each player's stronghold, and set starting honor as appropriate.
+
+
+--------------------------------------------------------------------------------
+
+ 
+
+Setting up the Playfield
+  As mentioned above, your stronghold should be on the playfield, but not much else.
+
+  Do these in any order:
+
+  - Go to the Fate Deck menu and select "Draw Serveral" (<ctrl> + <shift> + D) or use the icon and draw 5 cards.
+
+  - If you are going second, right click on your Dynasty Deck and choose "Look Through" (or select "Search" from the Dynasty Deck menu) and drag a legacy holding onto the playfield. Double click it to bow it.
+
+  - Drag 4 Dynasty cards from your Dynasty Deck pile to the playfield for your provinces.
+
+Now your ready to start....
+
+Enjoy!
+
+
+Other helpful items:
+
+Communicating
+
+  Below the chat log is an entry box. You can use that to talk to your fellow players at the table.
+  
+  You can also use it to change your name; type '/name desiredname' to change your name. This change is persistent and saved to your settings, so you will not need to do it again next time you play.
+
+
+
+Using Image Packs
+
+  Egg of P'an Ku supports the same kind of image databases used by The Game and Gempukku v3 (although it also provides generic card images for any missing card images).
+  
+  To use image packs, simply extract them into the images/cards/ subdirectory in your installation directory, making sure to preserve their own directory names. In the end, the structure should look like this:
+  
+  Installation directory
+  - EoPK.exe
+  - readme.txt
+  - images/
+    - cards/
+      - STS/
+        - STS001.jpg
+        - STS002.jpg
+          ...
+        HV/
+        - HV001.jpg
+        - HV002.jpg
+          ...
+        SE/
+        - SE001.jpg
+        - SE002.jpg
+          ...
+
+  And so forth, for any editions for which you have image packs. They will be automatically used by the program as appropriate.
+
+  A good place to get image packs is Kamisasori no Kaisho, located at http://www.kamisasori.net/
+
+
+
+Technical details
+
+  Egg of P'an Ku is written in Python 2.5. It primarily uses wxPython 2.8 for user interface management, simplejson for network message serialization, pyOpenGL (through wx) for playfield rendering, PIL and wx for image loading,
+  and various out-of-the-box Python modules for network management, card database storage, etc.
+  
+  If you are using a Win32 executable version of Egg of P'an Ku, it was packaged using py2exe.
+  
+  The default server port is 18072, so if you are behind a firewall and want to host games, that's the port you need to forward/open.
