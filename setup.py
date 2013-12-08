@@ -195,8 +195,9 @@ setup(
 		},
 	},
 	data_files=[
-		('.', ['README', 'LICENSE', 'CHANGES', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updates.xml','eggupdater.exe','copyninja.exe']),
+		('.', ['README', 'LICENSE', 'CHANGES', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updates.xml']),
 		('dlls',['DataHandler.dll','Ionic.Zip.dll','UpdaterClasses.dll'])
+		('scripts',['eggupdater.exe','copyninja.exe'])
 		('decks', deckfiles),
 		('images', imagefiles),
 		('images\\cards', cardimagefiles),
@@ -206,9 +207,10 @@ setup(
 )
 
 nsisfiles = [
-	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python25.dll', 'eggupdater.exe','copyninja.exe',
-		'tokens.dat', 'markers.dat', 'sets.dat', 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']),
+	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python25.dll', 'tokens.dat', 'markers.dat', 
+			'sets.dat', 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']), 
 	('dlls',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',])
+	('scripts',['eggupdater.exe','copyninja.exe'])
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images\\cards', cardimagefiles),
