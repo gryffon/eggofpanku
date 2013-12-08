@@ -1,6 +1,6 @@
 
 
-                    EGG OF P'AN KU 0.9.42 (2010-August-20)
+                    EGG OF P'AN KU 
 
           an unofficial Legend of the Five Rings online tabletop
 
@@ -21,6 +21,8 @@ Table of Contents
 
 Overview
 
+  Latest Release: 0.9.42 (2010-August-20)
+
   Egg of P'an Ku is a program for playing the Legend of the Five Rings collectible card game online. It acts as a virtual tabletop to which people can connect and play the game using digital representations of cards.
 
   Egg of P'an Ku does not enforce any game rules, but merely takes care of the tabletop itself, cards in and out of play, tokens, and players. Other programs that function similarly are The Game or Gempukku for Legend of the Five Rings, and Apprentice for Magic: the Gathering.
@@ -31,12 +33,11 @@ License
 
   Egg of P'an Ku is copyright (C) 2008 Peter C O Johansson.
   Paige Watson has been updating the source code from release version 0.8.0 onward. 
-  Ryan Karetas has forked the code as of Dec 2013(latest release 0.9.42)
+  Ryan Karetas has forked the code as of Dec 2013.
+
   Source code is currently available at https://github.com/gryffon/eggofpanku
 
-  It is Free Software, licensed under the GNU General Public License (version 2). 
-  You are free to use, copy and modify this program subject to certain restrictions.
-  For more information, see license.txt.
+  It is Free Software, licensed under the GNU General Public License (version 2). You are free to use, copy and modify this program subject to certain restrictions. For more information, see license.txt.
 
   
 
@@ -51,7 +52,7 @@ Download the installation executable file
 
   The Egg of P'an Ku application is currently only supported on MS Windows.
 
-You need to install a card database (cards.xml). You can download the latest version from the downloads page at Kamisasori (http://www.Kamisasori.net)
+You need to install a card database (cards.xml). You can download the latest version from the downloads page at Kamisasori (http://www.kamisasori.net)
   
   There are currently two versions, a "Emperor only" version and a "complete" version. "Emperor only" is the reccomended version unless you are playing with legacy cards.
 
@@ -68,7 +69,7 @@ Run the installer
 (optional)Download the image packs
 
   You will probably also want to download the image packs, at least for the edition that you are playing, You can find these on the
-  Kamisasori (http://www.Kamisasori.net) web site. These image packs should be unzipped into the images/cards directory after installing the application.
+  Kamisasori (http://www.kamisasori.net) web site. These image packs should be unzipped into the images/cards directory after installing the application.
 
   For more on the image packs, see "Using Image Packs" below.
 
