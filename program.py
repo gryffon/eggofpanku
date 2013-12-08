@@ -23,7 +23,7 @@ import os
 import socket
 import wx
 import logging
-import EoPK
+import epok
 import dbimport
 from guids import *
 
@@ -41,10 +41,10 @@ if __name__ == "__main__":
 	try:
 		app = wx.PySimpleApp()
 		if dbimport.EnsureExists():
-			frame = EoPK.MainWindow(None, ID_MAIN_WINDOW, EOPK_APPNAME)
+			frame = epok.MainWindow(None, ID_MAIN_WINDOW, EOPK_APPNAME)
 			app.MainLoop()
 	finally:
-		if not EoPK.MainWindow.LogFile is None:
-			EoPK.MainWindow.LogFile.close()
-			EoPK.MainWindow.LogFile = None
+		if not epok.MainWindow.LogFile is None:
+			epok.MainWindow.LogFile.close()
+			epok.MainWindow.LogFile = None
 		del app
