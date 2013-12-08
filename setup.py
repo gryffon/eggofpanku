@@ -195,7 +195,8 @@ setup(
 		},
 	},
 	data_files=[
-		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updates.xml','DataHandler.dll','eggupdater.exe','Ionic.Zip.dll','copyninja.exe','UpdaterClasses.dll']),
+		('.', ['readme.txt', 'license.txt', 'tokens.dat','markers.dat', 'sets.dat', 'filters.xml','updates.xml','eggupdater.exe','copyninja.exe']),
+		('dlls',['DataHandler.dll','Ionic.Zip.dll','UpdaterClasses.dll'])
 		('decks', deckfiles),
 		('images', imagefiles),
 		('images\\cards', cardimagefiles),
@@ -205,9 +206,9 @@ setup(
 )
 
 nsisfiles = [
-	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'msvcp90.dll', 'gdiplus.dll', 'python25.dll',
-		   'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe',
+	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python25.dll', 'eggupdater.exe','copyninja.exe',
 		'tokens.dat', 'markers.dat', 'sets.dat', 'readme.txt', 'license.txt', 'filters.xml','updates.xml']),
+	('dlls',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',])
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images\\cards', cardimagefiles),
@@ -217,7 +218,7 @@ nsisfiles = [
 ]
 
 # Copy additional DLLs
-for f in ('msvcp90.dll', 'msvcr90.dll', 'gdiplus.dll', 'DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe'):
+for f in ('dlls/msvcp90.dll', 'dlls/msvcr90.dll', 'dlls/gdiplus.dll', 'dlls/DataHandler.dll','eggupdater.exe','dlls/UpdaterClasses.dll','dlls/Ionic.Zip.dll','copyninja.exe'):
 	shutil.copy(f, 'dist')
 
 # UPX executables
