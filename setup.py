@@ -65,7 +65,7 @@ SetCompressor lzma
 !define MUI_WELCOMEFINISHPAGE_BITMAP "..\\installer_image.bmp"
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "license.txt"
+!insertmacro MUI_PAGE_LICENSE "LICENSE"
 
 !insertmacro MUI_PAGE_DIRECTORY
 
