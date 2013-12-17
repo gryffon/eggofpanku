@@ -15,9 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
-from dumbdbm import _Database
 """Card database module for Egg of P'an Ku."""
 
+from dumbdbm import _Database
 import xml.parsers.expat
 import os
 import cPickle
