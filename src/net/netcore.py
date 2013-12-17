@@ -25,9 +25,10 @@ import sys
 import threading
 import types
 import simplejson
-
-import game
 import random
+
+#Local Imports
+import game
 import canvas
 import playfield
 

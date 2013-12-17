@@ -17,6 +17,8 @@
 # 02110-1301, USA.
 """Deck module for Egg of P'an Ku."""
 import xml.parsers.expat
+
+#Local Imports
 import database
 from enums import Enumeration
 

@@ -17,6 +17,8 @@
 # 02110-1301, USA.
 """Deck panels."""
 import wx
+
+#Local Import
 import game
 import dragdrop
 from guids import *

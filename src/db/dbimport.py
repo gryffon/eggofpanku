@@ -19,8 +19,9 @@
 import wx
 import os.path
 
+#Local Imports
 import database
-#from settings import settings
+
 from xmlsettings import settings
 
 def EnsureExists():

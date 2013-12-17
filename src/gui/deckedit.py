@@ -17,22 +17,18 @@
 # 02110-1301, USA.
 """Deck editor module for Egg of P'an Ku."""
 
-#import wx
 import wx.lib.newevent
+import sys
+import StringIO
+
+#Local Import
 import preview
 import database
 import deck
-#import re
-import sys
-import StringIO
-#import win32clipboard
-
-#from enums import Enumeration
-
-#from settings import settings
-from xmlsettings import settings
 import dbimport
 import card_filters
+
+from xmlsettings import settings
 
 MAIN_TITLE = 'Egg of P\'an Ku Deck Editor'
 FILE_DIALOG_WILDCARD = 'Egg of P\'an Ku deck files (*.l5d)|*.l5d|All files (*.*)|*.*'

@@ -21,11 +21,12 @@ from OpenGL.GL import *
 from PIL import Image
 import random
 
+#Local Imports
 import canvas
 import game
 import database
 import dragdrop
-#from settings import settings
+
 from xmlsettings import settings
 from guids import *
 

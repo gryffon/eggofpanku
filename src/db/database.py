@@ -16,16 +16,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 from dumbdbm import _Database
-import dbimport
 """Card database module for Egg of P'an Ku."""
 
 import xml.parsers.expat
 import os
 import cPickle
+import base64
+
+
+#Local Imports
+import dbimport
 import odict
 import xmlfilters
-#import wx
-import base64
+
 from xmlsettings import settings
 
 cardAttrs = ("name", "force", "chi", "text", "cost", "focus", \

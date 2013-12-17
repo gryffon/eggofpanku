@@ -23,6 +23,8 @@ import os
 import socket
 import wx
 import logging
+
+#Local Imports
 import eopk
 import dbimport
 from guids import *

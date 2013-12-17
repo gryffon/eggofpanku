@@ -20,9 +20,10 @@
 import wx
 import string
 
+#Local Import
 import database
 import dbimport
-#from settings import settings
+
 from xmlsettings import settings
 
 

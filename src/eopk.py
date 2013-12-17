@@ -18,9 +18,6 @@
 """Egg of Pan Ku module."""
 
 
-from xmlsettings import settings
-#from settings import settings
-
 import cPickle
 import sys
 import os
@@ -28,6 +25,10 @@ import webbrowser
 import socket
 import wx
 import logging
+import subprocess
+
+
+#Local Imports
 import database
 import canvas
 import playfield
@@ -40,8 +41,9 @@ import settings_ui
 import deckpanel
 import deckedit
 import dbimport
-import subprocess
 
+
+from xmlsettings import settings
 from guids import *
 
 logging.basicConfig(level=logging.DEBUG,

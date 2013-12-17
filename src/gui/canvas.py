@@ -27,10 +27,11 @@ from PIL import PngImagePlugin   # If not explictly imported, py2exe will fail
 from PIL import Image
 import random
 
+#Local Imports
 import game
 import database
 import dragdrop
-#from settings import settings
+
 from xmlsettings import settings
 
 

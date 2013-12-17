@@ -20,6 +20,7 @@ import wx
 import wx.html
 from OpenGL.GL import *
 
+#Local Imports
 import canvas
 import database
 

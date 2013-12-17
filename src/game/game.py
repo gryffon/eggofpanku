@@ -17,6 +17,7 @@
 # 02110-1301, USA.
 """Game state module for Egg of P'an Ku."""
 
+#Local Imports
 import database
 
 ZONE_DUMMY = 0            # Dummy zone
