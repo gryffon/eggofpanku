@@ -29,22 +29,16 @@ import subprocess
 
 
 #Local Imports
-import database
-import canvas
-import playfield
-import game
-import netcore
-import dragdrop
-import deck
-import preview
-import settings_ui
-import deckpanel
-import deckedit
-import dbimport
+from db import database, dbimport
+from gui import canvas, playfield, dragdrop, preview
+from gui import settings_ui, deckpanel, deckedit
+from game import game, deck
+from net import netcore
 
 
-from xmlsettings import settings
-from guids import *
+
+from settings.xmlsettings import settings
+from gui.guids import *
 
 logging.basicConfig(level=logging.DEBUG,
 					format='%(asctime)s %(levelname)s %(message)s',

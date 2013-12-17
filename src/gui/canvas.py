@@ -28,11 +28,11 @@ from PIL import Image
 import random
 
 #Local Imports
-import game
-import database
+from game import game
+from db import database
 import dragdrop
 
-from xmlsettings import settings
+from settings.xmlsettings import settings
 
 
 CANVAS_CARD_W = 10.5

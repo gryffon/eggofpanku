@@ -19,7 +19,7 @@
 import wx
 
 #Local Import
-import game
+from game import game
 import dragdrop
 from guids import *
 

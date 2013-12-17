@@ -23,11 +23,11 @@ import random
 
 #Local Imports
 import canvas
-import game
-import database
+from game import game
+from db import database
 import dragdrop
 
-from xmlsettings import settings
+from settings.xmlsettings import settings
 from guids import *
 
 

@@ -19,8 +19,8 @@
 import xml.parsers.expat
 
 #Local Imports
-import database
-from enums import Enumeration
+from db import database
+from lib.enums import Enumeration
 
 OUTPUT_TYPES = Enumeration("OUTPUT_TYPES",['Text','HTML','BBCode'])
 

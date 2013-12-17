@@ -18,7 +18,7 @@
 """Game state module for Egg of P'an Ku."""
 
 #Local Imports
-import database
+from db import database
 
 ZONE_DUMMY = 0            # Dummy zone
 ZONE_DECK_DYNASTY = 1     # Dynasty deck

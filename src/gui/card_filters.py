@@ -21,7 +21,7 @@ import wx.lib.newevent
 import re
 
 #Local Imports
-import database
+from db import database
 
 
 # Window-related things

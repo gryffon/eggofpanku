@@ -26,8 +26,8 @@ import logging
 
 #Local Imports
 import eopk
-import dbimport
-from guids import *
+from db import dbimport
+from gui.guids import *
 
 
 if __name__ == "__main__":

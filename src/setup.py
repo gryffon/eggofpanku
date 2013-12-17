@@ -11,7 +11,7 @@ import tarfile
 import shutil
 
 #Local Imports
-import guids
+from gui import guids
 
 
 

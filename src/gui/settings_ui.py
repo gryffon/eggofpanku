@@ -21,10 +21,9 @@ import wx
 import string
 
 #Local Import
-import database
-import dbimport
+from db import database, dbimport
 
-from xmlsettings import settings
+from settings.xmlsettings import settings
 
 
 class GeneralSettings(wx.Panel):

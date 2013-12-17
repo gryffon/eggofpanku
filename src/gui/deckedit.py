@@ -23,12 +23,11 @@ import StringIO
 
 #Local Import
 import preview
-import database
+from db import database, dbimport
 import deck
-import dbimport
 import card_filters
 
-from xmlsettings import settings
+from settings.xmlsettings import settings
 
 MAIN_TITLE = 'Egg of P\'an Ku Deck Editor'
 FILE_DIALOG_WILDCARD = 'Egg of P\'an Ku deck files (*.l5d)|*.l5d|All files (*.*)|*.*'

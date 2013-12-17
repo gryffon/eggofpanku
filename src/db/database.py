@@ -26,10 +26,10 @@ import base64
 
 #Local Imports
 import dbimport
-import odict
-import xmlfilters
+from lib import odict
+from settings import xmlfilters
 
-from xmlsettings import settings
+from settings.xmlsettings import settings
 
 cardAttrs = ("name", "force", "chi", "text", "cost", "focus", \
 	"personal_honor", "honor_req", "starting_honor", \

@@ -28,11 +28,11 @@ import simplejson
 import random
 
 #Local Imports
-import game
-import canvas
-import playfield
+from game import game
+from gui import canvas, playfield
 
-from xmlsettings import settings
+
+from settings.xmlsettings import settings
 
 
 DEFAULT_PORT = 18072

@@ -22,7 +22,7 @@ from OpenGL.GL import *
 
 #Local Imports
 import canvas
-import database
+from db import database
 
 
 # More interesting names for the various card types.

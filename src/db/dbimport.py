@@ -22,7 +22,7 @@ import os.path
 #Local Imports
 import database
 
-from xmlsettings import settings
+from settings.xmlsettings import settings
 
 def EnsureExists():
 	"""Ensure that the database is loaded by prompting the user to load
