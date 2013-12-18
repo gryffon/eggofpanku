@@ -19,6 +19,7 @@
 
 import wx.lib.newevent
 import sys
+import os
 import StringIO
 
 #Local Import

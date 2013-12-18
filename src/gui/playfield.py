@@ -638,9 +638,9 @@ class Playfield(wx.Panel):
 		
 		# Icons
 		self.discardFate = MiniPile(self.infoPanel, player=None, zid=game.ZONE_DISCARD_FATE, name='Fate Discard Pile',
-			bitmap=wx.Bitmap('images/tiny_fate.png'))
+			bitmap=wx.Bitmap(os.path.join(settings.install_dir, 'images/tiny_fate.png')))
 		self.discardDynasty = MiniPile(self.infoPanel, player=None, zid=game.ZONE_DISCARD_DYNASTY, name='Dynasty Discard Pile',
-			bitmap=wx.Bitmap('images/tiny_dynasty.png'))
+			bitmap=wx.Bitmap(os.path.join(settings.install_dir, 'images/tiny_dynasty.png')))
 		wx.EVT_MENU(self.discardFate, ID_MNU_PILEPOPUP_SEARCH, self.OnFateSearch)
 		wx.EVT_MENU(self.discardDynasty, ID_MNU_PILEPOPUP_SEARCH, self.OnDynastySearch)
 		
