@@ -27,9 +27,10 @@ import base64
 #Local Imports
 import dbimport
 from lib import odict
-from settings import xmlfilters
+
 
 from settings.xmlsettings import settings
+from settings import xmlfilters
 
 cardAttrs = ("name", "force", "chi", "text", "cost", "focus", \
 	"personal_honor", "honor_req", "starting_honor", \
@@ -191,7 +192,7 @@ class XMLImporter:
 
 		# Finally, dump it.
 		if outfile is None:
-			outfile = file(LOCALDATABASE, mode='wb')
+			outfile = file(os.path.join(settings.install_dir, LOCALDATABASE), mode='wb')
 		cPickle.dump((self.filename, self.date, self.cards), outfile, cPickle.HIGHEST_PROTOCOL)
 
 	def parseStartElem(self, name, attrs):
@@ -244,7 +245,7 @@ class CardDB:
 		self.cardNames = {}
 		self.createIndex = 1  # Next available index for created cards
 
-		(self.filename, self.date, self.cards) = cPickle.load(file(LOCALDATABASE, mode='rb'))
+		(self.filename, self.date, self.cards) = cPickle.load(file(os.path.join(settings.install_dir, LOCALDATABASE), mode='rb'))
 		if self.filename != settings.cardsource:
 			raise NameError, 'Cards.db was created from a different xml file.  Please reload the card database.'
 
@@ -293,7 +294,7 @@ class CardDB:
 
 def reset():
 	global _database
-	os.remove(LOCALDATABASE)
+	os.remove(os.path.join(settings.install_dir, LOCALDATABASE))
 	importer = XMLImporter(settings.cardsource)
 	importer.convert()
 	_database = CardDB()

@@ -38,7 +38,6 @@ if __name__ == "__main__":
 	except ImportError:
 		pass
 
-	
 
 	try:
 		app = wx.PySimpleApp()

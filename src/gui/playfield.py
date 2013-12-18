@@ -20,6 +20,7 @@ import wx.lib.newevent
 from OpenGL.GL import *
 from PIL import Image
 import random
+import os
 
 #Local Imports
 import canvas
@@ -162,8 +163,8 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 		self.markerOffset = (0, 0)
 		self.attachMarker = None
 		
-		self.texBorderFrame = self.LoadTexture("images/border2.png")
-		self.texAttach = self.LoadTexture("images/border3.png")
+		self.texBorderFrame = self.LoadTexture(os.path.join(settings.install_dir, "images/border2.png"))
+		self.texAttach = self.LoadTexture(os.path.join(settings.install_dir, "images/border3.png"))
 		
 		wx.EVT_LEFT_DOWN(self, self.OnLeftMouseDown)
 		wx.EVT_LEFT_DCLICK(self, self.OnDoubleClick)

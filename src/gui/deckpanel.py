@@ -17,11 +17,13 @@
 # 02110-1301, USA.
 """Deck panels."""
 import wx
+import os
 
 #Local Import
 from game import game
 import dragdrop
 from guids import *
+from settings.xmlsettings import settings
 
 DeckDropCardEvent, EVT_DECK_DROP_CARD = wx.lib.newevent.NewEvent()
 
@@ -121,7 +123,7 @@ class DynastyDeckPanel(DeckPanel):
 	canShuffle = True
 	
 	def __init__(self, parent, id=wx.ID_ANY):
-		DeckPanel.__init__(self, parent, id, image='images/icon_dynasty.png', zname='Dynasty Deck', zid=game.ZONE_DECK_DYNASTY)
+		DeckPanel.__init__(self, parent, id, image=os.path.join(settings.install_dir, 'images/icon_dynasty.png'), zname='Dynasty Deck', zid=game.ZONE_DECK_DYNASTY)
 	
 	def CanHold(self, card):
 		return card.IsDynasty()
@@ -136,7 +138,7 @@ class DynastyDiscardPanel(DeckPanel):
 	dragFaceup = True
 	
 	def __init__(self, parent, id=wx.ID_ANY):
-		DeckPanel.__init__(self, parent, id, 'images/icon_dynasty_discard.png', zname='Dynasty Discard Pile', zid=game.ZONE_DISCARD_DYNASTY)
+		DeckPanel.__init__(self, parent, id, os.path.join(settings.install_dir, 'images/icon_dynasty_discard.png'), zname='Dynasty Discard Pile', zid=game.ZONE_DISCARD_DYNASTY)
 	
 	def CanHold(self, card):
 		return card.IsDynasty()
@@ -145,7 +147,7 @@ class FateDeckPanel(DeckPanel):
 	canShuffle = True
 	
 	def __init__(self, parent, id=wx.ID_ANY):
-		DeckPanel.__init__(self, parent, id, 'images/icon_fate.png', zname='Fate Deck', zid=game.ZONE_DECK_FATE)
+		DeckPanel.__init__(self, parent, id, os.path.join(settings.install_dir, 'images/icon_fate.png'), zname='Fate Deck', zid=game.ZONE_DECK_FATE)
 	
 	def CanHold(self, card):
 		return card.IsFate()
@@ -161,7 +163,7 @@ class FateDiscardPanel(DeckPanel):
 	dragFaceup = True
 	
 	def __init__(self, parent, id=wx.ID_ANY):
-		DeckPanel.__init__(self, parent, id, 'images/icon_fate_discard.png', zname='Fate Discard Pile', zid=game.ZONE_DISCARD_FATE)
+		DeckPanel.__init__(self, parent, id, os.path.join(settings.install_dir, 'images/icon_fate_discard.png'), zname='Fate Discard Pile', zid=game.ZONE_DISCARD_FATE)
 
 	def CanHold(self, card):
 		return card.IsFate()
@@ -171,7 +173,7 @@ class RemovedFromGamePanel(DeckPanel):
 	dragFaceup = True
 	
 	def __init__(self, parent, id=wx.ID_ANY):
-		DeckPanel.__init__(self, parent, id, 'images/icon_removed.png', zname='Removed-From-Game Zone', zid=game.ZONE_REMOVED)
+		DeckPanel.__init__(self, parent, id, os.path.join(settings.install_dir, 'images/icon_removed.png'), zname='Removed-From-Game Zone', zid=game.ZONE_REMOVED)
 
 	def CanHold(self, card):
 		return True

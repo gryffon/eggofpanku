@@ -26,6 +26,7 @@ from PIL import JpegImagePlugin  # If not explictly imported, py2exe will fail
 from PIL import PngImagePlugin   # If not explictly imported, py2exe will fail
 from PIL import Image
 import random
+import os
 
 #Local Imports
 from game import game
@@ -59,9 +60,9 @@ class L5RCanvas(GLCanvas):
 		
 		self.init = 0
 		self.SetCurrent()
-		self.texBorder = self.LoadTexture("images/border.png")
-		self.texFateBack = self.LoadTexture("images/fate_back.jpg")
-		self.texDynastyBack = self.LoadTexture("images/dynasty_back.jpg")
+		self.texBorder = self.LoadTexture(os.path.join(settings.install_dir, "images/border.png"))
+		self.texFateBack = self.LoadTexture(os.path.join(settings.install_dir, "images/fate_back.jpg"))
+		self.texDynastyBack = self.LoadTexture(os.path.join(settings.install_dir, "images/dynasty_back.jpg"))
 		self.texCard = {}
 		self.texGeneric = {}
 	
@@ -100,7 +101,7 @@ class L5RCanvas(GLCanvas):
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
 	
 	def LoadGeneric(self, type):
-		self.texGeneric[type] = self.LoadTexture('images/cards/generic_%s.jpg' % type)
+		self.texGeneric[type] = self.LoadTexture(os.path.join(settings.install_dir,'images/cards/generic_%s.jpg') % type)
 		return self.texGeneric[type]
 		
 	def DrawMarker(self, tex):

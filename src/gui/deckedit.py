@@ -24,7 +24,7 @@ import StringIO
 #Local Import
 import preview
 from db import database, dbimport
-import deck
+from game import deck
 import card_filters
 
 from settings.xmlsettings import settings
@@ -763,9 +763,9 @@ class MainWindow(wx.Frame):
 				import win32api
 				self.SetIcon(wx.Icon('deckedit.exe', wx.BITMAP_TYPE_ICO))
 			except:
-				self.SetIcon(wx.Icon('iconedit.ico', wx.BITMAP_TYPE_ICO))
+				self.SetIcon(wx.Icon(os.path.join(settings.install_dir, 'images/iconedit.ico'), wx.BITMAP_TYPE_ICO))
 		else:
-			self.SetIcon(wx.Icon('iconedit.ico', wx.BITMAP_TYPE_ICO))
+			self.SetIcon(wx.Icon(os.path.join(settings.install_dir, 'images/iconedit.ico'), wx.BITMAP_TYPE_ICO))
 
 		self.deck = None
 		self.deckName = None

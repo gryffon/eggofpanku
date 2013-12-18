@@ -28,7 +28,7 @@ def EnsureExists():
 	"""Ensure that the database is loaded by prompting the user to load
 	it if it is not."""
 	should_import = False
-	if not os.path.isfile(database.LOCALDATABASE):
+	if not os.path.isfile(os.path.join(settings.install_dir, database.LOCALDATABASE)):
 		if not os.path.isfile(settings.cardsource):
 			dlg = wx.MessageDialog(None, \
 				'You do not appear to have a card database configured right now.\n' \
