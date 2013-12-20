@@ -24,6 +24,7 @@ from OpenGL.GL import *
 import canvas
 from db import database
 
+from settings.xmlsettings import settings
 
 # More interesting names for the various card types.
 typeNames = {
@@ -191,7 +192,7 @@ class CardPreviewWindow(wx.SplitterWindow):
 		else:
 			html.append('<br><font size="-1">%s</font>' % card.id)
 			if card.rarity != "":
-				html.append('<img src=\'images/rarity_%s.png\' />' % card.rarity)
+				html.append('<img src=\'' + settings.data_dir + '/' + 'images/rarity_%s.png\' />' % card.rarity)
 				
 		if card.artist != "":
 			html.append('<br><font size="-1">Artist: %s</font>' % card.artist)
