@@ -27,7 +27,7 @@ DEFAULT_SETTINGS = {
     'canvas_card_spacing':1,
     'use_celestial_holdings':True,
     'legacy_card_draw':False,
-    'data_dir':'/home/gryffon/eopk',
+    'data_dir': os.path.join(os.path.expanduser('~'), 'eopk'),
     }
 
 class _XMLSettings:
