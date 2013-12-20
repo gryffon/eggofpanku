@@ -192,7 +192,7 @@ class XMLImporter:
 
 		# Finally, dump it.
 		if outfile is None:
-			outfile = file(os.path.join(settings.install_dir, LOCALDATABASE), mode='wb')
+			outfile = file(os.path.join(settings.data_dir, LOCALDATABASE), mode='wb')
 		cPickle.dump((self.filename, self.date, self.cards), outfile, cPickle.HIGHEST_PROTOCOL)
 
 	def parseStartElem(self, name, attrs):
@@ -245,7 +245,7 @@ class CardDB:
 		self.cardNames = {}
 		self.createIndex = 1  # Next available index for created cards
 
-		(self.filename, self.date, self.cards) = cPickle.load(file(os.path.join(settings.install_dir, LOCALDATABASE), mode='rb'))
+		(self.filename, self.date, self.cards) = cPickle.load(file(os.path.join(settings.data_dir, LOCALDATABASE), mode='rb'))
 		if self.filename != settings.cardsource:
 			raise NameError, 'Cards.db was created from a different xml file.  Please reload the card database.'
 
@@ -294,7 +294,7 @@ class CardDB:
 
 def reset():
 	global _database
-	os.remove(os.path.join(settings.install_dir, LOCALDATABASE))
+	os.remove(os.path.join(settings.data_dir, LOCALDATABASE))
 	importer = XMLImporter(settings.cardsource)
 	importer.convert()
 	_database = CardDB()

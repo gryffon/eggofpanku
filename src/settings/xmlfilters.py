@@ -42,7 +42,7 @@ class FilterReader:
         self.parser.CharacterDataHandler = self.parseCData
         __dir__ = os.path.dirname(os.path.abspath(__file__))
         #filepath = os.path.join(__dir__, 'filters.xml')
-        filepath = os.path.join(settings.install_dir, 'filters.xml')
+        filepath = os.path.join(settings.data_dir, 'filters.xml')
         self.parser.ParseFile(open(filepath, 'rb'))
 
     def parseStartElem(self, name, attrs):

@@ -27,14 +27,14 @@ DEFAULT_SETTINGS = {
     'canvas_card_spacing':1,
     'use_celestial_holdings':True,
     'legacy_card_draw':False,
-    'install_dir':'/home/gryffon/eopk',
+    'data_dir':'/home/gryffon/eopk',
     }
 
 class _XMLSettings:
     def __init__(self, xmlfile):
         self.__dict__['_filename'] = xmlfile
         self.__dict__.update(DEFAULT_SETTINGS)
-        self.LoadSettingsFile(os.path.join(self.__dict__['install_dir'], self._filename))
+        self.LoadSettingsFile(os.path.join(self.__dict__['data_dir'], self._filename))
         self.ApplySettingsFile()
      
     def ApplySettingsFile(self):   

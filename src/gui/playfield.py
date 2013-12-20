@@ -163,8 +163,8 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 		self.markerOffset = (0, 0)
 		self.attachMarker = None
 		
-		self.texBorderFrame = self.LoadTexture(os.path.join(settings.install_dir, "images/border2.png"))
-		self.texAttach = self.LoadTexture(os.path.join(settings.install_dir, "images/border3.png"))
+		self.texBorderFrame = self.LoadTexture(os.path.join(settings.data_dir, "images/border2.png"))
+		self.texAttach = self.LoadTexture(os.path.join(settings.data_dir, "images/border3.png"))
 		
 		wx.EVT_LEFT_DOWN(self, self.OnLeftMouseDown)
 		wx.EVT_LEFT_DCLICK(self, self.OnDoubleClick)
@@ -638,9 +638,9 @@ class Playfield(wx.Panel):
 		
 		# Icons
 		self.discardFate = MiniPile(self.infoPanel, player=None, zid=game.ZONE_DISCARD_FATE, name='Fate Discard Pile',
-			bitmap=wx.Bitmap(os.path.join(settings.install_dir, 'images/tiny_fate.png')))
+			bitmap=wx.Bitmap(os.path.join(settings.data_dir, 'images/tiny_fate.png')))
 		self.discardDynasty = MiniPile(self.infoPanel, player=None, zid=game.ZONE_DISCARD_DYNASTY, name='Dynasty Discard Pile',
-			bitmap=wx.Bitmap(os.path.join(settings.install_dir, 'images/tiny_dynasty.png')))
+			bitmap=wx.Bitmap(os.path.join(settings.data_dir, 'images/tiny_dynasty.png')))
 		wx.EVT_MENU(self.discardFate, ID_MNU_PILEPOPUP_SEARCH, self.OnFateSearch)
 		wx.EVT_MENU(self.discardDynasty, ID_MNU_PILEPOPUP_SEARCH, self.OnDynastySearch)
 		
