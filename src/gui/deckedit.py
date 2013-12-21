@@ -75,12 +75,12 @@ def GetCurrentDeck():
 class CardSorter:
 	"""Base class for card sorters."""
 	def __init__(self, cardmap):
-		self.db = database.get()
+		self.cardDB = database.get()
 		self.cardmap = cardmap
 
 	def __call__(self, idx1, idx2):
-		card1 = self.db[self.cardmap[idx1]]
-		card2 = self.db[self.cardmap[idx2]]
+		card1 = self.cardDB[self.cardmap[idx1]]
+		card2 = self.cardDB[self.cardmap[idx2]]
 		return self.compare(card1, card2)
 
 class CardNameSorter(CardSorter):
@@ -320,9 +320,9 @@ class DeckPanel(wx.Panel):
 		self.lstDynasty.DeleteAllItems()
 		self.lstInPlay.DeleteAllItems()
 
-		db = database.get()
+		cardDB = database.get()
 		for num, cdid, inplay in self.deck:
-			card = db[cdid]
+			card = cardDB[cdid]
 			if (card.startsInPlay()== True):
 				widget = self.lstInPlay
 			else:
@@ -813,10 +813,10 @@ class MainWindow(wx.Frame):
 		self.UpdateStatus()
 
 	def UpdateStatus(self):
-		db = database.get()
+		cardDB = database.get()
 		self.SetStatusText('%d Fate/%d Dynasty' % (self.deck.NumFate(), self.deck.NumDynasty()), 1)
 		self.SetStatusText('%d Holdings' %
-			sum([num for num, c, inplay in self.deck if db[c].type == "holding"]), 2)
+			sum([num for num, c, inplay in self.deck if cardDB[c].type == "holding"]), 2)
 		if self.deckName is not None:
 			self.SetTitle(MAIN_TITLE + ' - %s%s' % (self.deckName, '*' if self.deck.modified else ''))
 		else:

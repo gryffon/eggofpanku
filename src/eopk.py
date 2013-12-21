@@ -780,7 +780,7 @@ class ChatCtrl(wx.TextCtrl):
 		bits = text.split('#')
 
 		newText = []
-		db = database.get()
+		cardDB = database.get()
 		while bits:
 			# Append the first plain text bit
 			tempStr=bits.pop(0)
@@ -793,8 +793,8 @@ class ChatCtrl(wx.TextCtrl):
 					key = bits.pop(0)[5:]
 					try:
 						startpos = self.GetLastPosition()
-						newText.append(db[key].name)
-						self.AppendText(db[key].name)
+						newText.append(cardDB[key].name)
+						self.AppendText(cardDB[key].name)
 						endpos = self.GetLastPosition()
 						new_links.append((startpos, endpos, key))
 					except KeyError:
@@ -1035,11 +1035,11 @@ class MainWindow(wx.Frame):
 		self.Show(True)
 		
 		#
-		db = database.get()
+		cardDB = database.get()
 		self.PrintToChat("%s %s \nVersion %s" \
 			"\n\n%s\n" % (EOPK_APPNAME,EOPK_UNOFFICIAL_TEXT, EOPK_VERSION_STRING,  EOPK_COPYRIGHT ))
 		self.PrintToChat("%s %s" % (EOPK_APPNAME, EOPK_WARRANTY_TEXT))
-		self.PrintToChat("Database %s, containing %d cards." % (db.date, len(db)))
+		self.PrintToChat("Database %s, containing %d cards." % (cardDB.date, len(cardDB)))
 		self.PrintToChat("----------")
 		
 

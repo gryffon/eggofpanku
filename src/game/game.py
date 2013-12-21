@@ -281,11 +281,11 @@ class Player:
 	
 class GameState:
 	"""A complete game state. Should exist and be synchronized on both sides of a net connection."""
-	def __init__(self, db):
+	def __init__(self, cardDB):
 		self.players = {}
 		self.cards = {}
 		self.favor = None  # Who has the Imperial Favor?
-		self.cardDB = db
+		self.cardDB = cardDB
 
 	def FindCard(self, cgid):
 		"""Locate a single card by cgid, no matter where it is, and return it."""

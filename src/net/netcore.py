@@ -89,8 +89,8 @@ def Msg(_action, **kwargs):
 
 class ServerGameState(game.GameState):
 	"""A game state on the server side."""
-	def __init__(self, db):
-		game.GameState.__init__(self, db)
+	def __init__(self, cardDB):
+		game.GameState.__init__(self, cardDB)
 		self.nextPid = 1
 		self.nextCgid = 1
 		
@@ -156,8 +156,8 @@ class ServerGameState(game.GameState):
 
 class ClientCard(game.Card):
 	"""A client-side card."""
-	def __init__(self, client, db):
-		game.Card.__init__(self, db)
+	def __init__(self, client, cardDB):
+		game.Card.__init__(self, cardDB)
 		self.client = client
 		self.attached_to = None
 		self.attached_cards = []
@@ -190,8 +190,8 @@ class ClientCard(game.Card):
 	
 class ClientGameState(game.GameState):
 	"""A game state on the client side."""
-	def __init__(self, client, db):
-		game.GameState.__init__(self, db)
+	def __init__(self, client, cardDB):
+		game.GameState.__init__(self, cardDB)
 		self.client = client
 		self.localPlayer = None
 		
@@ -305,11 +305,11 @@ def MustBePlayer(fun):
 
 class Server(threading.Thread):
 	"""Main server controller. Handles all the server-side business logic, including networking. Runs in its own thread."""
-	def __init__(self, db, port = None):
+	def __init__(self, cardDB, port = None):
 		threading.Thread.__init__(self)
 		
 		# Card database
-		self.cardDB = db
+		self.cardDB = cardDB
 		
 		# Network-related setup.
 		if port: self.port = port
@@ -829,11 +829,11 @@ class Server(threading.Thread):
 class Client(threading.Thread):
 	"""Client side main business logic object. Runs in its own thread."""
 	
-	def __init__(self, db, localName, eventTarget = None):
+	def __init__(self, cardDB, localName, eventTarget = None):
 		threading.Thread.__init__(self)
 		
 		# Card database
-		self.cardDB = db
+		self.cardDB = cardDB
 		
 		# Local name and event target.
 		self.localName = localName
