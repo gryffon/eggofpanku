@@ -84,14 +84,13 @@ class Deck:
 		Returns a deck object.
 
 		"""
-		foundInPlay = False
+		foundInPlay = True
 
 		cardErrors=[]
 
 		cardDB = database.get()
 		deck = Deck()
 		for c in fp:
-			foundInPlay = True
 			if '# Dynasty' in c:
 				foundInPlay = False
 
