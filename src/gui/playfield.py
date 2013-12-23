@@ -320,11 +320,11 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 
 #			print 'PlayfieldCanvas.DrawMarkerToken tokenImage = %s' % (tokenImage)
 			try:
-				self.texMarker[token] = self.LoadTexture(tokenImage)
+				self.texMarker[token] = self.LoadTexture(os.path.join(settings.data_dir, tokenImage))
 			except IOError:
 				defaultImage = game.MARKER_IMAGE_PREFIX + game.MARKER_DEFAULT_IMAGE + game.MARKER_IMAGE_EXTENSION
 #				print 'PlayfieldCanvas.DrawMarkerToken Loading defaultImage = %s' % (defaultImage)
-				self.texMarker[token] = self.LoadTexture(defaultImage)
+				self.texMarker[token] = self.LoadTexture(os.path.join(settings.data_dir, defaultImage))
 		
 		glPushMatrix()
 		glColor4f(1.0, 1.0, 1.0, 1.0)
@@ -350,9 +350,9 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 				tokenImage = game.TOKEN_DEFAULT_IMAGE
 			
 			try:
-				self.texToken[token] = self.LoadTexture(tokenImage)
+				self.texToken[token] = self.LoadTexture(os.path.join(settings.data_dir, tokenImage))
 			except IOError:
-				self.texToken[token] = self.LoadTexture(game.TOKEN_DEFAULT_IMAGE)
+				self.texToken[token] = self.LoadTexture(os.path.join(settings.data_dir, game.TOKEN_DEFAULT_IMAGE))
 		
 		glPushMatrix()
 		glColor4f(1.0, 1.0, 1.0, 1.0)

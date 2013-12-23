@@ -16,9 +16,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 """Game state module for Egg of P'an Ku."""
+import os
 
 #Local Imports
 from db import database
+
+from settings.xmlsettings import settings
 
 ZONE_DUMMY = 0            # Dummy zone
 ZONE_DECK_DYNASTY = 1     # Dynasty deck
@@ -346,7 +349,7 @@ def FindMarkerTemplate(self, name):
 	return None
 
 try:
-	for line in file('markers.dat', 'rb'):
+	for line in file(os.path.join(settings.data_dir, 'dat/markers.dat'), 'rb'):
 		args = line.strip().split(':')
 		if len(args) != 2:
 			continue
@@ -366,7 +369,7 @@ def AddTokenTemplate(name, image=TOKEN_DEFAULT_IMAGE):
 	TokenNames[name] = len(TokenTemplates) - 1
 
 try:
-	for line in file('tokens.dat', 'rb'):
+	for line in file(os.path.join(settings.data_dir, 'dat/tokens.dat'), 'rb'):
 		args = line.strip().split(':')
 		if len(args) != 2:
 			continue
