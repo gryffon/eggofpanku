@@ -284,7 +284,7 @@ class ServerClient:
 		self.fateDeck = []
 		
 		# Add all the cards
-		for (count, cdid) in cards:
+		for (count, cdid, inplay) in cards:
 			card = self.cardDB[cdid]
 			for i in xrange(0, count):
 				if card.isDynasty():
