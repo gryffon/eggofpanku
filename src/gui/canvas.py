@@ -60,9 +60,9 @@ class L5RCanvas(GLCanvas):
 		
 		self.init = 0
 		self.SetCurrent()
-		self.texBorder = self.LoadTexture(os.path.join(settings.data_dir, "images/border.png"))
-		self.texFateBack = self.LoadTexture(os.path.join(settings.data_dir, "images/fate_back.jpg"))
-		self.texDynastyBack = self.LoadTexture(os.path.join(settings.data_dir, "images/dynasty_back.jpg"))
+		self.texBorder = self.LoadTexture(os.path.join(settings.data_dir, 'images/border.png'))
+		self.texFateBack = self.LoadTexture(os.path.join(settings.data_dir, 'images/fate_back.jpg'))
+		self.texDynastyBack = self.LoadTexture(os.path.join(settings.data_dir, 'images/dynasty_back.jpg'))
 		self.texCard = {}
 		self.texGeneric = {}
 	
