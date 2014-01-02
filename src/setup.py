@@ -62,7 +62,7 @@ SetCompressor lzma
 
 ;--------------------------------------------------------
 !define MUI_ABORTWARNING
-!define MUI_ICON "..\\icon.ico"
+!define MUI_ICON "..\\images\\icon.ico"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "..\\installer_image.bmp"
 
 !insertmacro MUI_PAGE_WELCOME
