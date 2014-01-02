@@ -94,10 +94,8 @@ Section ""
   Delete "$INSTDIR\\settings.xml"
   Delete "$INSTDIR\\cards.db"
 
-  SetOutPath "$INSTDIR"
   %%%FILES%%%
 
-  SetOutPath "%%%USERDIR%%%"
   %%%DATAFILES%%%
 
   SetOutPath "$INSTDIR"
