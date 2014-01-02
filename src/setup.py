@@ -207,6 +207,8 @@ setup(
 	]
 )
 
+"""
+
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python27.dll', 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']), 
 	('.',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',])
@@ -271,3 +273,4 @@ for dest, files in srcfiles:
 tar = tarfile.open('%s.tar.gz' % srcdest, 'w:gz')
 tar.add(srcdest, 'eopk-%s-src' % guids.EOPK_VERSION_FULL)
 tar.close()
+"""
