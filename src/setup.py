@@ -174,7 +174,7 @@ setup(
 			'copyright': guids.EOPK_COPYRIGHT,
 		},
 		{
-			'script': 'deckedit.py',
+			'script': 'gui\\deckedit.py',
 			'icon_resources': [(0, '..\\images\\iconedit.ico')],
 			'other_resources': [(24, 1, manifestxml % (guids.EOPK_APPNAME + ' Deck Editor'))],
 			'name': guids.EOPK_APPNAME + ' Deck Editor',
