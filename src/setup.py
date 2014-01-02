@@ -15,9 +15,9 @@ from gui import guids
 
 
 
-
-NSIS_DIR = 'c:\\Program Files\\NSIS'
-UPX_DIR = 'c:\\upx'
+#These may require updating depending on installed location of tools
+NSIS_DIR = 'c:\\Program Files (x86)\\NSIS'
+UPX_DIR = 'c:\\Program Files (x86)\\upx391w'
 
 manifestxml = '''
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -53,8 +53,8 @@ OutFile "eopk-install.exe"
 InstallDir "$PROGRAMFILES\%%%APPNAME%%%"
 InstallDirRegKey HKCU "Software\%%%APPNAME%%%" ""
 
-LangString Homepage ${LANG_ENGLISH} "Visit http://www.eggofpanku.com for more information."
-LangString HomepageLink ${LANG_ENGLISH} "http://www.eggofpanku.com"
+LangString Homepage ${LANG_ENGLISH} "Visit http://www.evil-incorporated.net/eopk for more information."
+LangString HomepageLink ${LANG_ENGLISH} "http://www.evil-incorporated.net/eopk"
 
 ;--------------------------------------------------------
 XPStyle on
