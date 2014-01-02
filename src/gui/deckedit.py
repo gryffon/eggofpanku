@@ -23,10 +23,10 @@ import os
 import StringIO
 
 #Local Import
-import preview
+from gui import card_filters, preview
 from db import database, dbimport
 from game import deck
-import card_filters
+
 
 from settings.xmlsettings import settings
 
