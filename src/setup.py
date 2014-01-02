@@ -152,6 +152,9 @@ if len(sys.argv) == 1:
 	sys.argv.append("py2exe")
 	#sys.argv.append("-q")
 
+#Make sure dlls are in path
+sys.path.append("..\\dlls")
+
 deckfiles = ['..\\decks\\Crab Followers.l5d', '..\\decks\\Dragon Kensai.l5d', \
 			'..\\decks\\Spider Breeder.l5d', '..\\decks\\Scorpion Ninja.l5d', \
 			 '..\\decks\\Pheonix Military.l5d', '..\\decks\\Unicorn Battle Maidens.l5d',
