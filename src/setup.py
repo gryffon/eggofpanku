@@ -145,6 +145,7 @@ SectionEnd
 
 #BEGIN CODE
 
+#Create Windows Executables
 if len(sys.argv) == 1:
 	sys.argv.append("py2exe")
 	sys.argv.append("-q")
@@ -226,6 +227,8 @@ nsisfiles = [
 	('sys', ['sys\\%s' % f for f in os.listdir('dist\\sys')]),
 ]
 
+#Create Windows Installer
+
 # UPX executables
 subprocess.Popen('%s\\upx.exe dist/*.exe dist/*.dll dist/sys/*.dll dist/sys/*.pyd' % (UPX_DIR), stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
 
@@ -245,6 +248,11 @@ except:
 
 subprocess.Popen('%s\\makensis dist\\eopk.nsi' % NSIS_DIR, stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
 
+#Create Source Package
+
+"""
+Exclude Source Package for Now
+
 # Ensure target directory exists
 srcdest = 'dist-src/eopk-%s-src' % guids.EOPK_VERSION_FULL
 try:
@@ -254,12 +262,17 @@ except:
 
 # Copy files
 srcfiles = [
-	('.', glob.glob('*.py') + glob.glob('*.ico') + ['README', 'LICENSE', 'CHANGES','tokens.dat','markers.dat','installer_image.bmp','gdiplus.dll','msvcr90.dll','msvcp90.dll','DataHandler.dll','eggupdater.exe','UpdaterClasses.dll','Ionic.Zip.dll','copyninja.exe']),
+	('.', glob.glob('*.py') + ['README', 'LICENSE', 'CHANGES']),
+	('.', ['..\\README', '..\\LICENSE', '..\\CHANGES', '..\\filters.xml','..\\updates.xml']),
+	('.',['..\\dlls\\DataHandler.dll','..\\dlls\\Ionic.Zip.dll','..\\dlls\\UpdaterClasses.dll']),
+	('.',['..\\dlls\\msvcp90.dll','..\\dlls\\msvcr90.dll', '..\\dlls\\gdiplus.dll']),
+	('dat', ['..\\dat\\tokens.dat','..\\dat\\markers.dat']),
 	('decks', deckfiles),
 	('images', imagefiles),
-	('images/cards', cardimagefiles),
-	('images/tokens', tokenimagefiles),
-	('images/markers', markerimagefiles),
+	('images\\cards', cardimagefiles),
+	('images\\tokens', tokenimagefiles),
+	('images\\markers', markerimagefiles),
+
 	]
 for dest, files in srcfiles:
 	try:
@@ -274,3 +287,4 @@ for dest, files in srcfiles:
 tar = tarfile.open('%s.tar.gz' % srcdest, 'w:gz')
 tar.add(srcdest, 'eopk-%s-src' % guids.EOPK_VERSION_FULL)
 tar.close()
+"""
