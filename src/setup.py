@@ -13,7 +13,7 @@ import shutil
 #Local Imports
 from gui import guids
 
-
+userdir = os.path.join(os.path.expanduser('~'), 'eopk')
 
 #These may require updating depending on installed location of tools
 NSIS_DIR = 'c:\\Program Files (x86)\\NSIS'
@@ -94,7 +94,11 @@ Section ""
   Delete "$INSTDIR\\settings.xml"
   Delete "$INSTDIR\\cards.db"
 
+  SetOutPath "$INSTDIR"
   %%%FILES%%%
+
+  SetOutPath "%%%USERDIR%%%"
+  %%%DATAFILES%%%
 
   SetOutPath "$INSTDIR"
 
@@ -218,13 +222,16 @@ setup(
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python27.dll', 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']), 
 	('.',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',]),
+	('sys', ['sys\\%s' % f for f in os.listdir('dist\\sys')]),
+]
+
+nsisdatafiles = [
 	('dat', ['dat\\tokens.dat','dat\\markers.dat']),
 	('decks', nsisdeckfiles),
 	('images', nsisimagefiles),
 	('images\\cards', nsiscardimagefiles),
 	('images\\tokens', nsistokenimagefiles),
 	('images\\markers', nsismarkerimagefiles),
-	('sys', ['sys\\%s' % f for f in os.listdir('dist\\sys')]),
 ]
 
 #Create Windows Installer
@@ -237,6 +244,8 @@ nsis = nsis_template \
 	.replace('%%%APPNAME%%%', guids.EOPK_APPNAME) \
 	.replace('%%%VERSION%%%', guids.EOPK_VERSION_FULL) \
 	.replace('%%%FILES%%%', '\n  '.join(('SetOutPath "$INSTDIR\\%s"\n  ' % dir) + ''.join('File "%s"\n  ' % file for file in files) for dir, files in nsisfiles)) \
+	.replace('%%%DATAFILES%%%', '\n  '.join(('SetOutPath "\%\%\%USERDIR\%\%\%\\%s"\n  ' % dir) + ''.join('File "%s"\n  ' % file for file in files) for dir, files in nsisdatafiles)) \
+	.replace('%%%USERDIR%%%', userdir) \
 	.replace('%%%DELETEFILES%%%', '\n  '.join(''.join(('Delete "$INSTDIR\\%s"\n  ' % file) for file in files) for dir, files in nsisfiles))
 file('dist/eopk.nsi', 'wb').write(nsis)
 
@@ -246,7 +255,7 @@ try:
 except:
 	pass
 
-subprocess.Popen('%s\\makensis dist\\eopk.nsi' % NSIS_DIR, stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
+#subprocess.Popen('%s\\makensis dist\\eopk.nsi' % NSIS_DIR, stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
 
 #Create Source Package
 
