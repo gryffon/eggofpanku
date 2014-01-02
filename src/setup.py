@@ -193,7 +193,7 @@ setup(
 	},
 	data_files=[
 		('.', ['..\\README', '..\\LICENSE', '..\\CHANGES', '..\\dat\\tokens.dat','..\\dat\\markers.dat',  '..\\filters.xml','..\\updates.xml']),
-		('dlls',['..\\dlls\\DataHandler.dll','..\\dlls\\Ionic.Zip.dll','..\\dlls\\UpdaterClasses.dll'])
+		('dlls',['..\\dlls\\DataHandler.dll','..\\dlls\\Ionic.Zip.dll','..\\dlls\\UpdaterClasses.dll']),
 		('decks', deckfiles),
 		('images', imagefiles),
 		('images\\cards', cardimagefiles),
