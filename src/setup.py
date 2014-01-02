@@ -150,7 +150,7 @@ SectionEnd
 
 if len(sys.argv) == 1:
 	sys.argv.append("py2exe")
-	#sys.argv.append("-q")
+	sys.argv.append("-q")
 
 #Make sure dlls are in path
 sys.path.append("..\\dlls")
