@@ -105,8 +105,6 @@ Section ""
     CreateDirectory "$SMPROGRAMS\\$StartMenuFolder"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\%%%APPNAME%%%.lnk" "$INSTDIR\\EoPK.exe"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Deck Editor.lnk" "$INSTDIR\\deckedit.exe"
-    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (required only).lnk" "$INSTDIR\\eggupdater.exe"
-    CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Update (include optional updates).lnk" "$INSTDIR\\eggupdater.exe" "-optional"
     CreateShortcut "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk" "$INSTDIR\\Uninstall.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
