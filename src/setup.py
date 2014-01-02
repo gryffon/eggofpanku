@@ -220,8 +220,8 @@ nsisfiles = [
 ]
 
 # Copy additional DLLs
-for f in ('dlls/msvcp90.dll', 'dlls/msvcr90.dll', 'dlls/gdiplus.dll', 'dlls/DataHandler.dll','eggupdater.exe','dlls/UpdaterClasses.dll','dlls/Ionic.Zip.dll','copyninja.exe'):
-	shutil.copy(f, 'dist')
+#for f in ('dlls/msvcp90.dll', 'dlls/msvcr90.dll', 'dlls/gdiplus.dll', 'dlls/DataHandler.dll','eggupdater.exe','dlls/UpdaterClasses.dll','dlls/Ionic.Zip.dll','copyninja.exe'):
+#	shutil.copy(f, 'dist')
 
 # UPX executables
 subprocess.Popen('%s\\upx.exe dist/*.exe dist/*.dll dist/sys/*.dll dist/sys/*.pyd' % (UPX_DIR), stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
