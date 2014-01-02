@@ -143,9 +143,6 @@ Section "Uninstall"
 SectionEnd
 '''
 
-##sys.stdout = open('py2exe-output.log','w')
-
-
 #BEGIN CODE
 
 if len(sys.argv) == 1:
@@ -207,12 +204,10 @@ setup(
 	]
 )
 
-"""
-
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python27.dll', 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']), 
 	('.',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',])
-	('dat', ['dat\\tokens.dat','dat\\markers.dat']),
+	('dat', ['..\\dat\\tokens.dat','..\\dat\\markers.dat']),
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images\\cards', cardimagefiles),
@@ -220,10 +215,6 @@ nsisfiles = [
 	('images\\markers', markerimagefiles),
 	('sys', ['sys\\%s' % f for f in os.listdir('dist\\sys')]),
 ]
-
-# Copy additional DLLs
-#for f in ('dlls/msvcp90.dll', 'dlls/msvcr90.dll', 'dlls/gdiplus.dll', 'dlls/DataHandler.dll','eggupdater.exe','dlls/UpdaterClasses.dll','dlls/Ionic.Zip.dll','copyninja.exe'):
-#	shutil.copy(f, 'dist')
 
 # UPX executables
 subprocess.Popen('%s\\upx.exe dist/*.exe dist/*.dll dist/sys/*.dll dist/sys/*.pyd' % (UPX_DIR), stdout=sys.stdout, stderr=sys.stderr, stdin=sys.stdin).wait()
@@ -273,4 +264,3 @@ for dest, files in srcfiles:
 tar = tarfile.open('%s.tar.gz' % srcdest, 'w:gz')
 tar.add(srcdest, 'eopk-%s-src' % guids.EOPK_VERSION_FULL)
 tar.close()
-"""
