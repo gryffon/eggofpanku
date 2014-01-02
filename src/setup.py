@@ -195,8 +195,9 @@ setup(
 		},
 	},
 	data_files=[
-		('.', ['..\\README', '..\\LICENSE', '..\\CHANGES', '..\\dat\\tokens.dat','..\\dat\\markers.dat',  '..\\filters.xml','..\\updates.xml']),
-		('dlls',['..\\dlls\\DataHandler.dll','..\\dlls\\Ionic.Zip.dll','..\\dlls\\UpdaterClasses.dll']),
+		('.', ['..\\README', '..\\LICENSE', '..\\CHANGES', '..\\filters.xml','..\\updates.xml']),
+		('.',['..\\dlls\\DataHandler.dll','..\\dlls\\Ionic.Zip.dll','..\\dlls\\UpdaterClasses.dll']),
+		('dat', ['..\\dat\\tokens.dat','..\\dat\\markers.dat'],)
 		('decks', deckfiles),
 		('images', imagefiles),
 		('images\\cards', cardimagefiles),
@@ -209,10 +210,9 @@ setup(
 Just testing py2exe at the moment.
 
 nsisfiles = [
-	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python25.dll', 'tokens.dat', 'markers.dat', 
-			 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']), 
-	('dlls',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',])
-	('scripts',['eggupdater.exe','copyninja.exe'])
+	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python27.dll', 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']), 
+	('.',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',])
+	('dat', ['..\\dat\\tokens.dat','..\\dat\\markers.dat'],)
 	('decks', deckfiles),
 	('images', imagefiles),
 	('images\\cards', cardimagefiles),
