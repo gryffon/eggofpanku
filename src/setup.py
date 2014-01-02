@@ -33,10 +33,10 @@ manifestxml = '''
 	<dependentAssembly>
 		<assemblyIdentity
 			type="win32"
-			name="Microsoft.Windows.Common-Controls"
-			version="6.0.0.0"
+			name="Microsoft.VC90.CRT"
+			version="9.0.30729.4918"
 			processorArchitecture="X86"
-			publicKeyToken="6595b64144ccf1df"
+			publicKeyToken="1fc8b3b9a1e18e3b"
 			language="*"
 		/>
 	</dependentAssembly>
