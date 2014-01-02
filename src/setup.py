@@ -136,8 +136,6 @@ Section "Uninstall"
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
   Delete "$SMPROGRAMS\\$StartMenuFolder\\%%%APPNAME%%%.lnk"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Deck Editor.lnk"
-  Delete "$SMPROGRAMS\\$StartMenuFolder\\Update (Required only).lnk"
-  Delete "$SMPROGRAMS\\$StartMenuFolder\\Update (include optional updates).lnk"
   Delete "$SMPROGRAMS\\$StartMenuFolder\\Uninstall.lnk"
   RMDir "$SMPROGRAMS\\$StartMenuFolder"
 
@@ -147,6 +145,8 @@ SectionEnd
 
 ##sys.stdout = open('py2exe-output.log','w')
 
+
+#BEGIN CODE
 
 if len(sys.argv) == 1:
 	sys.argv.append("py2exe")
