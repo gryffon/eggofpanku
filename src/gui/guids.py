@@ -17,7 +17,7 @@
 # 02110-1301, USA.
 """User interface identifiers and other constants."""
 
-EOPK_APPNAME = 'Egg of P\'an Ku' 
+EOPK_APPNAME = 'Egg of P\'an Ku Beta' 
 EOPK_VERSION_MAJOR = 0
 EOPK_VERSION_MINOR = 10
 EOPK_VERSION_REVISION = 0
