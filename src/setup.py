@@ -197,7 +197,7 @@ setup(
 	data_files=[
 		('.', ['..\\README', '..\\LICENSE', '..\\CHANGES', '..\\filters.xml','..\\updates.xml']),
 		('.',['..\\dlls\\DataHandler.dll','..\\dlls\\Ionic.Zip.dll','..\\dlls\\UpdaterClasses.dll']),
-		('.',['..\\dlls\\msvcp90.dll','..\\dlls\\msvcr90.dll']),
+		('.',['..\\dlls\\msvcp90.dll','..\\dlls\\msvcr90.dll', 'gdiplus.dll']),
 		('dat', ['..\\dat\\tokens.dat','..\\dat\\markers.dat']),
 		('decks', deckfiles),
 		('images', imagefiles),
