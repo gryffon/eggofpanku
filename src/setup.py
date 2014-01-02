@@ -150,24 +150,23 @@ SectionEnd
 
 if len(sys.argv) == 1:
 	sys.argv.append("py2exe")
-	sys.argv.append("-q")
+	#sys.argv.append("-q")
 
+deckfiles = ['..\\decks\\Crab Followers.l5d', '..\\decks\\Dragon Kensai.l5d', \
+			'..\\decks\\Spider Breeder.l5d', '..\\decks\\Scorpion Ninja.l5d', \
+			 '..\\decks\\Pheonix Military.l5d', '..\\decks\\Unicorn Battle Maidens.l5d',
+			 '..\\decks\\Crane Dueling.l5d' ]
 
-deckfiles = ['decks\\Crab Followers.l5d', 'decks\\Dragon Kensai.l5d', \
-			'decks\\Spider Breeder.l5d', 'decks\\Scorpion Ninja.l5d', \
-			 'decks\\Pheonix Military.l5d', 'decks\\Unicorn Battle Maidens.l5d',
-			 'decks\\Crane Dueling.l5d' ]
-
-imagefiles = glob.glob('images\\*.jpg') + glob.glob('images\\*.png')
-cardimagefiles = glob.glob('images\\cards\\*.jpg')
-tokenimagefiles = glob.glob('images\\tokens\\*.png')
-markerimagefiles = glob.glob('images\\markers\\*.png')
+imagefiles = glob.glob('..\\images\\*.jpg') + glob.glob('..\\images\\*.png')
+cardimagefiles = glob.glob('..\\images\\cards\\*.jpg')
+tokenimagefiles = glob.glob('..\\images\\tokens\\*.png')
+markerimagefiles = glob.glob('..\\images\\markers\\*.png')
 
 setup(
 	windows=[{
 			'script': 'program.py',
 			'dest_base': 'EoPK',
-			'icon_resources': [(0, 'icon.ico')],
+			'icon_resources': [(0, '..\\images\\icon.ico')],
 			'other_resources': [(24, 1, manifestxml % guids.EOPK_APPNAME)],
 			'name': guids.EOPK_APPNAME,
 			'description': '%s - An unofficial online tabletop for Legend of the Five Rings' % guids.EOPK_APPNAME,
@@ -176,7 +175,7 @@ setup(
 		},
 		{
 			'script': 'deckedit.py',
-			'icon_resources': [(0, 'iconedit.ico')],
+			'icon_resources': [(0, '..\\images\\iconedit.ico')],
 			'other_resources': [(24, 1, manifestxml % (guids.EOPK_APPNAME + ' Deck Editor'))],
 			'name': guids.EOPK_APPNAME + ' Deck Editor',
 			'description': 'Standalone deck editor for %s' % guids.EOPK_APPNAME,
@@ -187,16 +186,14 @@ setup(
 	zipfile='sys/library.zip',
 	options={
 		'py2exe':{
-			'excludes':['doctest', '_ssl', 'optparse', 'Numeric', 'simplejson._speedups',
-						"Tkinter","tcl" ],
+			'excludes':['doctest', '_ssl', 'optparse', 'Numeric', 'simplejson._speedups', "Tkinter","tcl" ],
 			'packages':['OpenGL'],
 			'optimize':2,
 		},
 	},
 	data_files=[
-		('.', ['README', 'LICENSE', 'CHANGES', 'tokens.dat','markers.dat',  'filters.xml','updates.xml']),
-		('dlls',['DataHandler.dll','Ionic.Zip.dll','UpdaterClasses.dll'])
-		('scripts',['eggupdater.exe','copyninja.exe'])
+		('.', ['..\\README', '..\\LICENSE', '..\\CHANGES', '..\\dat\\tokens.dat','..\\dat\\markers.dat',  '..\\filters.xml','..\\updates.xml']),
+		('dlls',['..\\dlls\\DataHandler.dll','..\\dlls\\Ionic.Zip.dll','..\\dlls\\UpdaterClasses.dll'])
 		('decks', deckfiles),
 		('images', imagefiles),
 		('images\\cards', cardimagefiles),
@@ -204,6 +201,9 @@ setup(
 		('images\\markers', markerimagefiles),
 	]
 )
+
+"""
+Just testing py2exe at the moment.
 
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python25.dll', 'tokens.dat', 'markers.dat', 
@@ -270,3 +270,4 @@ for dest, files in srcfiles:
 tar = tarfile.open('%s.tar.gz' % srcdest, 'w:gz')
 tar.add(srcdest, 'eopk-%s-src' % guids.EOPK_VERSION_FULL)
 tar.close()
+"""
