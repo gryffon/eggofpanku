@@ -216,7 +216,7 @@ setup(
 
 nsisfiles = [
 	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python27.dll', 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']), 
-	('.',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',])
+	('.',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',]),
 	('dat', ['dat\\tokens.dat','dat\\markers.dat']),
 	('decks', nsisdeckfiles),
 	('images', nsisimagefiles),
