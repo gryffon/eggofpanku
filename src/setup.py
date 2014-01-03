@@ -240,7 +240,7 @@ nsis = nsis_template \
 	.replace('%%%APPNAME%%%', guids.EOPK_APPNAME) \
 	.replace('%%%VERSION%%%', guids.EOPK_VERSION_FULL) \
 	.replace('%%%FILES%%%', '\n  '.join(('SetOutPath "$INSTDIR\\%s"\n  ' % dir) + ''.join('File "%s"\n  ' % file for file in files) for dir, files in nsisfiles)) \
-	.replace('%%%DATAFILES%%%', '\n  '.join(('SetOutPath "%%%%%%USERDIR%%%%%%\\%s"\n  ' % dir) + ''.join('File "%s"\n  ' % file for file in files) for dir, files in nsisdatafiles)) \
+	.replace('%%%DATAFILES%%%', '\n  '.join(('SetOutPath "$PROFILE\\%s"\n  ' % dir) + ''.join('File "%s"\n  ' % file for file in files) for dir, files in nsisdatafiles)) \
 	.replace('%%%USERDIR%%%', userdir) \
 	.replace('%%%DELETEFILES%%%', '\n  '.join(''.join(('Delete "$INSTDIR\\%s"\n  ' % file) for file in files) for dir, files in nsisfiles))
 file('dist/eopk.nsi', 'wb').write(nsis)
