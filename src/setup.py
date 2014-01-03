@@ -208,7 +208,7 @@ setup(
 )
 
 nsisfiles = [
-	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python27.dll', 'README', 'LICENSE', 'CHANGES', 'filters.xml','updates.xml']), 
+	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python27.dll', 'README', 'LICENSE', 'CHANGES', 'updates.xml']), 
 	('.',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',]),
 	('sys', ['sys\\%s' % f for f in os.listdir('dist\\sys')]),
 ]
@@ -221,6 +221,7 @@ nsistokenimagefiles = [s.replace('..\\','') for s in tokenimagefiles]
 nsismarkerimagefiles = [s.replace('..\\','') for s in markerimagefiles]
 
 nsisdatafiles = [
+	('.', ['filters.xml',]),
 	('dat', ['dat\\tokens.dat','dat\\markers.dat']),
 	('decks', nsisdeckfiles),
 	('images', nsisimagefiles),
