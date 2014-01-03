@@ -88,7 +88,7 @@ class GeneralSettings(wx.Panel):
 	def Save(self):
 		settings.playername = self.txtName.GetValue()
 		settings.log_multiplayer_games = self.chkRecordLog.GetValue();
-		settings.legacy_card_draw = self.chkLegacyDraw.GetValue();
+		settings.celestial_card_draw = self.chkCelestialDraw.GetValue();
 		settings.use_celestial_holdings = self.chkCEHoldings.GetValue();
 		#settings.start_procedure = self.cmbStartup.GetSelection()
 	
