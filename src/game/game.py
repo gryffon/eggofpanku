@@ -109,6 +109,7 @@ class Card:
 		self.tokens = {}         # Tokens on this card.
 		self.markers = {}		 # Markers on this card.
 		self.dishonored = False  # Honorable status.
+		self.strongholdFace = 'front' #Add a stronghold facing for Ivory
 	
 	def MoveToTop(self, zone = None):
 		"""Move a card to the top of another zone, or its current zone if no zone is specified."""

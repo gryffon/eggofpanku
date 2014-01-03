@@ -1313,6 +1313,7 @@ class MainWindow(wx.Frame):
 		
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_TAP, self.OnMenuCardTap)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_FLIP, self.OnMenuCardFlip)
+		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_FLIPSH, self.OnMenuCardFlipSH)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_DISCARD, self.OnMenuCardDiscard)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_KILL_DISCARD, self.OnMenuCardKillDiscard)
 		wx.EVT_MENU(self, ID_MNU_CARDPOPUP_DECK_TOP, self.OnMenuCardDeckTop)
@@ -1852,7 +1853,7 @@ class MainWindow(wx.Frame):
 		#Check if card is a stronghold. Further, check if it's IvE.
 		#If card is IvE stronghold, we want to flip it to the other side.
 		if self.contextCard.IsStronghold():
-			cardMenu.Append(ID_MNU_CARDPOPUP_FLIP, 'Flip Stronghold', 'Flip over stronghold.')
+			cardMenu.Append(ID_MNU_CARDPOPUP_FLIPSH, 'Flip Stronghold', 'Flip over stronghold.')
 		else:
 			cardMenu.Append(ID_MNU_CARDPOPUP_FLIP, 'Flip face-down' if evt.card.faceUp else 'Flip face-up', 'Flip this card over.')
 		cardMenu.Append(ID_MNU_CARDPOPUP_TAP, 'Straighten' if evt.card.tapped else 'Bow', 'Change this card\'s bowed status.')
@@ -1946,6 +1947,13 @@ class MainWindow(wx.Frame):
 	
 	def OnMenuCardFlip(self, evt):
 		self.client.Send(netcore.Msg('set-card-property', cgid=self.contextCard.cgid, property='faceUp', value=not self.contextCard.faceUp))
+
+	def OnMenuCardFlipSH(self, evt):
+		if self.contextCard.strongholdFace == 'front':
+			newface = 'back'
+		else:
+			newface = 'front'
+		self.client.Send(netcore.Msg('set-card-property', cgid=self.contextCard.cgid, property='strongholdFace', value=newface))
 
 	def OnMenuCardDiscard(self, evt):
 		if not self.contextCard:
@@ -2511,6 +2519,12 @@ class MainWindow(wx.Frame):
 				msg = 'You flip %s face-%s.' % (card.GetStyledName(), 'up' if event.value else 'down')
 			else:
 				msg = '%s flips %s face-%s.' % (player.name, card.GetStyledName(), 'up' if event.value else 'down')
+			self.PrintToChat(msg)
+		elif event.property == 'strongholdFace':  # Stronghold facing has changed.
+			if self.client.IsLocalPlayer(player.pid):
+				msg = 'You flip %s.' % (card.GetStyledName())
+			else:
+				msg = '%s flips %s.' % (player.name, card.GetStyledName())
 			self.PrintToChat(msg)
 		elif event.property == 'dishonored':  # Dishonored!
 			if self.client.IsLocalPlayer(player.pid):

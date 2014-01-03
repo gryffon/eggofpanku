@@ -56,6 +56,7 @@ ClientGameStartEvent,       EVT_CLIENT_GAME_START        = wx.lib.newevent.NewEv
 ClientPlayerJoinEvent,      EVT_CLIENT_PLAYER_JOIN       = wx.lib.newevent.NewEvent()
 ClientSetZoneEvent,         EVT_CLIENT_SET_ZONE          = wx.lib.newevent.NewEvent()
 ClientRevealCardEvent,      EVT_CLIENT_REVEAL_CARD       = wx.lib.newevent.NewEvent()
+ClientSwapStrongholdEvent,  EVT_CLIENT_SWAP_STRONGHOLD   = wx.lib.newevent.NewEvent()
 ClientPreMoveCardEvent,     EVT_CLIENT_PRE_MOVE_CARD     = wx.lib.newevent.NewEvent()
 ClientMoveCardEvent,        EVT_CLIENT_MOVE_CARD         = wx.lib.newevent.NewEvent()
 ClientSetCardPropertyEvent, EVT_CLIENT_SET_CARD_PROPERTY = wx.lib.newevent.NewEvent()
@@ -633,6 +634,10 @@ class Server(threading.Thread):
 		# If we're changing a cards facing, we might need to reveal it.
 		if property == 'faceUp' and value:
 			self.RevealCard(card)
+
+		# If we're swapping stronghold facing, we need to change the card.
+		if property == 'strongholdFace':
+			self.SwapStronghold(card, value)
 			
 		setattr(card, property, value)
 		self.Broadcast(Msg('set-card-property', pid=client.player.pid, cgid=cgid, property=property, value=value))
@@ -732,6 +737,22 @@ class Server(threading.Thread):
 			self.Broadcast(msg)
 		else:
 			player.client.Send(msg)
+
+	def SwapStronghold(self, card, value):
+		"""Swap Stronghold to alternate side, in support of Ivory Edition.
+		
+		Arguments:
+		card -- the stronghold
+		value -- the side the stronghold should be swapped to
+		
+		"""
+		if value == 'back':
+			newid = card.data.id + 'b'
+		else:
+			newid = card.data.id
+
+		msg = Msg('swap-stronghold', cgid=card.cgid, cdid=newid)
+		self.Broadcast(msg)
 	
 	def MoveCard(self, client, cgid, pid, zid, top=None, x=None, y=None, faceup=True, random=False):
 		"""Move a card around."""
@@ -1043,6 +1064,20 @@ class Client(threading.Thread):
 		except KeyError:
 			pass
 		wx.PostEvent(self._eventTarget, ClientRevealCardEvent(cgid=cgid, cdid=cdid))
+
+	def HandleSwapStronghold(self, cgid, cdid):
+		"""Handle the 'swap-stronghold' message.
+		
+		Arguments:
+		cgid -- the id of the game card to reveal
+		cdid -- the card data id
+		
+		"""
+		try:
+			self.gameState.cards[cgid].data = self.cardDB[cdid]
+		except KeyError:
+			pass
+		wx.PostEvent(self._eventTarget, ClientSwapStrongholdEvent(cgid=cgid, cdid=cdid))
 
 	def HandleMoveCard(self, cgid, pid, zid, top=False, mover=None, x=None, y=None, faceup=None, random=False):
 		"""Handle the move-card message.
