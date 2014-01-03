@@ -136,6 +136,12 @@ class DatabaseSettings(wx.Panel):
 		sbsizer.Add(sizer,0, wx.ALIGN_RIGHT|wx.ALL, 5)
 		
 		panelsizer.Add(sbsizer, 0, wx.EXPAND|wx.ALL, 4)
+
+		# -------
+		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Data Directory'), wx.VERTICAL)
+		sbsizer.Add(wx.StaticText(self, label='Data directory is set to: %s' % settings.data_dir ), 0, wx.ALL, 5)
+		
+		panelsizer.Add(sbsizer, 0, wx.EXPAND|wx.ALL, 4)
 		
 		self.SetSizer(panelsizer)
 	
