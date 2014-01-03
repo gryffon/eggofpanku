@@ -156,6 +156,17 @@ class Card:
 		except AttributeError:
 			return not self.dynasty
 
+	def IsStronghold(self):
+		"""Return whether this is a stronghold or not."""
+		try:
+			if self.data.type == 'stronghold':
+				return True
+			else:
+				return False
+		except AttributeError:
+			return False
+
+
 	def NumTokens(self, type = None):
 		"""Return the number of typed tokens are on this card."""
 		if type is None:

@@ -1849,7 +1849,12 @@ class MainWindow(wx.Frame):
 		"""Process a right-click on a card on the playfield canvas."""
 		self.contextCard = evt.card
 		cardMenu = wx.Menu()
-		cardMenu.Append(ID_MNU_CARDPOPUP_FLIP, 'Flip face-down' if evt.card.faceUp else 'Flip face-up', 'Flip this card over.')
+		#Check if card is a stronghold. Further, check if it's IvE.
+		#If card is IvE stronghold, we want to flip it to the other side.
+		if self.contextCard.IsStronghold():
+			cardMenu.Append(ID_MNU_CARDPOPUP_FLIP, 'Flip Stronghold', 'Flip over stronghold.')
+		else:
+			cardMenu.Append(ID_MNU_CARDPOPUP_FLIP, 'Flip face-down' if evt.card.faceUp else 'Flip face-up', 'Flip this card over.')
 		cardMenu.Append(ID_MNU_CARDPOPUP_TAP, 'Straighten' if evt.card.tapped else 'Bow', 'Change this card\'s bowed status.')
 		if not evt.card.faceUp:
 			cardMenu.Append(ID_MNU_CARDPOPUP_PEEK, 'Peek', 'Peek at this card.')
