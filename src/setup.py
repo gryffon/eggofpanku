@@ -214,11 +214,11 @@ nsisfiles = [
 ]
 
 #Remove leading ..\\ from files arrays
-nsisdeckfiles = [s.replace('..//','') for s in deckfiles]
-nsisimagefiles = [s.replace('..//','') for s in imagefiles]
-nsiscardimagefiles = [s.replace('..//','') for s in cardimagefiles]
-nsistokenimagefiles = [s.replace('..//','') for s in tokenimagefiles]
-nsismarkerimagefiles = [s.replace('..//','') for s in markerimagefiles]
+nsisdeckfiles = [s.replace('..\\','') for s in deckfiles]
+nsisimagefiles = [s.replace('..\\','') for s in imagefiles]
+nsiscardimagefiles = [s.replace('..\\','') for s in cardimagefiles]
+nsistokenimagefiles = [s.replace('..\\','') for s in tokenimagefiles]
+nsismarkerimagefiles = [s.replace('..\\','') for s in markerimagefiles]
 
 nsisdatafiles = [
 	('dat', ['dat\\tokens.dat','dat\\markers.dat']),
