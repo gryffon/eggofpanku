@@ -118,4 +118,4 @@ class _XMLSettings:
             if node.nodeType == node.TEXT_NODE:
                 node.data = string.strip(string.strip(node.data, '\n'))
                 
-settings = _XMLSettings(self.data_dir + '/settings.xml')
+settings = _XMLSettings(os.path.join(os.path.expanduser('~'), 'eopk/settings.xml'))
