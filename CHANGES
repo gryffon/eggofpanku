@@ -1,5 +1,15 @@
 News & Changes
 
+  2014-January-03 Egg of P'an Ku 0.10.0b3
+  * Changed the default for CE holdings to False.
+  * Changed beginning Fate Hand size to 5. 
+  * Add support for double-sided stronghold. 
+
+  2014-January-03 Egg of P'an Ku 0.10.0b2
+  * Fixed issue with installer installing to hard-coded user directory.
+  * Fixed issue with settings file being written to the wrong place.
+  * Added icon files to distribution.
+
   2014-January-02 Egg of P'an Ku 0.10.0b1
   * Rebuilt with more recent versions of Python, simplejson and OpenGL.
   * Updated internal strings to note that project has been taken over by a new developer.
