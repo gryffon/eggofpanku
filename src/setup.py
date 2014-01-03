@@ -161,7 +161,7 @@ deckfiles = ['..\\decks\\Crab Followers.l5d', '..\\decks\\Dragon Kensai.l5d', \
 			 '..\\decks\\Pheonix Military.l5d', '..\\decks\\Unicorn Battle Maidens.l5d',
 			 '..\\decks\\Crane Dueling.l5d' ]
 
-imagefiles = glob.glob('..\\images\\*.jpg') + glob.glob('..\\images\\*.png')
+imagefiles = glob.glob('..\\images\\*.jpg') + glob.glob('..\\images\\*.png') + glob.glob('..\\images\\*.ico')
 cardimagefiles = glob.glob('..\\images\\cards\\*.jpg')
 tokenimagefiles = glob.glob('..\\images\\tokens\\*.png')
 markerimagefiles = glob.glob('..\\images\\markers\\*.png')
