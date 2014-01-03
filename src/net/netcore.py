@@ -488,8 +488,8 @@ class Server(threading.Thread):
 			#draw 5 Fate cards per player
 			zone = player.zones[game.ZONE_DECK_FATE]
 
-			#Added change to card draw.
-			cardDraw = 6
+			#Ivory Edition goes back to drawing 5 cards.
+			cardDraw = 5
 
 			if settings.legacy_card_draw == True:
 				cardDraw = 5
