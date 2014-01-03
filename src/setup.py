@@ -48,7 +48,7 @@ nsis_template = '''
 !include "MUI.nsh"
 ;--------------------------------------------------------
 Name "%%%APPNAME%%%"
-OutFile "eopk-install.exe"
+OutFile "eopk-%%%VERSION%%%-install.exe"
 
 InstallDir "$PROGRAMFILES\%%%APPNAME%%%"
 InstallDirRegKey HKCU "Software\%%%APPNAME%%%" ""
