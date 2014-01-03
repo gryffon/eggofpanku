@@ -25,7 +25,7 @@ DEFAULT_SETTINGS = {
     'matchpassword':'1234',
     'log_multiplayer_games':False,
     'canvas_card_spacing':1,
-    'use_celestial_holdings':True,
+    'use_celestial_holdings':False,
     'legacy_card_draw':False,
     'data_dir': os.path.join(os.path.expanduser('~'), 'eopk'),
     }
