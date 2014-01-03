@@ -118,4 +118,4 @@ class _XMLSettings:
             if node.nodeType == node.TEXT_NODE:
                 node.data = string.strip(string.strip(node.data, '\n'))
                 
-settings = _XMLSettings('settings.xml')
+settings = _XMLSettings(self.data_dir + '/settings.xml')
