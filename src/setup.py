@@ -165,16 +165,6 @@ cardimagefiles = glob.glob('..\\images\\cards\\*.jpg')
 tokenimagefiles = glob.glob('..\\images\\tokens\\*.png')
 markerimagefiles = glob.glob('..\\images\\markers\\*.png')
 
-nsisdeckfiles = ['decks\\Crab Followers.l5d', 'decks\\Dragon Kensai.l5d', \
-			'decks\\Spider Breeder.l5d', 'decks\\Scorpion Ninja.l5d', \
-			 'decks\\Pheonix Military.l5d', 'decks\\Unicorn Battle Maidens.l5d',
-			 'decks\\Crane Dueling.l5d' ]
-
-nsisimagefiles = glob.glob('images\\*.jpg') + glob.glob('images\\*.png')
-nsiscardimagefiles = glob.glob('images\\cards\\*.jpg')
-nsistokenimagefiles = glob.glob('images\\tokens\\*.png')
-nsismarkerimagefiles = glob.glob('images\\markers\\*.png')
-
 setup(
 	windows=[{
 			'script': 'program.py',
@@ -222,6 +212,13 @@ nsisfiles = [
 	('.',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',]),
 	('sys', ['sys\\%s' % f for f in os.listdir('dist\\sys')]),
 ]
+
+#Remove leading ..\\ from files arrays
+nsisdeckfiles = [s.replace('..//','') for s in deckfiles]
+nsisimagefiles = [s.replace('..//','') for s in imagefiles]
+nsiscardimagefiles = [s.replace('..//','') for s in cardimagefiles]
+nsistokenimagefiles = [s.replace('..//','') for s in tokenimagefiles]
+nsismarkerimagefiles = [s.replace('..//','') for s in markerimagefiles]
 
 nsisdatafiles = [
 	('dat', ['dat\\tokens.dat','dat\\markers.dat']),
