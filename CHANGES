@@ -1,5 +1,11 @@
 News & Changes
 
+  2014-January-02 Egg of P'an Ku 0.10.0b1
+  * Rebuilt with more recent versions of Python, simplejson and OpenGL.
+  * Updated internal strings to note that project has been taken over by a new developer.
+  * Removed EggUpdater/copyninja from distribution.
+
+
   2010-August-20 Egg of P'an Ku 0.9.42
 	* Added a new EggUpdater that will update itself. This now includes copyninja.exe to do some updating of EggUpdater.exe
 	* Added a link to the updater in the start menu and an "Optional" updater that gets everything.
