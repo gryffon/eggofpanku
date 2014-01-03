@@ -57,9 +57,9 @@ class GeneralSettings(wx.Panel):
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		sizer.Add(wx.StaticText(self, label='Cards:'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
 		
-		self.chkLegacyDraw = wx.CheckBox(self, label='Draw Only 5 Cards (Legacy Rules)')
-		self.chkLegacyDraw.SetValue(settings.legacy_card_draw)
-		sizer.Add(self.chkLegacyDraw , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+		self.chkCelestialDraw = wx.CheckBox(self, label='Draw 6 Cards (Celestial/Emperor Rules)')
+		self.chkCelestialDraw.SetValue(settings.celestial_card_draw)
+		sizer.Add(self.chkCelestialDraw , 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
 		sbsizer.Add(sizer, 0, wx.EXPAND|wx.ALL, 5)
 		
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
