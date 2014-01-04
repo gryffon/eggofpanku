@@ -470,15 +470,15 @@ class Server(threading.Thread):
 
 			# Find their Sensei if available.
 			bothDecks = player.zones[game.ZONE_DECK_FATE].cards + player.zones[game.ZONE_DECK_DYNASTY].cards
-				senseiLoc = borderKeepLoc = (strongLoc - (CANVAS_CARD_AND_GRID))
-				senseiFound = False
+			senseiLoc = (strongLoc - (CANVAS_CARD_AND_GRID))
+			senseiFound = False
 			for cgid in bothDecks:
 				card = self.gameState.FindCard(cgid)
 				if card.data.type == 'sensei':
 					# Found it!
 					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=senseiLoc, y=0, faceup=True)
 					# Also adjust family honor.
-					#self.HandleSetFamilyHonor(player.client, honor=int(card.data.starting_honor))
+					self.HandleSetFamilyHonor(player.client, honor=int(card.data.starting_honor))
 					senseiFound = True
 					break
 
@@ -1172,7 +1172,14 @@ class Client(threading.Thread):
 	def HandleSetFamilyHonor(self, pid, honor):
 		player = self.gameState.FindPlayer(pid)
 		oldhonor = player.familyHonor
-		player.familyHonor = honor
+		print honor
+		#Handle case of Sensei adjusting honor
+		if str(honor).startswith('+'):
+			player.familyHonor = oldhonor + int(str(honor)[-1])
+		elif str(honor).startswith('-'):
+			player.familyHonor = oldhonor - int(str(honor)[-1])
+		else:
+			player.familyHonor = honor
 		wx.PostEvent(self._eventTarget, ClientSetFamilyHonorEvent(pid=pid, honor=honor, oldhonor=oldhonor))
 	
 	def HandleSetTokens(self, pid, cgid, token, number):
