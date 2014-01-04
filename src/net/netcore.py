@@ -492,8 +492,8 @@ class Server(threading.Thread):
 			#Ivory Edition goes back to drawing 5 cards.
 			cardDraw = 5
 
-			if settings.legacy_card_draw == True:
-				cardDraw = 5
+			if settings.celestial_card_draw == True:
+				cardDraw = 6
 				
 			for cgid in reversed(zone.TopCards(cardDraw)):
 				self.HandleMoveCard(player.client,cgid,player.pid,game.ZONE_HAND,x=0,y=0,faceup=True)
