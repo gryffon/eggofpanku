@@ -468,9 +468,26 @@ class Server(threading.Thread):
 					self.HandleSetFamilyHonor(player.client, honor=int(card.data.starting_honor))
 					break
 
+			# Find their Sensei if available.
+			bothDecks = player.zones[game.ZONE_DECK_FATE].cards + player.zones[game.ZONE_DECK_DYNASTY].cards
+				senseiLoc = borderKeepLoc = (strongLoc - (CANVAS_CARD_AND_GRID))
+				senseiFound = False
+			for cgid in bothDecks:
+				card = self.gameState.FindCard(cgid)
+				if card.data.type == 'sensei':
+					# Found it!
+					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=senseiLoc, y=0, faceup=True)
+					# Also adjust family honor.
+					#self.HandleSetFamilyHonor(player.client, honor=int(card.data.starting_honor))
+					senseiFound = True
+					break
+
 			#Put Bamboo Harversters and Border Keep into play
 			if settings.use_celestial_holdings == True:
-				borderKeepLoc = (strongLoc - (CANVAS_CARD_AND_GRID))
+				if senseiFound:
+					borderKeepLoc = (senseiLoc - (CANVAS_CARD_AND_GRID))
+				else:
+					borderKeepLoc = (strongLoc - (CANVAS_CARD_AND_GRID))
 				bambooLoc = (borderKeepLoc - (CANVAS_CARD_AND_GRID))
 
 				#Get Border Keep and put it in play
