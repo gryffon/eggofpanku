@@ -4,6 +4,8 @@ News & Changes
   * Changed the default for CE holdings to False.
   * Changed beginning Fate Hand size to 5. 
   * Add support for double-sided stronghold. 
+  * Add sensei to playfield if in the decklist.
+  * Adjust starting family honor due to sensei.
 
   2014-January-03 Egg of P'an Ku 0.10.0b2
   * Fixed issue with installer installing to hard-coded user directory.
