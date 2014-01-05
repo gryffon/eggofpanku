@@ -102,14 +102,14 @@ class ServerGameState(game.GameState):
 		self.players[p.pid] = p
 		self.nextPid += 1
 
-		
-		borderKeep = self.FindCardByName('Border Keep')
-		keepcard = self.AddCard(borderKeep)
-		p.zones[game.ZONE_DUMMY].PutTop(keepcard)
-		
-		bambooHarvesters= self.FindCardByName('Bamboo Harvesters')	
-		bamboocard = self.AddCard(bambooHarvesters)
-		p.zones[game.ZONE_DUMMY].PutTop(bamboocard)
+		if settings.use_celestial_holdings == True:
+			borderKeep = self.FindCardByName('Border Keep')
+			keepcard = self.AddCard(borderKeep)
+			p.zones[game.ZONE_DUMMY].PutTop(keepcard)
+			
+			bambooHarvesters= self.FindCardByName('Bamboo Harvesters')	
+			bamboocard = self.AddCard(bambooHarvesters)
+			p.zones[game.ZONE_DUMMY].PutTop(bamboocard)
 
 		# Submit cards, too.
 		if dynasty:
