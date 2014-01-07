@@ -84,6 +84,7 @@ class _XMLSettings:
             eopkSetting.appendChild(eopkSettingValue)
             eopksettings.appendChild(eopkSetting)
             
+            
         self.__dict__['xml'] = newsettings
     
     def WriteSettingsFile(self):
@@ -94,6 +95,26 @@ class _XMLSettings:
         except AttributeError:
             self.CreateSettingsFile()
         
+        #Check for new settings
+        for k, v in DEFAULT_SETTINGS.items():
+            settingfound = False
+
+            for node in self.xml.getElementsByTagName("eopk:setting"):
+                if k == node.getAttribute("name"):
+                    settingfound = True
+                    break
+
+            if settingfound == False:
+                print "Setting not found: " + k
+                eopkSetting = self.__dict__['xml'].createElement("eopk:setting")
+                eopkSettingName = self.__dict__['xml'].createAttributeNS("http://code.google.com/p/eopk/", "name")
+                eopkSettingName.nodeValue = k
+                eopkSetting.setAttributeNode(eopkSettingName)
+                eopkSettingValue = self.__dict__['xml'].createTextNode(repr(v))
+                eopkSetting.appendChild(eopkSettingValue)
+                self.__dict__['xml'].childNodes[0].appendChild(eopkSetting)
+
+
         f = file(settings._filename, 'w')
         self.xml.writexml(f, indent="  ", addindent="  ", newl="\n")
         f.close()
