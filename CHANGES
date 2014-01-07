@@ -1,5 +1,9 @@
 News & Changes
 
+  2014-January-05 Egg of P'an Ku 0.10.0b4
+  * Use CE holdings option to determine if we try to load Border Keep and Bamboo Harvesters
+  * Fix setting of image pack directory.
+
   2014-January-04 Egg of P'an Ku 0.10.0b3
   * Changed the default for CE holdings to False.
   * Changed beginning Fate Hand size to 5. 
