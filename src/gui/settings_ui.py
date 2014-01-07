@@ -150,6 +150,11 @@ class DatabaseSettings(wx.Panel):
 		self.SetSizer(panelsizer)
 	
 	def Save(self):
+		new_dir_imagepacks = self.dirImagePacks.GetValue()
+		if new_dir_imagepacks != DEFAULT_SETTINGS['dir_imagepacks']:
+			settings.imagepackdir_changed = True
+		else:
+			settings.imagepackdir_changed = False
 		settings.dir_imagepacks = self.dirImagePacks.GetValue()
 		
 	def Import(self):
@@ -168,6 +173,7 @@ class DatabaseSettings(wx.Panel):
 	
 	def OnDefaultImagesPath(self, event):
 		self.dirImagePacks.SetValue(DEFAULT_SETTINGS['dir_imagepacks'])
+
 
 	def OnGetImagesPath(self, event):
 		fdlg = wx.DirDialog(None, message='Please select the directory containing the images', \
