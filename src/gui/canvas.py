@@ -140,7 +140,10 @@ class L5RCanvas(GLCanvas):
 				for k,loc in card.images.iteritems():
 					try:
 						if loc.startswith('images/cards/'):
-							loc = settings.data_dir + '/' + settings.dir_imagepacks + loc[13:]
+							if settings.imagepackdir_changed == True:
+								loc = settings.dir_imagepacks + loc[13:]
+							else:
+								loc = settings.data_dir + '/' + settings.dir_imagepacks + loc[13:]
 						self.texCard[card.id] = self.LoadTexture(loc)
 						break
 					except IOError:
