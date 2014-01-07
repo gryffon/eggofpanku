@@ -1,5 +1,8 @@
 News & Changes
 
+  2014-January-07 Egg of P'an Ku 0.10.0b5
+  * Write new settings to the settings file without having to delete the old file.
+  
   2014-January-06 Egg of P'an Ku 0.10.0b4
   * Use CE holdings option to determine if we try to load Border Keep and Bamboo Harvesters
   * Fix setting of image pack directory.
