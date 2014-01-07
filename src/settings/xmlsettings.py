@@ -15,6 +15,7 @@ DEFAULT_SETTINGS = {
     'cardsource':'',
     'playfield_snap':True,
     'dir_imagepacks':'images/cards/',
+    'imagepackdir_changed':False,
     'playfield_bg_mode':0,
     'playfield_bg_color1':(0, 206, 24),
     'playfield_bg_color2':(0, 190, 16),
