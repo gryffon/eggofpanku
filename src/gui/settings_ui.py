@@ -24,6 +24,7 @@ import string
 from db import database, dbimport
 
 from settings.xmlsettings import settings
+from settings.xmlsettings import DEFAULT_SETTINGS
 
 
 class GeneralSettings(wx.Panel):
@@ -130,8 +131,11 @@ class DatabaseSettings(wx.Panel):
 		sbsizer.Add(wx.StaticText(self, label='Egg of P\'an Ku will look in the  below directory for card images.'), 0, wx.ALL, 5)
 		self.dirImagePacks = wx.TextCtrl(self, value=settings.dir_imagepacks)
 		sbsizer.Add(self.dirImagePacks, 0, wx.EXPAND|wx.ALL, 5)
+		self.btnDefaultImagesPath = wx.Button(self, label='Default')
 		self.btnGetImagesPath = wx.Button(self, label='Browse')
+		self.Bind(wx.EVT_BUTTON, self.OnDefaultImagesPath, self.btnDefaultImagesPath)
 		self.Bind(wx.EVT_BUTTON, self.OnGetImagesPath, self.btnGetImagesPath)
+		sizer.Add(self.btnDefaultImagesPath, 0, wx.RIGHT, 5)
 		sizer.Add(self.btnGetImagesPath, 0, wx.RIGHT, 5)
 		sbsizer.Add(sizer,0, wx.ALIGN_RIGHT|wx.ALL, 5)
 		
@@ -162,6 +166,9 @@ class DatabaseSettings(wx.Panel):
 			return False
 		return True
 	
+	def OnDefaultImagesPath(self, event):
+		self.dirImagePacks.SetValue(DEFAULT_SETTINGS['dir_imagepacks'])
+
 	def OnGetImagesPath(self, event):
 		fdlg = wx.DirDialog(None, message='Please select the directory containing the images', \
 						    defaultPath=settings.dir_imagepacks, name='Select Images Path')
