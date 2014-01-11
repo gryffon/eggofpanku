@@ -53,8 +53,8 @@ OutFile "eopk-%%%VERSION%%%-install.exe"
 InstallDir "$PROGRAMFILES\%%%APPNAME%%%"
 InstallDirRegKey HKCU "Software\%%%APPNAME%%%" ""
 
-LangString Homepage ${LANG_ENGLISH} "Visit http://www.evil-incorporated.net/eopk for more information."
-LangString HomepageLink ${LANG_ENGLISH} "http://www.evil-incorporated.net/eopk"
+LangString Homepage ${LANG_ENGLISH} "Visit http://www.eggofpanku.net for more information."
+LangString HomepageLink ${LANG_ENGLISH} "http://www.eggofpanku.net"
 
 ;--------------------------------------------------------
 XPStyle on

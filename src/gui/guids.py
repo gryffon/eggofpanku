@@ -32,7 +32,7 @@ EOPK_WARRANTY_TEXT = "comes with ABSOLUTELY NO WARRANTY." \
 			" This is free software, and you are welcome to redistribute it" \
 			" under certain conditions; see LICENSE for details."
 
-EOPK_WEBSITE_URL = "http://www.evil-incorporated.net/eopk"
+EOPK_WEBSITE_URL = "http://www.eeggofpanku.net"
 EOPK_DONATE_URL = "https://www.google.com"
 
 ID_MAIN_WINDOW = 20000
