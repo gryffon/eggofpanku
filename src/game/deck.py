@@ -101,8 +101,10 @@ class Deck:
 					print '%s starts in play.' % (cardname)
 
 				try:
+					print "Load normal:"
 					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
 				except (ValueError, KeyError):
+					print "Load error:"
 					cardErrors.append(cardname)
 
 		if len(cardErrors) >0:
