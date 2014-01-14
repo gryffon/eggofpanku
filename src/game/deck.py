@@ -71,6 +71,8 @@ class Deck:
 	def NumFate(self):
 		"""Return the number of fate cards in the deck."""
 		cardDB = database.get()
+		for i in self.cards:
+			print i
 		return sum([count for count, id, inplay in self.cards if((inplay!=True) and  (cardDB[id].isFate()))])
 
 	def NumInPlay(self):
@@ -101,10 +103,8 @@ class Deck:
 					print '%s starts in play.' % (cardname)
 
 				try:
-					print "Load normal:"
 					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
 				except (ValueError, KeyError):
-					print "Load error:"
 					cardErrors.append(cardname)
 
 		if len(cardErrors) >0:
