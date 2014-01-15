@@ -283,9 +283,10 @@ class Deck:
 		Returns the number of that card now in the deck.
 
 		"""
-		for idx, val, inplay in enumerate(self.cards):
+		for idx, val in enumerate(self.cards):
 			if val[1] == cdid:
 				if val[0] > num:
+					inplay = self.cards[idx][2]
 					self.cards[idx] = (val[0] - num, cdid, inplay)
 					return val[0] - num
 				else:
