@@ -202,7 +202,7 @@ class DatabaseSettings(wx.Panel):
 		fdlg = wx.DirDialog(None, message='Please select the directory containing Egg of P\'an Ku data ', \
 						    defaultPath=settings.data_dir, name='Select Data Dir')
 		if fdlg.ShowModal() == wx.ID_OK:
-			self.dirDataDir.SetValue(fdlg.GetPath() if fdlg.GetPath().endswith('\\') else fdlg.GetPath() + '\\')
+			self.dirData.SetValue(fdlg.GetPath() if fdlg.GetPath().endswith('\\') else fdlg.GetPath() + '\\')
 
 	def OnChangeDatabase(self, event):
 		fdlg = wx.FileDialog(None, wildcard='XML card database (*.xml)|*.xml|All files (*.*)|*.*', style=wx.OPEN|wx.FILE_MUST_EXIST)
