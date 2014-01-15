@@ -1,7 +1,10 @@
 News & Changes
 
-  2014-January-07 Egg of P'an Ku 0.10.0b5
+  2014-January-14 Egg of P'an Ku 0.10.0b5
   * Write new settings to the settings file without having to delete the old file.
+  * Fix issue in deck building with removing card not updating card count and ruining deck list.
+  *Fix issue with sensei not adjusting starting honor.
+
   
   2014-January-06 Egg of P'an Ku 0.10.0b4
   * Use CE holdings option to determine if we try to load Border Keep and Bamboo Harvesters
