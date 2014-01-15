@@ -100,6 +100,7 @@ class DatabaseSettings(wx.Panel):
 		db = database.get()
 		panelsizer = wx.BoxSizer(wx.VERTICAL)
 		
+		#Database 
 		# -------
 		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Current Database'), wx.VERTICAL)
 		
@@ -125,6 +126,7 @@ class DatabaseSettings(wx.Panel):
 		
 		panelsizer.Add(sbsizer, 0, wx.CENTRE|wx.EXPAND|wx.ALL, 4)
 		
+		#Image Packs
 		# -------
 		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Image Packs'), wx.VERTICAL)
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -141,12 +143,23 @@ class DatabaseSettings(wx.Panel):
 		
 		panelsizer.Add(sbsizer, 0, wx.EXPAND|wx.ALL, 4)
 
+		#Data Dir
 		# -------
 		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Data Directory'), wx.VERTICAL)
-		sbsizer.Add(wx.StaticText(self, label='Data directory is set to: %s' % settings.data_dir ), 0, wx.ALL, 5)
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sbsizer.Add(wx.StaticText(self, label='Egg of P\'an Ku will look in the  below directory for it\'s data.'), 0, wx.ALL, 5)
+		self.dirData = wx.TextCtrl(self, value=settings.data_dir)
+		sbsizer.Add(self.dirData, 0, wx.EXPAND|wx.ALL, 5)
+		self.btnDefaultDataDir = wx.Button(self, label='Default')
+		self.btnGetDataDir = wx.Button(self, label='Browse')
+		self.Bind(wx.EVT_BUTTON, self.OnDefaultDataDir, self.btnDefaultDataDir)
+		self.Bind(wx.EVT_BUTTON, self.OnGetDataDir, self.btnGetDataDir)
+		sizer.Add(self.btnDefaultDataDir, 0, wx.RIGHT, 5)
+		sizer.Add(self.btnGetDataDir, 0, wx.RIGHT, 5)
+		sbsizer.Add(sizer,0, wx.ALIGN_RIGHT|wx.ALL, 5)
 		
 		panelsizer.Add(sbsizer, 0, wx.EXPAND|wx.ALL, 4)
-		
+
 		self.SetSizer(panelsizer)
 	
 	def Save(self):
@@ -180,7 +193,17 @@ class DatabaseSettings(wx.Panel):
 						    defaultPath=settings.dir_imagepacks, name='Select Images Path')
 		if fdlg.ShowModal() == wx.ID_OK:
 			self.dirImagePacks.SetValue(fdlg.GetPath() if fdlg.GetPath().endswith('\\') else fdlg.GetPath() + '\\')
-	
+
+	def OnDefaultDataDir(self, event):
+		self.dirData.SetValue(DEFAULT_SETTINGS['data_dir'])
+
+
+	def OnGetDataDir(self, event):
+		fdlg = wx.DirDialog(None, message='Please select the directory containing Egg of P\'an Ku data ', \
+						    defaultPath=settings.data_dir, name='Select Data Dir')
+		if fdlg.ShowModal() == wx.ID_OK:
+			self.dirDataDir.SetValue(fdlg.GetPath() if fdlg.GetPath().endswith('\\') else fdlg.GetPath() + '\\')
+
 	def OnChangeDatabase(self, event):
 		fdlg = wx.FileDialog(None, wildcard='XML card database (*.xml)|*.xml|All files (*.*)|*.*', style=wx.OPEN|wx.FILE_MUST_EXIST)
 		if fdlg.ShowModal() == wx.ID_OK:
