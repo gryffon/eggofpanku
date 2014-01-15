@@ -315,7 +315,7 @@ class PlayfieldSettings(wx.Panel):
 
 class SettingsDialog(wx.Dialog):
 	def __init__(self, parent):
-		wx.Dialog.__init__(self, parent, title='Preferences', size=(460, 400))
+		wx.Dialog.__init__(self, parent, title='Preferences', size=(490, 400))
 		
 		sizer = wx.BoxSizer(wx.VERTICAL)  # Main sizer
 		
