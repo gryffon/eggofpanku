@@ -71,8 +71,6 @@ class Deck:
 	def NumFate(self):
 		"""Return the number of fate cards in the deck."""
 		cardDB = database.get()
-		for i in self.cards:
-			print i
 		return sum([count for count, id, inplay in self.cards if((inplay!=True) and  (cardDB[id].isFate()))])
 
 	def NumInPlay(self):
@@ -285,10 +283,10 @@ class Deck:
 		Returns the number of that card now in the deck.
 
 		"""
-		for idx, val in enumerate(self.cards):
+		for idx, val, inplay in enumerate(self.cards):
 			if val[1] == cdid:
 				if val[0] > num:
-					self.cards[idx] = (val[0] - num, cdid)
+					self.cards[idx] = (val[0] - num, cdid, inplay)
 					return val[0] - num
 				else:
 					del self.cards[idx]
