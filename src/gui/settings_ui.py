@@ -152,6 +152,8 @@ class DatabaseSettings(wx.Panel):
 		sbsizer.Add(self.dirData, 0, wx.EXPAND|wx.ALL, 5)
 		self.btnDefaultDataDir = wx.Button(self, label='Default')
 		self.btnGetDataDir = wx.Button(self, label='Browse')
+		self.btnDefaultDataDir.Disable()
+		self.btnGetDataDir.Disable()
 		self.Bind(wx.EVT_BUTTON, self.OnDefaultDataDir, self.btnDefaultDataDir)
 		self.Bind(wx.EVT_BUTTON, self.OnGetDataDir, self.btnGetDataDir)
 		sizer.Add(self.btnDefaultDataDir, 0, wx.RIGHT, 5)
