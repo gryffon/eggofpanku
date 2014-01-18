@@ -344,6 +344,11 @@ class HelpAboutDialog(wx.Dialog):
 		aboutData.append('Version: %s\n' % EOPK_VERSION_STRING)
 		aboutData.append(EOPK_COPYRIGHT)
 		aboutData.append("\n%s %s" % (EOPK_APPNAME,EOPK_WARRANTY_TEXT))
+
+		#Beta Testers
+		aboutData.append('\n\nThanks to the following for beta testing:\n')
+		for name in EOPK_BETA_TESTERS:
+			aboutData.append('%s' % name)
 		
 		lblHelp = wx.StaticText(self, wx.ID_ANY, '\n'.join(aboutData))
 		lblHelp.Wrap(300)
