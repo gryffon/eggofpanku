@@ -205,8 +205,12 @@ Using Image Packs
 
 Technical details
 
-  Egg of P'an Ku is written in Python 2.5. It primarily uses wxPython 2.8 for user interface management, simplejson for network message serialization, pyOpenGL (through wx) for playfield rendering, PIL and wx for image loading,
-  and various out-of-the-box Python modules for network management, card database storage, etc.
+  Egg of P'an Ku is written in Python 2.7. 
+    Additional Libraries:
+      wxPython - 2.8 For user interface management 
+      simplejson - 3.3.0  For network message serialization
+      pyOpenGL -  3.0.2  (through wx) For playfield rendering 
+      PIL - 1.1.7  For image loading,
   
   If you are using a Win32 executable version of Egg of P'an Ku, it was packaged using py2exe.
   
