@@ -170,6 +170,12 @@ class Deck:
 							OUTPUT_TYPES.BBCode:'\n[size=150]%s[/size]\n'}[savetype]
 				fp.write(shString % (card.name))
 
+			if card.type == 'sensei':
+				senString = {OUTPUT_TYPES.Text:'\n1 %s\n',
+							OUTPUT_TYPES.HTML:'\n<h3><u>%s</u></h3>\n',
+							OUTPUT_TYPES.BBCode:'\n[size=150]%s[/size]\n'}[savetype]
+				fp.write(senString % (card.name))
+
 		#In Play Cards
 		inPlayCards =[(count, cardDB[cdid]) for count, cdid, inPlay in self if inPlay==True]
 		inPlayCount = 0
@@ -235,8 +241,9 @@ class Deck:
 		ringcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isRing())]
 		self.WriteCardsToTypeList(fp,ringcards,'Rings', savetype)
 
-		senseicards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isSensei())]
-		self.WriteCardsToTypeList(fp,senseicards,'Senseis', savetype)
+		#Break senseis for legacy for the time being
+		#senseicards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isSensei())]
+		#self.WriteCardsToTypeList(fp,senseicards,'Senseis', savetype)
 
 
 
