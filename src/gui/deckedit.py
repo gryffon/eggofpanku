@@ -861,7 +861,7 @@ class MainWindow(wx.Frame):
 				success = wx.TheClipboard.GetData(do)
 				if success:
 					data = do.GetText()
-				ex.TheClipboard.Close()
+				wx.TheClipboard.Close()
 			self.deck = deck.Deck.loadFromClipboard(data)
 		except deck.ImportCardsNotFoundError, ei:
 			wx.MessageDialog(self, '%s\n' % ei, 'Import Error', wx.ICON_ERROR).ShowModal()
