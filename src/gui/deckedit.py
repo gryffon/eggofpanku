@@ -855,10 +855,13 @@ class MainWindow(wx.Frame):
 
 	def OpenDeckFromClipboard(self):
 		try:
-			win32clipboard.OpenClipboard()
-			data = win32clipboard.GetClipboardData(win32clipboard.CF_TEXT)
-			win32clipboard.EmptyClipboard()
-			win32clipboard.CloseClipboard()
+			if not wx.TheClipboard.IsOpened():
+				wx.TheClipboard.Open()
+				do = wx.TextDataObject()
+				success = wx.TheClipboard.GetData(do)
+				if success:
+					data = do.GetText()
+				ex.TheClipboard.Close()
 			self.deck = deck.Deck.loadFromClipboard(data)
 		except deck.ImportCardsNotFoundError, ei:
 			wx.MessageDialog(self, '%s\n' % ei, 'Import Error', wx.ICON_ERROR).ShowModal()
