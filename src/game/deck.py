@@ -153,9 +153,7 @@ class Deck:
 				print '%s starts in play.' % (cardname)
 
 				try:
-					card = cardDB.FindCardByName(cardname).id
-					card.inplay = foundInPlay
-					deck.cards.append((int(count), card, foundInPlay))
+					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
 				except (ValueError, KeyError):
 					cardErrors.append(cardname)
 
@@ -176,9 +174,7 @@ class Deck:
 				print '%s starts in play.' % (cardname)
 
 				try:
-					card = cardDB.FindCardByName(cardname).id
-					card.inplay = foundInPlay
-					deck.cards.append((int(count), card, foundInPlay))
+					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
 				except (ValueError, KeyError):
 					cardErrors.append(cardname)
 
@@ -199,9 +195,7 @@ class Deck:
 				print '%s starts in play.' % (cardname)
 
 				try:
-					card = cardDB.FindCardByName(cardname).id
-					card.inplay = foundInPlay
-					deck.cards.append((int(count), card, foundInPlay))
+					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
 				except (ValueError, KeyError):
 					cardErrors.append(cardname)
 
@@ -229,9 +223,7 @@ class Deck:
 					print '%s starts in play.' % (cardname)
 
 				try:
-					card = cardDB.FindCardByName(cardname).id
-					card.inplay = foundInPlay
-					deck.cards.append((int(count), card, foundInPlay))
+					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
 				except (ValueError, KeyError):
 					cardErrors.append(cardname)
 
