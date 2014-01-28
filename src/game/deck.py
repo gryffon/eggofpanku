@@ -77,7 +77,7 @@ class Deck:
 		cardDB = database.get()
 		return sum([count for count,id, inplay in self.cards if inplay == True])
 
-	def numCardsInDeckFileSubSection(section):
+	def numCardsInDeckFileSubSection(self, section):
 		start = section.find('(')
 		end = section.find(')')
 		return int(section[start+1:end-1])
