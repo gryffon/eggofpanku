@@ -129,10 +129,10 @@ class Deck:
 		cardDB = database.get()
 		deck = Deck()
 		for line in fp:
-		#Look for Pre-Game cards first
-		if '# Pre-Game' in line:	
-			numPreGame = deck.numCardsInDeckFileSubSection(line)
-			break
+			#Look for Pre-Game cards first
+			if '# Pre-Game' in line:	
+				numPreGame = deck.numCardsInDeckFileSubSection(line)
+				break
 
 		#Look for a combination of Stronghold,Sensei,Winds to match numPreGame
 		i = 0
