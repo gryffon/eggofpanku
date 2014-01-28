@@ -134,6 +134,7 @@ class Deck:
 		cardDB = database.get()
 		deck = Deck()
 		for line in fp:
+			print line
 			#Look for Pre-Game cards first
 			if '# Pre-Game' in line:	
 				numPreGame = deck.numCardsInDeckFileSubSection(line)
