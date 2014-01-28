@@ -323,8 +323,7 @@ class DeckPanel(wx.Panel):
 		cardDB = database.get()
 		for num, cdid, inplay in self.deck:
 			card = cardDB[cdid]
-			if (card.startsInPlay() == True):
-				print "Pre-Game card"
+			if (inplay == True):
 				widget = self.lstInPlay
 			else:
 				if card.isDynasty():
