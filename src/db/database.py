@@ -137,9 +137,10 @@ class CardData:
 	def isCelestial(self):
 		return self.type == 'celestial'
 
+	#Don't consider sensei a Fate card for the time being.
 	def isFate(self):
 		return self.type in ['strategy', 'follower', 'item', \
-			'spell', 'ancestor', 'ring', 'sensei']
+			'spell', 'ancestor', 'ring']
 
 	def isStrategy(self):
 		return self.type == 'strategy'
