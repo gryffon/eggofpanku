@@ -80,6 +80,7 @@ class Deck:
 	def numCardsInDeckFileSubSection(self, section):
 		start = section.find('(')
 		end = section.find(')')
+		print section[start+1:end-1]
 		return int(section[start+1:end-1])
 
 	@classmethod
