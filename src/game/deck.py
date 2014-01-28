@@ -77,6 +77,11 @@ class Deck:
 		cardDB = database.get()
 		return sum([count for count,id, inplay in self.cards if inplay == True])
 
+	def numCardsInDeckFileSubSection(section):
+		start = section.find('(')
+		end = section.find(')')
+		return int(section[start+1:end-1])
+
 	@classmethod
 	def load(cls, fp):
 		"""Read a deck from a list of strings (or a file-like object) and parse it.
@@ -123,12 +128,91 @@ class Deck:
 
 		cardDB = database.get()
 		deck = Deck()
-		for c in fp:
-			if '# Dynasty' in c:
-				foundInPlay = False
+		line = fp.next()
+		#Look for Pre-Game cards first
+		if '# Pre-Game' in line:	
+			numPreGame = deck.numCardsInDeckFileSubSection(line)
 
-			if not c.startswith('#') and c.strip() != '':
-				(count, cardname) = c.strip().split(' ', 1)
+		#Look for a combination of Stronghold,Sensei,Winds to match numPreGame
+		i = 0
+		while i < numPreGame:
+			if '# Stronghold' in line:
+				numStronghold = deck.numCardsInDeckFileSubSection(line)
+				if numStronghold != 1:
+					print "More than one stronghold not allowed, only taking the first one."
+				line = fp.next()
+				i += 1
+				#Add Stronghold to Deck
+				(count, cardname) = line.strip().split(' ', 1)
+				cardname = cardname.strip()
+				print '%s starts in play.' % (cardname)
+
+				try:
+					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
+				except (ValueError, KeyError):
+					cardErrors.append(cardname)
+
+				if numStronghold != 1:
+					for x in range(numStronghold-1):
+						i += 1
+						fp.next()
+
+			if '# Sensei' in line:		
+				numSensei = deck.numCardsInDeckFileSubSection(line)
+				if numSensei != 1:
+					print "More than one sensei not allowed, only taking the first one."
+				line = fp.next()
+				i += 1
+				#Add Sensei to Deck
+				(count, cardname) = line.strip().split(' ', 1)
+				cardname = cardname.strip()
+				print '%s starts in play.' % (cardname)
+
+				try:
+					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
+				except (ValueError, KeyError):
+					cardErrors.append(cardname)
+
+				if numSensei != 1:
+					for x in range(numSensei-1):
+						i += 1
+						fp.next()
+
+			if '# Wind' in line:		
+				numWind = deck.numCardsInDeckFileSubSection(line)
+				if numWind != 1:
+					print "More than one wind not allowed, only taking the first one."
+				line = fp.next()
+				i += 1
+				#Add Wind to Deck
+				(count, cardname) = line.strip().split(' ', 1)
+				cardname = cardname.strip()
+				print '%s starts in play.' % (cardname)
+
+				try:
+					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
+				except (ValueError, KeyError):
+					cardErrors.append(cardname)
+
+				if numWind != 1:
+					for x in range(numWind-1):
+						i += 1
+						fp.next()
+
+			#Go to next line before end of loop
+			line = fp.next()
+
+		foundInPlay = False
+
+		for line in fp:
+			if '# Dynasty' in line:
+				numDynasty = deck.numCardsInDeckFileSubSection(line)
+
+			if '# Fate' in line:
+				numFate = deck.numCardsInDeckFileSubSection(line)
+
+			if not line.startswith('#') and line.strip() != '':
+				(count, cardname) = line.strip().split(' ', 1)
 				cardname = cardname.strip()
 				if foundInPlay:
 					print '%s starts in play.' % (cardname)
