@@ -111,6 +111,39 @@ class Deck:
 		return deck
 
 	@classmethod
+	def newload(cls, fp):
+		"""Read a deck from a list of strings (or a file-like object) and parse it.
+
+		Returns a deck object.
+
+		"""
+		foundInPlay = True
+
+		cardErrors=[]
+
+		cardDB = database.get()
+		deck = Deck()
+		for c in fp:
+			if '# Dynasty' in c:
+				foundInPlay = False
+
+			if not c.startswith('#') and c.strip() != '':
+				(count, cardname) = c.strip().split(' ', 1)
+				cardname = cardname.strip()
+				if foundInPlay:
+					print '%s starts in play.' % (cardname)
+
+				try:
+					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, foundInPlay))
+				except (ValueError, KeyError):
+					cardErrors.append(cardname)
+
+		if len(cardErrors) >0:
+			raise LoadCardsNotFoundError(cardErrors, deck)
+
+		return deck
+
+	@classmethod
 	def loadFromClipboard(cls, data):
 		#set up a holder for unknown cards
 		cardErrors= []
@@ -153,7 +186,7 @@ class Deck:
 
 		return deck
 
-	def Save(self, fp, savetype):
+	def oldSave(self, fp, savetype):
 		cardDB = database.get()
 
 		headerString = ''
@@ -226,7 +259,7 @@ class Deck:
 		ancestorcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isAncestor())]
 		self.WriteCardsToTypeList(fp,ancestorcards,'Ancestors', savetype)
 
-		actioncards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isAction())]
+		actioncards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isStrategy())]
 		self.WriteCardsToTypeList(fp,actioncards,'Strategies', savetype)
 
 		followercards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isFollower())]
@@ -241,10 +274,84 @@ class Deck:
 		ringcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isRing())]
 		self.WriteCardsToTypeList(fp,ringcards,'Rings', savetype)
 
-		#Break senseis for legacy for the time being
-		#senseicards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isSensei())]
-		#self.WriteCardsToTypeList(fp,senseicards,'Senseis', savetype)
+	def Save(self, fp, savetype):
+		cardDB = database.get()
 
+		headerString = ''
+		headerString = {OUTPUT_TYPES.Text:'\n# %s (%d)\n',
+						OUTPUT_TYPES.HTML:'\n<h3><u>%s (%d)</u></h3>\n',
+						OUTPUT_TYPES.BBCode:'\n[size=150]%s (%d)[/size]\n'}[savetype]
+
+		#Oracle refers to the Stronghold and Sensei as Pre-Game cards
+		#Pre-Game Cards
+		inPlayCards =[(count, cardDB[cdid]) for count, cdid, inPlay in self if inPlay==True]
+		inPlayCount = 0
+		for item in inPlayCards:
+			inPlayCount += int(item[0])
+
+		fp.write(headerString % ('Pre-Game',inPlayCount))	
+
+		stronghold = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay==True) and cardDB[cdid].type=="stronghold")]
+		self.WriteCardsToTypeList(fp,stronhold,'Stronghold', savetype)
+
+		sensei = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay==True) and cardDB[cdid].isSensei())]
+		self.WriteCardsToTypeList(fp,sensei,'Sensei', savetype)
+
+		wind = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay==True) and   cardDB[cdid].isWind())]
+		self.WriteCardsToTypeList(fp,wind,'Wind', savetype)
+
+		#Dynasty Deck
+		dyncards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and  (cardDB[cdid].isDynasty()))]
+		dynCount = 0
+		for item in dyncards:
+			dynCount += int(item[0])
+
+		fp.write(headerString % ('Dynasty',dynCount))
+
+		celestialcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and   cardDB[cdid].isCelestial())]
+		self.WriteCardsToTypeList(fp,celestialcards,'Celestials', savetype)
+
+		eventcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and   cardDB[cdid].isEvent())]
+		self.WriteCardsToTypeList(fp,eventcards,'Events', savetype)
+
+		holdingcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and   cardDB[cdid].isHolding())]
+		self.WriteCardsToTypeList(fp,holdingcards,'Holdings', savetype)
+
+		personalitycards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isPersonality())]
+		self.WriteCardsToTypeList(fp,personalitycards,'Personalities', savetype)
+
+		regioncards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and   cardDB[cdid].isRegion())]
+		self.WriteCardsToTypeList(fp,regioncards,'Regions', savetype)
+
+		#Fate Deck
+		fatecards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if ((inPlay!=True) and  (cardDB[cdid].isFate()))]
+		fateCount = 0
+		for item in fatecards:
+			fateCount += int(item[0])
+
+		#fatecards.sort(lambda a, b: cmp(a[1].type, b[1].type))
+		fp.write(headerString % ('Fate',fateCount))
+
+		ancestorcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isAncestor())]
+		self.WriteCardsToTypeList(fp,ancestorcards,'Ancestors', savetype)
+
+		followercards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isFollower())]
+		self.WriteCardsToTypeList(fp,followercards,'Followers', savetype)
+
+		itemcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isItem())]
+		self.WriteCardsToTypeList(fp,itemcards,'Items', savetype)
+
+		ringcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isRing())]
+		self.WriteCardsToTypeList(fp,ringcards,'Rings', savetype)
+
+		spellcards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isSpell())]
+		self.WriteCardsToTypeList(fp,spellcards,'Spells', savetype)
+
+		strategycards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isStrategy())]
+		self.WriteCardsToTypeList(fp,strategycards,'Strategy', savetype)
+
+		senseicards = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay!=True) and cardDB[cdid].isSensei())]
+		self.WriteCardsToTypeList(fp,senseicards,'Senseis', savetype)
 
 
 	def WriteCardsToTypeList(self, fp, cardlist, title, saveType):

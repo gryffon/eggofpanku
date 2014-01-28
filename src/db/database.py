@@ -141,7 +141,7 @@ class CardData:
 		return self.type in ['strategy', 'follower', 'item', \
 			'spell', 'ancestor', 'ring', 'sensei']
 
-	def isAction(self):
+	def isStrategy(self):
 		return self.type == 'strategy'
 
 	def isFollower(self):
