@@ -81,10 +81,8 @@ class Deck:
 		start = section.find('(')
 		end = section.find(')')
 		if start+1 == end-1:
-			print section[start+1]
 			return int(section[start+1])
 		else:
-			print section[start+1:end-1]
 			return int(section[start+1:end-1])
 
 
