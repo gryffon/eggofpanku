@@ -37,7 +37,8 @@ ID_DE_MNU_NEW_DECK = 9000
 ID_DE_MNU_SAVE_DECK = 9001
 ID_DE_MNU_SAVE_DECK_AS = 9002
 ID_DE_MNU_OPEN_DECK = 9003
-ID_DE_MNU_IMPORT_CLIPBOARD = 9004
+ID_DE_MNU_OPEN_DECK = 9004
+ID_DE_MNU_IMPORT_CLIPBOARD = 9005
 ID_DE_MNU_EDIT_OUTPUT_HTML = 9007
 ID_DE_MNU_EDIT_OUTPUT_BBCODE = 9008
 ID_DE_MNU_RECENT = 9010
@@ -734,6 +735,7 @@ class MainWindow(wx.Frame):
 		# Events
 		wx.EVT_MENU(self, ID_DE_MNU_NEW_DECK, self.OnMenuNewDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_OPEN_DECK, self.OnMenuOpenDeck)
+		wx.EVT_MENU(self, ID_DE_MNU_OPEN_OLD_DECK, self.OnMenuOpenOldDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK, self.OnMenuSaveDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK_AS, self.OnMenuSaveDeckAs)
 		wx.EVT_MENU(self, ID_DE_MNU_IMPORT_CLIPBOARD, self.OnMenuImportClipboard)
@@ -790,6 +792,28 @@ class MainWindow(wx.Frame):
 	def OpenDeck(self, filename):
 		try:
 			self.deck = deck.Deck.load(file(filename, 'rb'))
+		except deck.LoadCardsNotFoundError, ei:
+			wx.MessageDialog(self, '%s\n' % ei, 'Load Deck Error', wx.ICON_ERROR).ShowModal()
+			self.deck = ei.loadedDeck
+		except deck.InvalidCardError, e:
+			wx.MessageDialog(self, 'A card in the deck (%s) was not found in the card database.\n' \
+				'This could be because your card database is outdated, missing some cards, or ' \
+				'because the deck is invalid somehow.' % e.card, 'Deck Error', wx.ICON_ERROR).ShowModal()
+			return
+		except IOError:
+			wx.MessageDialog(self, 'The specified deck file could not be opened.\nMake sure the path ' \
+				'entered exists.', 'Deck Error', wx.ICON_ERROR).ShowModal()
+			return
+
+		self.panelEdit.SetDeck(self.deck)
+		self.deckName = filename
+		self.noteViews.GetCurrentPage().Activate()
+		self.RecentlyUsed(self.deckName)
+		self.UpdateStatus()
+
+	def OpenOldDeck(self, filename):
+		try:
+			self.deck = deck.Deck.oldload(file(filename, 'rb'))
 		except deck.LoadCardsNotFoundError, ei:
 			wx.MessageDialog(self, '%s\n' % ei, 'Load Deck Error', wx.ICON_ERROR).ShowModal()
 			self.deck = ei.loadedDeck
@@ -897,6 +921,14 @@ class MainWindow(wx.Frame):
 		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_WILDCARD, defaultDir=settings.last_deck, style=wx.OPEN|wx.FILE_MUST_EXIST)
 		if dlg.ShowModal() == wx.ID_OK:
 			self.OpenDeck(dlg.GetPath())
+
+	def OnMenuOpenOldDeck(self, event):
+		if self.deck and self.deck.modified and not self.QuerySaveFirst():
+			return
+
+		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_WILDCARD, defaultDir=settings.last_deck, style=wx.OPEN|wx.FILE_MUST_EXIST)
+		if dlg.ShowModal() == wx.ID_OK:
+			self.OpenOldDeck(dlg.GetPath())
 
 	def OnMenuRecent(self, event):
 		idx = event.GetId() - ID_DE_MNU_RECENT
