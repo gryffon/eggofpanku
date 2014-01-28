@@ -843,7 +843,9 @@ class MainWindow(wx.Frame):
 				if success:
 					data = do.GetText()
 				wx.TheClipboard.Close()
-			self.deck = deck.Deck.loadFromClipboard(data)
+			#Expectation: We are loading from Oracle or the Plaintext view in Egg
+			#Just call the normal Load function
+			self.deck = deck.Deck.load(data)
 		except deck.ImportCardsNotFoundError, ei:
 			wx.MessageDialog(self, '%s\n' % ei, 'Import Error', wx.ICON_ERROR).ShowModal()
 			self.deck = ei.importedDeck
