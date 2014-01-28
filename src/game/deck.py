@@ -292,7 +292,7 @@ class Deck:
 		fp.write(headerString % ('Pre-Game',inPlayCount))	
 
 		stronghold = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay==True) and cardDB[cdid].type=="stronghold")]
-		self.WriteCardsToTypeList(fp,stronhold,'Stronghold', savetype)
+		self.WriteCardsToTypeList(fp,stronghold,'Stronghold', savetype)
 
 		sensei = [(count, cardDB[cdid]) for count, cdid, inPlay in self if((inPlay==True) and cardDB[cdid].isSensei())]
 		self.WriteCardsToTypeList(fp,sensei,'Sensei', savetype)
