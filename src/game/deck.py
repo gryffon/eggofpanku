@@ -238,7 +238,7 @@ class Deck:
 	def loadFromClipboard(cls, data):
 		(fp, path) = tempfile.mkstemp(text=True)
 
-		fp.writelines(data.splitlines())
+		fp.writelines(data)
 		fp.flush()
 
 		fp.seek(0, 0)
