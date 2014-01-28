@@ -399,6 +399,13 @@ class DeckPanel(wx.Panel):
 	def Add(self, cdid, num=1, inPlay=False):
 		card = database.get()[cdid]
 
+		if card.type == 'stronghold':
+			inPlay = True
+		elif card.isSensei():
+			inPlay = True
+		elif card.isWind():
+			inPlay = True
+			
 		if inPlay==True:
 			widget = self.lstInPlay
 		else:
