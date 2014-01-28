@@ -83,7 +83,7 @@ class Deck:
 		return int(section[start+1:end-1])
 
 	@classmethod
-	def load(cls, fp):
+	def oldload(cls, fp):
 		"""Read a deck from a list of strings (or a file-like object) and parse it.
 
 		Returns a deck object.
@@ -116,7 +116,7 @@ class Deck:
 		return deck
 
 	@classmethod
-	def newload(cls, fp):
+	def load(cls, fp):
 		"""Read a deck from a list of strings (or a file-like object) and parse it.
 
 		Returns a deck object.
