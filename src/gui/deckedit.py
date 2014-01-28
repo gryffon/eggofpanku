@@ -713,6 +713,7 @@ class MainWindow(wx.Frame):
 		self.mnuFile = wx.Menu()
 		self.mnuFile.Append(ID_DE_MNU_NEW_DECK, 'New deck\tCtrl+N', 'Create a new, empty deck.')
 		self.mnuFile.Append(ID_DE_MNU_OPEN_DECK, 'Open deck...\tCtrl+O', 'Open an existing deck.')
+		self.mnuFile.Append(ID_DE_MNU_OPEN_OLD_DECK, 'Open old format deck...', 'Open an existing deck.')
 		self.mnuFile.Append(ID_DE_MNU_SAVE_DECK, 'Save deck\tCtrl+S', 'Save the current deck.')
 		self.mnuFile.Append(ID_DE_MNU_SAVE_DECK_AS, 'Save deck as...\tCtrl+Shift+S', 'Save the current deck with a new name.')
 		self.mnuFile.AppendSeparator()
