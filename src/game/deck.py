@@ -236,18 +236,48 @@ class Deck:
 	@classmethod
 	def loadFromClipboard(cls, data):
 
-		(infile, path) = tempfile.mkstemp(text=True)
+	#set up a holder for unknown cards
+	cardErrors= []
+	importLineHeaders = ['stronghold','dynasty','holdings','regions','personalities','events', 'celestials', 'fate','strategies','spells','items','followers','rings']
 
-		fp = os.fdopen(infile,"w")
+	cardDB = database.get()
+	deck = Deck()
 
-		fp.write(data)
-		fp.flush()
-		
+	#Look for a card line, not a header, not a space, and not the EOF (\x00) line.
+	for line in data.splitlines():
+		if not line.startswith('#') \
+		and line.find('\x00') == -1 \
+		and line.find(':') == -1 \
+		and line.strip() != '' \
+		and not line.isspace():
+			try:
+				#check that the first item is an integer
+				cardStr = line.strip().split(' ', 1)
+				cardLower = cardStr[0].lower()
+				if  cardLower in importLineHeaders:
+					continue
 
-		fp = os.fdopen(infile,"r")
-		
 
-		return cls.load(fp)
+				count = cardStr[0].strip('x')
+				if count.isdigit():
+					cardname =  cardStr[1].strip()
+				else:
+					count = 1
+					cardname = line.strip()
+			except (ValueError, IndexError):
+				count = 1
+				cardname = line.strip()
+			try:
+				deck.cards.append((int(count), cardDB.FindCardByName(cardname).id), False)
+			except (ValueError,KeyError):
+				cardErrors.append(cardname)
+
+	#If there are errors throw an import error.
+	if len(cardErrors) > 0:
+		raise ImportCardsNotFoundError(cardErrors, deck)
+
+	return deck
+
 
 
 
