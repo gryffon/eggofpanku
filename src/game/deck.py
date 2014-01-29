@@ -268,7 +268,7 @@ class Deck:
 					count = 1
 					cardname = line.strip()
 				try:
-					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id), False)
+					deck.cards.append((int(count), cardDB.FindCardByName(cardname).id, False))
 				except (ValueError,KeyError):
 					cardErrors.append(cardname)
 
