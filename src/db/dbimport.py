@@ -56,7 +56,7 @@ def EnsureExists():
 			should_import = True
 	else:
 		try:
-			if os.stat(database.LOCALDATABASE).st_mtime < os.stat(settings.cardsource).st_mtime:
+			if os.stat(os.path.join(settings.data_dir, database.LOCALDATABASE).st_mtime < os.stat(settings.cardsource).st_mtime:
 				wx.MessageDialog(None, \
 					'You have an existing database import specified, and it seems to\n' \
 					'be newer than the locally cached database. Egg of P\'an Ku will re-import it now.\n' \
