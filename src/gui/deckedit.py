@@ -838,11 +838,11 @@ class MainWindow(wx.Frame):
 		try:
 			if not wx.TheClipboard.IsOpened():
 				wx.TheClipboard.Open()
-				do = wx.TextDataObject()
-				success = wx.TheClipboard.GetData(do)
-				if success:
-					data = do.GetText()
-				wx.TheClipboard.Close()
+			do = wx.TextDataObject()
+			success = wx.TheClipboard.GetData(do)
+			if success:
+				data = do.GetText()
+			wx.TheClipboard.Close()
 			#Expectation: We are loading from Oracle or the Plaintext view in Egg
 			#Just call the normal Load function
 			self.deck = deck.Deck.loadFromClipboard(data)
@@ -861,13 +861,18 @@ class MainWindow(wx.Frame):
 		self.UpdateStatus()
 
 	def SaveToClipboard(self, textformat):
-		win32clipboard.OpenClipboard()
-		win32clipboard.EmptyClipboard()
-		io = StringIO.StringIO()
-		GetCurrentDeck().Save(io, textformat)
-		win32clipboard.SetClipboardData(win32clipboard.CF_TEXT,io.getvalue())
-		win32clipboard.CloseClipboard()
+		if not wx.TheClipboard.IsOpened():
+			wx.TheClipboard.Open()
 
+		do = wx.TextDataObject()
+		io = StringIO.StringIO()
+
+		GetCurrentDeck().Save(io, textformat)
+		do.SetText(io.getvalue())
+		
+		wx.TheClipboard.SetData(do)
+		wx.TheClipboard.Close()
+		
 	def PickSaveName(self):
 		dlg = wx.FileDialog(self, wildcard=FILE_DIALOG_WILDCARD, defaultDir=settings.last_deck, style=wx.SAVE|wx.OVERWRITE_PROMPT)
 		if dlg.ShowModal() == wx.ID_OK:
