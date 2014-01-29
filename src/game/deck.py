@@ -238,7 +238,7 @@ class Deck:
 
 		(infile, path) = tempfile.mkstemp(text=True)
 
-		fp = os.fdopen(infile,"rw")
+		fp = os.fdopen(infile,"w")
 
 		fp.write(data)
 		fp.flush()
