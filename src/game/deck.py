@@ -17,7 +17,7 @@
 # 02110-1301, USA.
 """Deck module for Egg of P'an Ku."""
 import xml.parsers.expat
-import tempfile
+import tempfile, os
 
 #Local Imports
 from db import database
@@ -236,8 +236,6 @@ class Deck:
 	@classmethod
 	def loadFromClipboard(cls, data):
 
-		print "Data:"
-		print data
 		(infile, path) = tempfile.mkstemp(text=True)
 
 		fp = os.fdopen(infile,"rw")
