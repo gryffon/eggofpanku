@@ -17,11 +17,11 @@
 # 02110-1301, USA.
 """User interface identifiers and other constants."""
 
-EOPK_APPNAME = 'Egg of P\'an Ku Beta' 
-EOPK_VERSION_MAJOR = 0
-EOPK_VERSION_MINOR = 10
+EOPK_APPNAME = 'Egg of P\'an Ku' 
+EOPK_VERSION_MAJOR = 1
+EOPK_VERSION_MINOR = 0
 EOPK_VERSION_REVISION = 0
-EOPK_BETA = 'b6'
+EOPK_BETA = ''
 EOPK_VERSION_FULL = '%d.%d.%d' % (EOPK_VERSION_MAJOR, EOPK_VERSION_MINOR, EOPK_VERSION_REVISION)
 EOPK_EDITION = 'Ivory Edition'
 EOPK_VERSION_STRING = EOPK_VERSION_FULL + EOPK_BETA + ' : ' + EOPK_EDITION
@@ -32,7 +32,7 @@ EOPK_WARRANTY_TEXT = "comes with ABSOLUTELY NO WARRANTY." \
 			" This is free software, and you are welcome to redistribute it" \
 			" under certain conditions; see LICENSE for details."
 
-EOPK_BETA_TESTERS = ('Jeremy Petravicz', 'Stasinos Karampatsos', 'Angelo Alvisi')
+EOPK_BETA_TESTERS = ('Jeremy Petravicz', 'Stasinos Karampatsos', 'Angelo Alvisi', 'Jean-Baptiste Perrin', 'Shiba Patrick', 'Faber van Kraanen')
 
 EOPK_WEBSITE_URL = "http://www.eeggofpanku.net"
 EOPK_DONATE_URL = "https://www.google.com"
