@@ -34,8 +34,8 @@ EOPK_WARRANTY_TEXT = "comes with ABSOLUTELY NO WARRANTY." \
 
 EOPK_BETA_TESTERS = ('Jeremy Petravicz', 'Stasinos Karampatsos', 'Angelo Alvisi', 'Jean-Baptiste Perrin', 'Shiba Patrick', 'Faber van Kraanen')
 
-EOPK_WEBSITE_URL = "http://www.eeggofpanku.net"
-EOPK_DONATE_URL = "https://www.google.com"
+EOPK_WEBSITE_URL = "http://www.eggofpanku.net"
+EOPK_DONATE_URL = "http://www.eggofpanku.net/donate.php"
 
 ID_MAIN_WINDOW = 20000
 ID_CARD_PREVIEW = 20001
