@@ -242,8 +242,10 @@ class Deck:
 
 		fp.write(data)
 		fp.flush()
+		fp.close()
 
-		fp.seek(0, 0)
+		fp = os.fdopen(infile,"r")
+		
 
 		return cls.load(fp)
 
