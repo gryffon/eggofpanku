@@ -156,11 +156,7 @@ if len(sys.argv) == 1:
 #Make sure dlls are in path
 sys.path.append("..\\dlls")
 
-deckfiles = ['..\\decks\\Crab Followers.l5d', '..\\decks\\Dragon Kensai.l5d', \
-			'..\\decks\\Spider Breeder.l5d', '..\\decks\\Scorpion Ninja.l5d', \
-			 '..\\decks\\Pheonix Military.l5d', '..\\decks\\Unicorn Battle Maidens.l5d',
-			 '..\\decks\\Crane Dueling.l5d' ]
-
+deckfiles = glob.glob('..\\decks\\*.l5d')
 imagefiles = glob.glob('..\\images\\*.jpg') + glob.glob('..\\images\\*.png') + glob.glob('..\\images\\*.ico')
 cardimagefiles = glob.glob('..\\images\\cards\\*.jpg')
 tokenimagefiles = glob.glob('..\\images\\tokens\\*.png')
