@@ -245,7 +245,7 @@ class Deck:
 
 		fp.seek(0, 0)
 
-		return self.load(fp)
+		return cls.load(fp)
 
 
 
