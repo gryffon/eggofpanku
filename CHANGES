@@ -1,6 +1,13 @@
 News & Changes
-  2014-January-14 Egg of P'an Ku 0.10.0b6
-  * Remove old decks and add Ivory starters
+  2014-January-29 Egg of P'an Ku 1.0.0
+  * Remove old decks and added Ivory starters
+  * Adding a Stronghold, Sensei, or Wind will automatically put them "In Play."
+  * Updated deck file to be more similar in structure to Oracle text output.
+  * Remove Gempukku and TheGame deck converters.
+  * Don't count Sensei in Fate deck.
+  * Fixed 'Import from clipboard' (doesn't set in play)
+  * Fixed 'Copy deck as'
+
 
   2014-January-14 Egg of P'an Ku 0.10.0b5
   * Write new settings to the settings file without having to delete the old file.
