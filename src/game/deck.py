@@ -236,8 +236,8 @@ class Deck:
 	@classmethod
 	def loadFromClipboard(cls, data):
 
-		print "Data:"
-		print data
+		#print "Data:"
+		#print data
 		(fp, path) = tempfile.mkstemp(text=True)
 
 		fp.write(data)
