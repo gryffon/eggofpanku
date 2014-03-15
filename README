@@ -21,7 +21,7 @@ Table of Contents
 
 Overview
 
-  Latest Release: 0.9.42 (2010-August-20)
+  Latest Release: 1.0.0 (2014-Jan-29)
 
   Egg of P'an Ku is a program for playing the Legend of the Five Rings collectible card game online. It acts as a virtual tabletop to which people can connect and play the game using digital representations of cards.
 
@@ -47,7 +47,7 @@ Developers ONLY - Please see /docs/Developer Installation Guide.txt for instruct
 
 Download the installation executable file
 
-  Latest stable release is still available from the Egg of P'an Ku Google Code site (http://code.google.com/p/eopk).
+  Latest stable release is still available from the Egg of P'an Ku github site (https://github.com/gryffon/eggofpanku).
   
 
   The Egg of P'an Ku application is currently only supported on MS Windows.
