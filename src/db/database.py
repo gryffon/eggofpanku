@@ -71,7 +71,8 @@ for filterItem in filterList["legality"]:
 	legalityFormats.append(filterItem.displayName)
 
 for filterItem in filterList["set"]:
-	cardSets.insert(0, filterItem.displayName, filterItem.name)
+	#cardSets.insert(0, filterItem.displayName, filterItem.name)
+	cardSets[filterItem.displayName] = filterItem.name
 
 LOCALDATABASE = 'cards.db'
 FILENAME = os.path.basename(settings.cardsource)
