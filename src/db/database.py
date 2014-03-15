@@ -22,11 +22,10 @@ import xml.parsers.expat
 import os
 import cPickle
 import base64
-
+from collections import OrderedDict
 
 #Local Imports
 import dbimport
-from lib import odict
 
 
 from settings.xmlsettings import settings
@@ -43,7 +42,7 @@ factions = []
 minorClans = []
 legalityFormats = []
 rarityFormats = {}
-cardSets = odict.OrderedDict()
+cardSets = OrderedDict()
 
 filterList = xmlfilters.FilterReader().Filters
 
@@ -70,7 +69,7 @@ for filterItem in filterList["legality"]:
 	legalityFormats.append(filterItem.displayName)
 
 for filterItem in filterList["set"]:
-	cardSets.insert(0, filterItem.displayName, filterItem.name)
+	cardSets[filterItem.displayName] = filterItem.name
 
 LOCALDATABASE = 'cards.db'
 FILENAME = os.path.basename(settings.cardsource)
