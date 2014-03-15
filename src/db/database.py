@@ -22,11 +22,11 @@ import xml.parsers.expat
 import os
 import cPickle
 import base64
-
+from collections import OrderedDict
 
 #Local Imports
 import dbimport
-from lib import odict
+#from lib import odict
 
 
 from settings.xmlsettings import settings
@@ -43,7 +43,8 @@ factions = []
 minorClans = []
 legalityFormats = []
 rarityFormats = {}
-cardSets = odict.OrderedDict()
+#cardSets = odict.OrderedDict()
+cardSets = OrderedDict()
 
 filterList = xmlfilters.FilterReader().Filters
 
