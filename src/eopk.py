@@ -1296,6 +1296,7 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, ID_MNU_FATE_DRAW, self.OnMenuFateDraw)
 		wx.EVT_MENU(self, ID_MNU_FATE_DRAW_X, self.OnMenuFateDrawX)
 		wx.EVT_MENU(self, ID_MNU_FATE_SHUFFLE, self.OnMenuFateShuffle)
+		wx.EVT_MENU(self, ID_MNU_FATE_SEARCH, self.OnMenuFateSearch)
 		wx.EVT_MENU(self, ID_MNU_FATE_LOOK_TOP, self.OnMenuFateLook)
 		wx.EVT_MENU(self, ID_MNU_FATE_LOOK_BOTTOM, self.OnMenuFateLook)
 		
