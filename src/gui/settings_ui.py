@@ -202,6 +202,7 @@ class DatabaseSettings(wx.Panel):
 
 	def OnDefaultDataDir(self, event):
 		self.dirData.SetValue(DEFAULT_SETTINGS_DATA_DIR['data_dir'])
+		locationsettings.data_dir = self.dirData.GetValue()
 
 
 	def OnGetDataDir(self, event):
@@ -209,6 +210,7 @@ class DatabaseSettings(wx.Panel):
 						    defaultPath=locationsettings.data_dir, name='Select Data Dir')
 		if fdlg.ShowModal() == wx.ID_OK:
 			self.dirData.SetValue(fdlg.GetPath() if fdlg.GetPath().endswith('\\') else fdlg.GetPath() + '\\')
+			locationsettings.data_dir = self.dirData.GetValue()
 
 	def OnChangeDatabase(self, event):
 		fdlg = wx.FileDialog(None, wildcard='XML card database (*.xml)|*.xml|All files (*.*)|*.*', style=wx.OPEN|wx.FILE_MUST_EXIST)

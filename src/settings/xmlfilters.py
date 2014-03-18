@@ -7,6 +7,7 @@ Created on May 26, 2009
 import xml.parsers.expat
 import os
 from settings.xmlsettings import settings
+from settings.xmlsettings import locationsettings
 
 class FilterData:
     '''
@@ -42,7 +43,7 @@ class FilterReader:
         self.parser.CharacterDataHandler = self.parseCData
         __dir__ = os.path.dirname(os.path.abspath(__file__))
         #filepath = os.path.join(__dir__, 'filters.xml')
-        filepath = os.path.join(settings.data_dir, 'filters.xml')
+        filepath = os.path.join(locationsettings.data_dir, 'filters.xml')
         self.parser.ParseFile(open(filepath, 'rb'))
 
     def parseStartElem(self, name, attrs):
