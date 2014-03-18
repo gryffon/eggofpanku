@@ -36,7 +36,7 @@ DEFAULT_SETTINGS_DATA_DIR = {
 
 class _XMLSettings:
     def __init__(self, xmlfile, defaults):
-        self.defaults = defaults
+        self.__dict__['defaults'] = defaults
         self.__dict__['_filename'] = xmlfile
         self.__dict__.update(defaults)
         self.LoadSettingsFile(self._filename)
@@ -79,7 +79,7 @@ class _XMLSettings:
         eopkXMLNS.nodeValue="http://code.google.com/p/eopk/"
         eopksettings.setAttributeNode(eopkXMLNS)
         newsettings.appendChild(eopksettings)
-        for k, v in self.defaults.items():
+        for k, v in self.__dict__['defaults'].items():
             eopkSetting = newsettings.createElement("eopk:setting")
             eopkSettingName = newsettings.createAttributeNS("http://code.google.com/p/eopk/", "name")
             eopkSettingName.nodeValue = k
@@ -100,7 +100,7 @@ class _XMLSettings:
             self.CreateSettingsFile()
         
         #Check for new settings
-        for k, v in self.defaults.items():
+        for k, v in self.__dict__['defaults'].items():
             settingfound = False
 
             for node in self.xml.getElementsByTagName("eopk:setting"):
