@@ -35,7 +35,7 @@ DEFAULT_SETTINGS_DATA_DIR = {
     }
 
 class _XMLSettings:
-    def __init__(self, xmlfile,defaults):
+    def __init__(self, xmlfile, defaults):
         self.__dict__['_filename'] = xmlfile
         self.__dict__.update(defaults)
         self.LoadSettingsFile(self._filename)
