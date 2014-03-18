@@ -28,14 +28,17 @@ DEFAULT_SETTINGS = {
     'canvas_card_spacing':1,
     'use_celestial_holdings':False,
     'celestial_card_draw':False,
+    }
+
+DEFAULT_SETTINGS_DATA_DIR = {
     'data_dir': os.path.join(os.path.expanduser('~'), 'eopk'),
     }
 
 class _XMLSettings:
-    def __init__(self, xmlfile):
+    def __init__(self, xmlfile,defaults):
         self.__dict__['_filename'] = xmlfile
-        self.__dict__.update(DEFAULT_SETTINGS)
-        self.LoadSettingsFile(os.path.join(self.__dict__['data_dir'], self._filename))
+        self.__dict__.update(defaults)
+        self.LoadSettingsFile(self._filename)
         self.ApplySettingsFile()
      
     def ApplySettingsFile(self):   
@@ -139,5 +142,7 @@ class _XMLSettings:
             
             if node.nodeType == node.TEXT_NODE:
                 node.data = string.strip(string.strip(node.data, '\n'))
-                
-settings = _XMLSettings(os.path.join(os.path.expanduser('~'), 'eopk/settings.xml'))
+
+locationsettings = _XMLSettings('location.xml', DEFAULT_SETTINGS_DATA_DIR)
+
+settings = _XMLSettings(os.path.join(os.path.expanduser(locationsettings.data_dir), 'settings.xml'), DEFAULT_SETTINGS)
