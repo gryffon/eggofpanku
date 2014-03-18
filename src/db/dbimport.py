@@ -23,12 +23,14 @@ import os.path
 import database
 
 from settings.xmlsettings import settings
+from settings.xmlsettings import locationsettings
+
 
 def EnsureExists():
 	"""Ensure that the database is loaded by prompting the user to load
 	it if it is not."""
 	should_import = False
-	if not os.path.isfile(os.path.join(settings.data_dir, database.LOCALDATABASE)):
+	if not os.path.isfile(os.path.join(locationsettings.data_dir, database.LOCALDATABASE)):
 		if not os.path.isfile(settings.cardsource):
 			dlg = wx.MessageDialog(None, \
 				'You do not appear to have a card database configured right now.\n' \
@@ -56,7 +58,7 @@ def EnsureExists():
 			should_import = True
 	else:
 		try:
-			if os.stat(os.path.join(settings.data_dir, database.LOCALDATABASE)).st_mtime < os.stat(settings.cardsource).st_mtime:
+			if os.stat(os.path.join(locationsettings.data_dir, database.LOCALDATABASE)).st_mtime < os.stat(settings.cardsource).st_mtime:
 				wx.MessageDialog(None, \
 					'You have an existing database import specified, and it seems to\n' \
 					'be newer than the locally cached database. Egg of P\'an Ku will re-import it now.\n' \

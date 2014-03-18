@@ -29,6 +29,7 @@ from db import database
 import dragdrop
 
 from settings.xmlsettings import settings
+from settings.xmlsettings import locationsettings
 from guids import *
 
 
@@ -163,8 +164,8 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 		self.markerOffset = (0, 0)
 		self.attachMarker = None
 		
-		self.texBorderFrame = self.LoadTexture(os.path.join(settings.data_dir, "images/border2.png"))
-		self.texAttach = self.LoadTexture(os.path.join(settings.data_dir, "images/border3.png"))
+		self.texBorderFrame = self.LoadTexture(os.path.join(locationsettings.data_dir, "images/border2.png"))
+		self.texAttach = self.LoadTexture(os.path.join(locationsettings.data_dir, "images/border3.png"))
 		
 		wx.EVT_LEFT_DOWN(self, self.OnLeftMouseDown)
 		wx.EVT_LEFT_DCLICK(self, self.OnDoubleClick)
@@ -320,11 +321,11 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 
 #			print 'PlayfieldCanvas.DrawMarkerToken tokenImage = %s' % (tokenImage)
 			try:
-				self.texMarker[token] = self.LoadTexture(os.path.join(settings.data_dir, tokenImage))
+				self.texMarker[token] = self.LoadTexture(os.path.join(locationsettings.data_dir, tokenImage))
 			except IOError:
 				defaultImage = game.MARKER_IMAGE_PREFIX + game.MARKER_DEFAULT_IMAGE + game.MARKER_IMAGE_EXTENSION
 #				print 'PlayfieldCanvas.DrawMarkerToken Loading defaultImage = %s' % (defaultImage)
-				self.texMarker[token] = self.LoadTexture(os.path.join(settings.data_dir, defaultImage))
+				self.texMarker[token] = self.LoadTexture(os.path.join(locationsettings.data_dir, defaultImage))
 		
 		glPushMatrix()
 		glColor4f(1.0, 1.0, 1.0, 1.0)
@@ -350,9 +351,9 @@ class PlayfieldCanvas(canvas.L5RCanvas):
 				tokenImage = game.TOKEN_DEFAULT_IMAGE
 			
 			try:
-				self.texToken[token] = self.LoadTexture(os.path.join(settings.data_dir, tokenImage))
+				self.texToken[token] = self.LoadTexture(os.path.join(locationsettings.data_dir, tokenImage))
 			except IOError:
-				self.texToken[token] = self.LoadTexture(os.path.join(settings.data_dir, game.TOKEN_DEFAULT_IMAGE))
+				self.texToken[token] = self.LoadTexture(os.path.join(locationsettings.data_dir, game.TOKEN_DEFAULT_IMAGE))
 		
 		glPushMatrix()
 		glColor4f(1.0, 1.0, 1.0, 1.0)
@@ -638,9 +639,9 @@ class Playfield(wx.Panel):
 		
 		# Icons
 		self.discardFate = MiniPile(self.infoPanel, player=None, zid=game.ZONE_DISCARD_FATE, name='Fate Discard Pile',
-			bitmap=wx.Bitmap(os.path.join(settings.data_dir, 'images/tiny_fate.png')))
+			bitmap=wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tiny_fate.png')))
 		self.discardDynasty = MiniPile(self.infoPanel, player=None, zid=game.ZONE_DISCARD_DYNASTY, name='Dynasty Discard Pile',
-			bitmap=wx.Bitmap(os.path.join(settings.data_dir, 'images/tiny_dynasty.png')))
+			bitmap=wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tiny_dynasty.png')))
 		wx.EVT_MENU(self.discardFate, ID_MNU_PILEPOPUP_SEARCH, self.OnFateSearch)
 		wx.EVT_MENU(self.discardDynasty, ID_MNU_PILEPOPUP_SEARCH, self.OnDynastySearch)
 		
