@@ -66,7 +66,7 @@ class _XMLSettings:
                 node.firstChild.nodeValue = repr(value)
                 return
         
-        print newsetting + " not found in settings "
+        print newsetting + " not found in settings: " + self.__dict__['_filename']
                 
     def CreateSettingsFile(self):
         newsettings = Document()
