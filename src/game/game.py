@@ -22,6 +22,7 @@ import os
 from db import database
 
 from settings.xmlsettings import settings
+from settings.xmlsettings import locationsettings
 
 ZONE_DUMMY = 0            # Dummy zone
 ZONE_DECK_DYNASTY = 1     # Dynasty deck
