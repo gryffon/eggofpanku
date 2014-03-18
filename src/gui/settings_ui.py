@@ -348,7 +348,7 @@ class SettingsDialog(wx.Dialog):
 		self.SetSizer(sizer)
 		
 		#wx.EVT_BUTTON(self, self.GetAffirmativeId(), self.SaveSettings)
-		self.Bind(wx.EVT_BUTTON, self.SaveSettings, self.GetAffirmativeId())
+		self.Bind(wx.EVT_BUTTON, self.SaveSettings, id=self.GetAffirmativeId())
 		
 	
 	def SaveSettings(self, event):
