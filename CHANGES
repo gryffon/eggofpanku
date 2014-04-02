@@ -1,4 +1,8 @@
 News & Changes
+  2014-April-03 Egg of P'an Ku 1.0.1
+  * Fix Fate Deck Search
+  * Remove extra library in favor of built-in library
+
   2014-January-29 Egg of P'an Ku 1.0.0
   * Remove old decks and added Ivory starters
   * Adding a Stronghold, Sensei, or Wind will automatically put them "In Play."
