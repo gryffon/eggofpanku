@@ -1,4 +1,9 @@
 News & Changes
+  2014-April-19 Egg of P'an Ku 1.0.2
+  * Fix program crash when using non-default directory for images.
+  * Now able to specify a location for the entire data directory;
+      supports having multiple environments
+
   2014-April-03 Egg of P'an Ku 1.0.1
   * Fix Fate Deck Search
   * Remove extra library in favor of built-in library
