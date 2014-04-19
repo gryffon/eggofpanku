@@ -142,7 +142,7 @@ class L5RCanvas(GLCanvas):
 					try:
 						if loc.startswith('images/cards/'):
 							if settings.imagepackdir_changed == True:
-								loc = locationsettings.dir_imagepacks + loc[13:]
+								loc = settings.dir_imagepacks + loc[13:]
 							else:
 								loc = locationsettings.data_dir + '/' + settings.dir_imagepacks + loc[13:]
 						self.texCard[card.id] = self.LoadTexture(loc)
