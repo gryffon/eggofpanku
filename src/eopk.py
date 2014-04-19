@@ -37,6 +37,7 @@ from net import netcore
 
 
 from settings.xmlsettings import settings
+from settings.xmlsettings import locationsettings
 from gui.guids import *
 
 logging.basicConfig(level=logging.DEBUG,
@@ -944,10 +945,10 @@ class MainWindow(wx.Frame):
 		
 		# Clients list
 		iglL5R = wx.ImageList(16, 16)
-		iglL5R.AddWithColourMask(wx.Bitmap(os.path.join(settings.data_dir, 'images/icosm_family_honor.png')), (255, 255, 255))
-		iglL5R.AddWithColourMask(wx.Bitmap(os.path.join(settings.data_dir, 'images/icosm_hand.png')), (255, 255, 255))
-		iglL5R.AddWithColourMask(wx.Bitmap(os.path.join(settings.data_dir, 'images/icosm_fate.png')), (255, 255, 255))
-		iglL5R.AddWithColourMask(wx.Bitmap(os.path.join(settings.data_dir, 'images/icosm_favor.png')), (255, 255, 255))
+		iglL5R.AddWithColourMask(wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/icosm_family_honor.png')), (255, 255, 255))
+		iglL5R.AddWithColourMask(wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/icosm_hand.png')), (255, 255, 255))
+		iglL5R.AddWithColourMask(wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/icosm_fate.png')), (255, 255, 255))
+		iglL5R.AddWithColourMask(wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/icosm_favor.png')), (255, 255, 255))
 		
 		self.lstClients = wx.ListCtrl(splitterClients, ID_CLIENT_LIST, style=wx.LC_REPORT|wx.SUNKEN_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES)
 		self.lstClients.AssignImageList(iglL5R, wx.IMAGE_LIST_SMALL)
@@ -997,9 +998,9 @@ class MainWindow(wx.Frame):
 				import win32api
 				self.SetIcon(wx.Icon(win32api.GetModuleFileName(win32api.GetModuleHandle(None)), wx.BITMAP_TYPE_ICO))
 			except ImportError:
-				self.SetIcon(wx.Icon(os.path.join(settings.data_dir, 'images/icon.ico'), wx.BITMAP_TYPE_ICO))
+				self.SetIcon(wx.Icon(os.path.join(locationsettings.data_dir, 'images/icon.ico'), wx.BITMAP_TYPE_ICO))
 		else:
-			self.SetIcon(wx.Icon(os.path.join(settings.data_dir, 'images/icon.ico'), wx.BITMAP_TYPE_ICO))
+			self.SetIcon(wx.Icon(os.path.join(locationsettings.data_dir, 'images/icon.ico'), wx.BITMAP_TYPE_ICO))
 		
 		# Server/client callbacks.
 		netcore.EVT_CLIENT_REJECTED(self, self.OnClientRejected)
@@ -1062,93 +1063,93 @@ class MainWindow(wx.Frame):
 		
 		# System tools
 		toolbar.AddSeparator()
-		toolbar.AddLabelTool(ID_MNU_HOST, 'Host table', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_host.png')),
+		toolbar.AddLabelTool(ID_MNU_HOST, 'Host table', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_host.png')),
 			shortHelp='Host table', longHelp='Host a game table.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuHost, id=ID_MNU_HOST)
 		
-		toolbar.AddLabelTool(ID_MNU_CONNECT, 'Connect', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_connect.png')),
+		toolbar.AddLabelTool(ID_MNU_CONNECT, 'Connect', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_connect.png')),
 			shortHelp='Connect', longHelp='Connect to a host to play a game.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuConnect, id=ID_MNU_CONNECT)
 		
-		toolbar.AddLabelTool(ID_MNU_DISCONNECT, 'Disconnect', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_disconnect.png')),
+		toolbar.AddLabelTool(ID_MNU_DISCONNECT, 'Disconnect', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_disconnect.png')),
 			shortHelp='Disconnect', longHelp='Disconnect from the current host.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuDisconnect, id=ID_MNU_DISCONNECT)
 		
 		toolbar.AddSeparator()
-		toolbar.AddLabelTool(ID_MNU_JOIN_GAME, 'Join game', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_join_game.png')),
+		toolbar.AddLabelTool(ID_MNU_JOIN_GAME, 'Join game', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_join_game.png')),
 			shortHelp='Join game', longHelp='Submit a deck and play in the next game.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuSubmitDeck, id=ID_MNU_JOIN_GAME)
 		
-		toolbar.AddLabelTool(ID_MNU_LEAVE_GAME, 'Leave game', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_leave_game.png')),
+		toolbar.AddLabelTool(ID_MNU_LEAVE_GAME, 'Leave game', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_leave_game.png')),
 			shortHelp='Leave game', longHelp='Retract your current deck, leaving the next game.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuLeaveGame, id=ID_MNU_LEAVE_GAME)
 		
-		toolbar.AddLabelTool(ID_MNU_START_GAME, 'Start game', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_start.png')),
+		toolbar.AddLabelTool(ID_MNU_START_GAME, 'Start game', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_start.png')),
 			shortHelp='Start game', longHelp='Start the game.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuStartGame, id=ID_MNU_START_GAME)
 		
 		# Game tools
 		toolbar.AddSeparator()
-		toolbar.AddLabelTool(ID_MNU_STRAIGHTEN_ALL, 'Straighten all', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_straighten_all.png')),
+		toolbar.AddLabelTool(ID_MNU_STRAIGHTEN_ALL, 'Straighten all', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_straighten_all.png')),
 			shortHelp='Straighten all', longHelp='Straighten all cards you control in play.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuStraightenAll, id=ID_MNU_STRAIGHTEN_ALL)
 
 		#Toolbar Icon for Remove all Markers
 		#Added by PCW 10/10/2008
-		toolbar.AddLabelTool(ID_MNU_REMOVE_MARKERS, 'Remove all markers', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_remove_markers.png')),
+		toolbar.AddLabelTool(ID_MNU_REMOVE_MARKERS, 'Remove all markers', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_remove_markers.png')),
 			shortHelp='Remove All Markers', longHelp='Remove all the markers from cards.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuRemoveAllMarkers, id=ID_MNU_REMOVE_MARKERS)
 		
 		toolbar.AddSeparator()
-		toolbar.AddLabelTool(ID_MNU_FAMILY_HONOR_SET, 'Set family honor', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_honor.png')),
+		toolbar.AddLabelTool(ID_MNU_FAMILY_HONOR_SET, 'Set family honor', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_honor.png')),
 			shortHelp='Set family honor', longHelp='Set your family honor to some value.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuSetHonor, id=ID_MNU_FAMILY_HONOR_SET)
 		
-		toolbar.AddLabelTool(ID_MNU_FAMILY_HONOR_INC, 'Increase family honor', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_honor_add.png')),
+		toolbar.AddLabelTool(ID_MNU_FAMILY_HONOR_INC, 'Increase family honor', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_honor_add.png')),
 			shortHelp='Increase family honor', longHelp='Increase your family honor by 1.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuIncHonor, id=ID_MNU_FAMILY_HONOR_INC)
 		
-		toolbar.AddLabelTool(ID_MNU_FAMILY_HONOR_DEC, 'Decrease family honor', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_honor_sub.png')),
+		toolbar.AddLabelTool(ID_MNU_FAMILY_HONOR_DEC, 'Decrease family honor', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_honor_sub.png')),
 			shortHelp='Decrease family honor', longHelp='Decrease your family honor by 1.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuDecHonor, id=ID_MNU_FAMILY_HONOR_DEC)
 		
 		toolbar.AddSeparator()
-		toolbar.AddLabelTool(ID_MNU_TAKE_FAVOR, 'Take Imperial Favor', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_favor.png')),
+		toolbar.AddLabelTool(ID_MNU_TAKE_FAVOR, 'Take Imperial Favor', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_favor.png')),
 			shortHelp='Take Imperial Favor', longHelp='Take the Imperial Favor.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuTakeFavor, id=ID_MNU_TAKE_FAVOR)
 		
-		toolbar.AddLabelTool(ID_MNU_DISCARD_FAVOR, 'Discard Imperial Favor', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_favor_dis.png')),
+		toolbar.AddLabelTool(ID_MNU_DISCARD_FAVOR, 'Discard Imperial Favor', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_favor_dis.png')),
 			shortHelp='Discard Imperial Favor', longHelp='Discard the Imperial Favor.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuDiscardFavor, id=ID_MNU_DISCARD_FAVOR)
 		
 		toolbar.AddSeparator()
-		toolbar.AddLabelTool(ID_MNU_FATE_DRAW, 'Draw Fate card', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_fate_draw.png')),
+		toolbar.AddLabelTool(ID_MNU_FATE_DRAW, 'Draw Fate card', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_fate_draw.png')),
 			shortHelp='Draw Fate card', longHelp='Draw the top card of your fate deck.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuFateDraw, id=ID_MNU_FATE_DRAW)
 		
-		toolbar.AddLabelTool(ID_MNU_FATE_DRAW_X, 'Draw several Fate cards', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_fate_draw_x.png')),
+		toolbar.AddLabelTool(ID_MNU_FATE_DRAW_X, 'Draw several Fate cards', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_fate_draw_x.png')),
 			shortHelp='Draw several Fate cards', longHelp='Draw several cards from your fate deck.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuFateDrawX, id=ID_MNU_FATE_DRAW_X)
 		
-		toolbar.AddLabelTool(ID_MNU_HAND_REVEAL_X_RANDOM, 'Reveal random cards', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_fate_reveal_random.png')),
+		toolbar.AddLabelTool(ID_MNU_HAND_REVEAL_X_RANDOM, 'Reveal random cards', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_fate_reveal_random.png')),
 			shortHelp='Reveal random cards', longHelp='Reveal a number of cards from your hand at random.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuHandRevealRandomX, id=ID_MNU_HAND_REVEAL_X_RANDOM)
 		
-		toolbar.AddLabelTool(ID_MNU_HAND_REVEAL, 'Reveal hand', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_fate_reveal.png')),
+		toolbar.AddLabelTool(ID_MNU_HAND_REVEAL, 'Reveal hand', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_fate_reveal.png')),
 			shortHelp='Reveal hand', longHelp='Reveal your hand to the other players.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuHandReveal, id=ID_MNU_HAND_REVEAL)
 		
 		toolbar.AddSeparator()
-		toolbar.AddLabelTool(ID_MNU_COIN_FLIP, 'Flip coin', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_flip_coin.png')),
+		toolbar.AddLabelTool(ID_MNU_COIN_FLIP, 'Flip coin', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_flip_coin.png')),
 			shortHelp='Flip coin', longHelp='Flip a coin and announce the result.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuFlipCoin, id=ID_MNU_COIN_FLIP)
 		
-		toolbar.AddLabelTool(ID_MNU_ROLL_DICE, 'Roll die', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_roll_die.png')),
+		toolbar.AddLabelTool(ID_MNU_ROLL_DICE, 'Roll die', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_roll_die.png')),
 			shortHelp='Roll die', longHelp='Roll an n-sided die and announce the result.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuRollDie, id=ID_MNU_ROLL_DICE)
 		
 		toolbar.AddSeparator()
-		toolbar.AddLabelTool(ID_MNU_FOCUS_CREATE, 'Create focus pool', wx.Bitmap(os.path.join(settings.data_dir, 'images/tlb_icon_focuspool.png')),
+		toolbar.AddLabelTool(ID_MNU_FOCUS_CREATE, 'Create focus pool', wx.Bitmap(os.path.join(locationsettings.data_dir, 'images/tlb_icon_focuspool.png')),
 			shortHelp='Create focus pool', longHelp='Create a focus pool from the top three cards of your fate deck.')
 		self.Bind(wx.EVT_TOOL, self.OnMenuCreateFocusPool, id=ID_MNU_FOCUS_CREATE)
 		

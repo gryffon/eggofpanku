@@ -34,6 +34,7 @@ from db import database
 import dragdrop
 
 from settings.xmlsettings import settings
+from settings.xmlsettings import locationsettings
 
 
 CANVAS_CARD_W = 10.5
@@ -60,9 +61,9 @@ class L5RCanvas(GLCanvas):
 		
 		self.init = 0
 		self.SetCurrent()
-		self.texBorder = self.LoadTexture(os.path.join(settings.data_dir, 'images/border.png'))
-		self.texFateBack = self.LoadTexture(os.path.join(settings.data_dir, 'images/fate_back.jpg'))
-		self.texDynastyBack = self.LoadTexture(os.path.join(settings.data_dir, 'images/dynasty_back.jpg'))
+		self.texBorder = self.LoadTexture(os.path.join(locationsettings.data_dir, 'images/border.png'))
+		self.texFateBack = self.LoadTexture(os.path.join(locationsettings.data_dir, 'images/fate_back.jpg'))
+		self.texDynastyBack = self.LoadTexture(os.path.join(locationsettings.data_dir, 'images/dynasty_back.jpg'))
 		self.texCard = {}
 		self.texGeneric = {}
 	
@@ -101,7 +102,7 @@ class L5RCanvas(GLCanvas):
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
 	
 	def LoadGeneric(self, type):
-		self.texGeneric[type] = self.LoadTexture(os.path.join(settings.data_dir,'images/cards/generic_%s.jpg') % type)
+		self.texGeneric[type] = self.LoadTexture(os.path.join(locationsettings.data_dir,'images/cards/generic_%s.jpg') % type)
 		return self.texGeneric[type]
 		
 	def DrawMarker(self, tex):
@@ -143,7 +144,7 @@ class L5RCanvas(GLCanvas):
 							if settings.imagepackdir_changed == True:
 								loc = settings.dir_imagepacks + loc[13:]
 							else:
-								loc = settings.data_dir + '/' + settings.dir_imagepacks + loc[13:]
+								loc = locationsettings.data_dir + '/' + settings.dir_imagepacks + loc[13:]
 						self.texCard[card.id] = self.LoadTexture(loc)
 						break
 					except IOError:

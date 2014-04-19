@@ -29,6 +29,7 @@ from game import deck
 
 
 from settings.xmlsettings import settings
+from settings.xmlsettings import locationsettings
 
 MAIN_TITLE = 'Egg of P\'an Ku Deck Editor'
 FILE_DIALOG_WILDCARD = 'Egg of P\'an Ku deck files (*.l5d)|*.l5d|All files (*.*)|*.*'
@@ -751,9 +752,9 @@ class MainWindow(wx.Frame):
 				import win32api
 				self.SetIcon(wx.Icon('deckedit.exe', wx.BITMAP_TYPE_ICO))
 			except:
-				self.SetIcon(wx.Icon(os.path.join(settings.data_dir, 'images/iconedit.ico'), wx.BITMAP_TYPE_ICO))
+				self.SetIcon(wx.Icon(os.path.join(locationsettings.data_dir, 'images/iconedit.ico'), wx.BITMAP_TYPE_ICO))
 		else:
-			self.SetIcon(wx.Icon(os.path.join(settings.data_dir, 'images/iconedit.ico'), wx.BITMAP_TYPE_ICO))
+			self.SetIcon(wx.Icon(os.path.join(locationsettings.data_dir, 'images/iconedit.ico'), wx.BITMAP_TYPE_ICO))
 
 		self.deck = None
 		self.deckName = None

@@ -28,14 +28,18 @@ DEFAULT_SETTINGS = {
     'canvas_card_spacing':1,
     'use_celestial_holdings':False,
     'celestial_card_draw':False,
+    }
+
+DEFAULT_SETTINGS_DATA_DIR = {
     'data_dir': os.path.join(os.path.expanduser('~'), 'eopk'),
     }
 
 class _XMLSettings:
-    def __init__(self, xmlfile):
+    def __init__(self, xmlfile, defaults):
+        self.__dict__['defaults'] = defaults
         self.__dict__['_filename'] = xmlfile
-        self.__dict__.update(DEFAULT_SETTINGS)
-        self.LoadSettingsFile(os.path.join(self.__dict__['data_dir'], self._filename))
+        self.__dict__.update(defaults)
+        self.LoadSettingsFile(self._filename)
         self.ApplySettingsFile()
      
     def ApplySettingsFile(self):   
@@ -63,7 +67,7 @@ class _XMLSettings:
                 node.firstChild.nodeValue = repr(value)
                 return
         
-        print newsetting + " not found in settings "
+        print newsetting + " not found in settings: " + self.__dict__['_filename']
                 
     def CreateSettingsFile(self):
         newsettings = Document()
@@ -75,7 +79,7 @@ class _XMLSettings:
         eopkXMLNS.nodeValue="http://code.google.com/p/eopk/"
         eopksettings.setAttributeNode(eopkXMLNS)
         newsettings.appendChild(eopksettings)
-        for k, v in DEFAULT_SETTINGS.items():
+        for k, v in self.__dict__['defaults'].items():
             eopkSetting = newsettings.createElement("eopk:setting")
             eopkSettingName = newsettings.createAttributeNS("http://code.google.com/p/eopk/", "name")
             eopkSettingName.nodeValue = k
@@ -96,7 +100,7 @@ class _XMLSettings:
             self.CreateSettingsFile()
         
         #Check for new settings
-        for k, v in DEFAULT_SETTINGS.items():
+        for k, v in self.__dict__['defaults'].items():
             settingfound = False
 
             for node in self.xml.getElementsByTagName("eopk:setting"):
@@ -115,7 +119,7 @@ class _XMLSettings:
                 self.__dict__['xml'].childNodes[0].appendChild(eopkSetting)
 
 
-        f = file(settings._filename, 'w')
+        f = file(self._filename, 'w')
         self.xml.writexml(f, indent="  ", addindent="  ", newl="\n")
         f.close()
         self.ApplySettingsFile()        
@@ -125,7 +129,7 @@ class _XMLSettings:
             self.__dict__['xml'] = xml.dom.minidom.parse(xmlsettings)
         
         except IOError:
-            print "Unable to open settings file."
+            print "Unable to open settings file: " + xmlsettings
             return False
         
         self.StripTextNodes(self.xml.getElementsByTagName('eopk:settings'))
@@ -139,5 +143,7 @@ class _XMLSettings:
             
             if node.nodeType == node.TEXT_NODE:
                 node.data = string.strip(string.strip(node.data, '\n'))
-                
-settings = _XMLSettings(os.path.join(os.path.expanduser('~'), 'eopk/settings.xml'))
+
+locationsettings = _XMLSettings('location.xml', DEFAULT_SETTINGS_DATA_DIR)
+
+settings = _XMLSettings(os.path.join(os.path.expanduser(locationsettings.data_dir), 'settings.xml'), DEFAULT_SETTINGS)

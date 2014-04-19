@@ -25,6 +25,9 @@ from db import database, dbimport
 
 from settings.xmlsettings import settings
 from settings.xmlsettings import DEFAULT_SETTINGS
+from settings.xmlsettings import locationsettings
+from settings.xmlsettings import DEFAULT_SETTINGS_DATA_DIR
+
 
 
 class GeneralSettings(wx.Panel):
@@ -148,12 +151,13 @@ class DatabaseSettings(wx.Panel):
 		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Data Directory'), wx.VERTICAL)
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		sbsizer.Add(wx.StaticText(self, label='Egg of P\'an Ku will look in the  below directory for it\'s data.'), 0, wx.ALL, 5)
-		self.dirData = wx.TextCtrl(self, value=settings.data_dir)
+		self.dirData = wx.TextCtrl(self, value=locationsettings.data_dir)
 		sbsizer.Add(self.dirData, 0, wx.EXPAND|wx.ALL, 5)
 		self.btnDefaultDataDir = wx.Button(self, label='Default')
 		self.btnGetDataDir = wx.Button(self, label='Browse')
-		self.btnDefaultDataDir.Disable()
-		self.btnGetDataDir.Disable()
+		#Renable changing data_dir
+		#self.btnDefaultDataDir.Disable()
+		#self.btnGetDataDir.Disable()
 		self.Bind(wx.EVT_BUTTON, self.OnDefaultDataDir, self.btnDefaultDataDir)
 		self.Bind(wx.EVT_BUTTON, self.OnGetDataDir, self.btnGetDataDir)
 		sizer.Add(self.btnDefaultDataDir, 0, wx.RIGHT, 5)
@@ -171,6 +175,7 @@ class DatabaseSettings(wx.Panel):
 		else:
 			settings.imagepackdir_changed = False
 		settings.dir_imagepacks = self.dirImagePacks.GetValue()
+		locationsettings.data_dir = self.dirData.GetValue()
 		
 	def Import(self):
 		try:
@@ -197,14 +202,16 @@ class DatabaseSettings(wx.Panel):
 			self.dirImagePacks.SetValue(fdlg.GetPath() if fdlg.GetPath().endswith('\\') else fdlg.GetPath() + '\\')
 
 	def OnDefaultDataDir(self, event):
-		self.dirData.SetValue(DEFAULT_SETTINGS['data_dir'])
+		self.dirData.SetValue(DEFAULT_SETTINGS_DATA_DIR['data_dir'])
+		
 
 
 	def OnGetDataDir(self, event):
 		fdlg = wx.DirDialog(None, message='Please select the directory containing Egg of P\'an Ku data ', \
-						    defaultPath=settings.data_dir, name='Select Data Dir')
+						    defaultPath=locationsettings.data_dir, name='Select Data Dir')
 		if fdlg.ShowModal() == wx.ID_OK:
 			self.dirData.SetValue(fdlg.GetPath() if fdlg.GetPath().endswith('\\') else fdlg.GetPath() + '\\')
+			
 
 	def OnChangeDatabase(self, event):
 		fdlg = wx.FileDialog(None, wildcard='XML card database (*.xml)|*.xml|All files (*.*)|*.*', style=wx.OPEN|wx.FILE_MUST_EXIST)
@@ -340,13 +347,15 @@ class SettingsDialog(wx.Dialog):
 		sizer.Add(buttonsizer, 0, wx.EXPAND | wx.ALL, 5)
 		self.SetSizer(sizer)
 		
-		wx.EVT_BUTTON(self, self.GetAffirmativeId(), self.SaveSettings)
+		#wx.EVT_BUTTON(self, self.GetAffirmativeId(), self.SaveSettings)
+		self.Bind(wx.EVT_BUTTON, self.SaveSettings, id=self.GetAffirmativeId())
 		
 	
 	def SaveSettings(self, event):
 		for title, page in self.pages:
 			page.Save()
 		settings.WriteSettingsFile()
+		locationsettings.WriteSettingsFile()
 		event.Skip()
 
 

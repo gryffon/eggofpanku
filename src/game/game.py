@@ -22,6 +22,7 @@ import os
 from db import database
 
 from settings.xmlsettings import settings
+from settings.xmlsettings import locationsettings
 
 ZONE_DUMMY = 0            # Dummy zone
 ZONE_DECK_DYNASTY = 1     # Dynasty deck
@@ -361,7 +362,7 @@ def FindMarkerTemplate(self, name):
 	return None
 
 try:
-	for line in file(os.path.join(settings.data_dir, 'dat/markers.dat'), 'rb'):
+	for line in file(os.path.join(locationsettings.data_dir, 'dat/markers.dat'), 'rb'):
 		args = line.strip().split(':')
 		if len(args) != 2:
 			continue
@@ -381,7 +382,7 @@ def AddTokenTemplate(name, image=TOKEN_DEFAULT_IMAGE):
 	TokenNames[name] = len(TokenTemplates) - 1
 
 try:
-	for line in file(os.path.join(settings.data_dir, 'dat/tokens.dat'), 'rb'):
+	for line in file(os.path.join(locationsettings.data_dir, 'dat/tokens.dat'), 'rb'):
 		args = line.strip().split(':')
 		if len(args) != 2:
 			continue
