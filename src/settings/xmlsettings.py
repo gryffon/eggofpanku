@@ -119,7 +119,7 @@ class _XMLSettings:
                 self.__dict__['xml'].childNodes[0].appendChild(eopkSetting)
 
 
-        f = file(settings._filename, 'w')
+        f = file(self._filename, 'w')
         self.xml.writexml(f, indent="  ", addindent="  ", newl="\n")
         f.close()
         self.ApplySettingsFile()        
@@ -129,7 +129,7 @@ class _XMLSettings:
             self.__dict__['xml'] = xml.dom.minidom.parse(xmlsettings)
         
         except IOError:
-            print "Unable to open settings file."
+            print "Unable to open settings file: " + xmlsettings
             return False
         
         self.StripTextNodes(self.xml.getElementsByTagName('eopk:settings'))
