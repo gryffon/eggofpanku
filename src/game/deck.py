@@ -23,7 +23,7 @@ import tempfile, os
 from db import database
 from lib.enums import Enumeration
 
-OUTPUT_TYPES = Enumeration("OUTPUT_TYPES",['Text','HTML','BBCode'])
+OUTPUT_TYPES = Enumeration("OUTPUT_TYPES",['Text','HTML','BBCode','EnhText'])
 
 class DeckException(Exception):
 	pass
@@ -287,7 +287,8 @@ class Deck:
 		headerString = ''
 		headerString = {OUTPUT_TYPES.Text:'\n# %s (%d)\n',
 						OUTPUT_TYPES.HTML:'\n<h3><u>%s (%d)</u></h3>\n',
-						OUTPUT_TYPES.BBCode:'\n[size=150]%s (%d)[/size]\n'}[savetype]
+						OUTPUT_TYPES.BBCode:'\n[size=150]%s (%d)[/size]\n',
+						OUTPUT_TYPES.EnhText:'\n# %s (%d)\n'}[savetype]
 
 		#Oracle refers to the Stronghold and Sensei as Pre-Game cards
 		#Pre-Game Cards
@@ -374,16 +375,26 @@ class Deck:
 
 			headerString = {OUTPUT_TYPES.Text:'\n# %s (%d)\n',
 							OUTPUT_TYPES.HTML:'\n<br/><b><u>%s (%d)</u></b><br/>\n',
-							OUTPUT_TYPES.BBCode:'\n[b][u]%s (%d)[/u][/b]\n'}[saveType]
+							OUTPUT_TYPES.BBCode:'\n[b][u]%s (%d)[/u][/b]\n',
+							OUTPUT_TYPES.EnhText:'\n# %s (%d)\n'}[saveType]
 
 			cardlist.sort(lambda a, b: cmp(a[1].type, b[1].type))
 			cardString = {OUTPUT_TYPES.Text:'%d %s\n',
 						  OUTPUT_TYPES.HTML:'%d %s<br/>\n',
-						  OUTPUT_TYPES.BBCode:'%d %s\n'}[saveType]
+						  OUTPUT_TYPES.BBCode:'%d %s\n',
+						  OUTPUT_TYPES.EnhText:'%d %s [%s] [%s]\n'}[saveType]
 
 			fp.write(headerString % (title,cardCount))
 			for count, card in cardlist:
-				fp.write(cardString % (count, card.name))
+				if card.rarity is '':
+					displayrarity = 'n/a'
+				else:
+					displayrarity = card.rarity
+				
+				if saveType is OUTPUT_TYPES.EnhText:
+					fp.write(cardString % (count, card.name, ''.join(i for i in card.id if not i.isdigit()), displayrarity))
+				else:
+					fp.write(cardString % (count, card.name))
 
 	def Add(self, cdid, num = 1, inplay=False):
 		"""Add a number of a particular card to the deck.
