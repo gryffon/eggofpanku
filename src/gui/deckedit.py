@@ -40,7 +40,6 @@ ID_DE_MNU_SAVE_DECK_AS = 9002
 ID_DE_MNU_OPEN_DECK = 9003
 ID_DE_MNU_OPEN_OLD_DECK = 9004
 ID_DE_MNU_IMPORT_CLIPBOARD = 9005
-ID_DE_MNU_EDIT_OUTPUT_ENHTEXT = 9006
 ID_DE_MNU_EDIT_OUTPUT_HTML = 9007
 ID_DE_MNU_EDIT_OUTPUT_BBCODE = 9008
 ID_DE_MNU_RECENT = 9010
@@ -724,7 +723,6 @@ class MainWindow(wx.Frame):
 		self.mnuFile.Append(wx.ID_EXIT, 'Exit', 'Close the deck editor.')
 
 		self.mnuEdit = wx.Menu()
-		self.mnuEdit.Append(ID_DE_MNU_EDIT_OUTPUT_ENHTEXT, 'Copy deck as Enhanced Text', 'Copy current deck list to the clipboard in Text format with Set and Rarity included.')
 		self.mnuEdit.Append(ID_DE_MNU_EDIT_OUTPUT_HTML, 'Copy deck as HTML', 'Copy current deck list to the clipboard in HTML format.')
 		self.mnuEdit.Append(ID_DE_MNU_EDIT_OUTPUT_BBCODE, 'Copy deck as BBCode', 'Copy current deck list to the clipboard in BBCode format.')
 		self.mnuEdit.AppendSeparator()
@@ -743,7 +741,6 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK, self.OnMenuSaveDeck)
 		wx.EVT_MENU(self, ID_DE_MNU_SAVE_DECK_AS, self.OnMenuSaveDeckAs)
 		wx.EVT_MENU(self, ID_DE_MNU_IMPORT_CLIPBOARD, self.OnMenuImportClipboard)
-		wx.EVT_MENU(self, ID_DE_MNU_EDIT_OUTPUT_ENHTEXT, self.OnCopyEnhTextDecklistToClipboard)
 		wx.EVT_MENU(self, ID_DE_MNU_EDIT_OUTPUT_HTML, self.OnCopyHTMLDecklistToClipboard)
 		wx.EVT_MENU(self, ID_DE_MNU_EDIT_OUTPUT_BBCODE, self.OnCopyBBCodeDecklistToClipboard)
 		wx.EVT_MENU(self, wx.ID_EXIT, self.OnMenuExit)
@@ -961,9 +958,6 @@ class MainWindow(wx.Frame):
 
 	def OnCopyHTMLDecklistToClipboard(self, event):
 		self.SaveToClipboard(deck.OUTPUT_TYPES.HTML)
-
-	def OnCopyEnhTextDecklistToClipboard(self, event):
-		self.SaveToClipboard(deck.OUTPUT_TYPES.EnhText)
 
 	def OnMenuImportClipboard(self, event):
 		if self.deck and self.deck.modified and not self.QuerySaveFirst():
