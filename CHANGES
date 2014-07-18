@@ -1,4 +1,8 @@
 News & Changes
+  2014-July-18 Egg of P'an Ku 1.0.3
+  * Add Output Type "Enhanced Text." "Enhanced Text" includes the Set and Rarity in the output.
+
+
   2014-April-19 Egg of P'an Ku 1.0.2
   * Fix program crash when using non-default directory for images.
   * Now able to specify a location for the entire data directory;
