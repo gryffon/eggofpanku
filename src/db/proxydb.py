@@ -43,9 +43,9 @@ class ProxyDB():
 	def __init__(self):
 		#Open connection to database
 		self.conn = sqlite3.connect(os.path.join(locationsettings.data_dir, 'proxy.db'))
-		self.initDB()
+		self.init_db()
 
-	def initDB(self):
+	def init_db(self):
 		with self.conn:
 			cur = self.conn.cursor()
 			cur.execute('''CREATE TABLE IF NOT EXISTS CardType 
@@ -67,7 +67,7 @@ class ProxyDB():
 							 FOREIGN KEY(Type) REFERENCES CardType(Id))
 						''')
 
-	def numTables(self):
+	def num_tables(self):
 		with self.conn:
 			cur = self.conn.cursor()
 			cur.execute("SELECT count(*) FROM sqlite_master WHERE type='table'")
@@ -75,11 +75,11 @@ class ProxyDB():
 			numTables = cur.fetchone()[0]
 			print numTables
 
-	def resetDB(self):
+	def reset_db(self):
 		with self.conn:
 			self.conn.execute("DROP TABLE ProxyCard")
 
-	def addCardType(self, type):
+	def add_card_type(self, type):
 		with self.conn:
 			try:
 				cur = self.conn.cursor()
@@ -87,7 +87,7 @@ class ProxyDB():
 			except sqlite3.IntegrityError:
 				print "Card Type already exists."
 
-	def getCardTypes(self):
+	def get_card_types(self):
 		with self.conn:
 			cur = self.conn.cursor()
 			cur.execute("SELECT * from CardType")
@@ -96,7 +96,7 @@ class ProxyDB():
 
 			return rows
 
-	def addCard(self, carddata):
+	def add_card(self, carddata):
 		md5 = hashlib.md5()
 		md5.update(carddata['Name'])
 		IdHash = md5.hexdigest()
@@ -110,7 +110,7 @@ class ProxyDB():
 			except sqlite3.IntegrityError:
 				print "Card with that name already exists."
 
-	def getCard(self, Id):
+	def get_card_by_id(self, Id):
 		with self.conn:
 			cur = self.conn.cursor()
 			cur.execute("SELECT * FROM ProxyCard WHERE Id=?", (Id,))
@@ -122,10 +122,10 @@ class ProxyDB():
 #Use for testing
 if __name__ == "__main__":
 	proxydb = ProxyDB()
-	proxydb.numTables()
+	proxydb.num_tables()
 
-	proxydb.addCardType("Personality")
-	proxydb.addCardType("Item")
+	proxydb.add_card_type("Personality")
+	proxydb.add_card_type("Item")
 #	rows = proxydb.getCardTypes()
 
 #	for row in rows:
@@ -134,10 +134,10 @@ if __name__ == "__main__":
 	newcard = {'Name': 'Fudo', 'Type': 1, 'Force': 10, 'Chi': 5, 'HR': -1, 'GC': 0, 'PH': 0,
 				'CardText': 'May not be included in decks.\nCards\' effects will not bow this Personality or move him home.', 
 				'Image': '' }
-	proxydb.addCard(newcard)
+	proxydb.add_card(newcard)
 	md5 = hashlib.md5()
 	md5.update('Fudo')
 	CardId = md5.hexdigest()
 
-	card = proxydb.getCard(CardId)
+	card = proxydb.get_card_by_id(CardId)
 	print card
