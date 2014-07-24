@@ -1,5 +1,6 @@
 # Egg of P'an Ku -- an unofficial client for Legend of the Five Rings
 # Copyright (C) 2008  Peter C O Johansson
+# Copyright (C) 2014  Ryan Karetas
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
