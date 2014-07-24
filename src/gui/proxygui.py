@@ -25,14 +25,11 @@ date: 21 Jul 2014
 
 import wx
 
+#Local Imports
+from db import proxydb
+
 class CreateCardDialog(wx.Dialog):
-	cardTypes = {
-		'Personality':'personality',
-		'Follower':'follower',
-		'Item':'item',
-		'Region':'region',
-		'Holding':'holding',
-	}
+	cardTypes = {}
 	
 	def GetType(self):
 		return self.cardTypes[self.cmbType.GetValue()]
@@ -51,6 +48,12 @@ class CreateCardDialog(wx.Dialog):
 		}
 		
 	def __init__(self, parent):
+		#Open database and populate CardTypes
+		proxdb = proxydb.ProxyDB()
+		card_types = proxdb.get_card_types()
+		for card_type in card_types:
+			self.cardTypes[card_type[1]] = card_type[0]
+
 		wx.Dialog.__init__(self, parent, wx.ID_ANY, 'Create Card')
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		

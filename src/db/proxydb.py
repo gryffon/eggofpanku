@@ -1,5 +1,6 @@
 # Egg of P'an Ku -- an unofficial client for Legend of the Five Rings
 # Copyright (C) 2008  Peter C O Johansson
+# Copyright (C) 2014  Ryan Karetas
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,6 +26,8 @@ date: 21 Jul 2014
 
 import sqlite3
 import hashlib
+import sys
+import os
 
 #Use for testing
 if __name__ == "__main__":
@@ -48,6 +51,10 @@ class ProxyDB():
 	def init_db(self):
 		with self.conn:
 			cur = self.conn.cursor()
+			cur.execute("PRAGMA foreign_keys = ON")
+
+			#Debug
+			cur.execute("PRAGMA foreign_keys")
 			cur.execute('''CREATE TABLE IF NOT EXISTS CardType 
 							(Id Integer PRIMARY KEY,
 							 Type TEXT UNIQUE)
@@ -108,7 +115,18 @@ class ProxyDB():
 								carddata['Chi'], carddata['HR'], carddata['GC'], carddata['PH'],
 								carddata['CardText'], carddata['Image']))
 			except sqlite3.IntegrityError:
-				print "Card with that name already exists."
+				error = sys.exc_info()[1]
+				if str(error) == "foreign key constraint failed":
+					print "Card Type does not exist."
+				elif str(error) == "column Name is not unique":
+					print "Proxy Card with that name already exists."
+				else:
+					print "Unknown issue adding Proxy Card."
+
+	def del_card(self, Id):
+		with self.conn:
+			cur = self.conn.cursor()
+			cur.execute("DELETE FROM ProxyCard WHERE Id=?", (Id,))
 
 	def get_card_by_id(self, Id):
 		with self.conn:
@@ -119,19 +137,29 @@ class ProxyDB():
 
 			return row
 
+	def get_cards_by_type(self, Type):
+		with self.conn:
+			cur = self.conn.cursor()
+			cur.execute("SELECT * FROM ProxyCard WHERE Type=?", (Type,))
+
+			rows = cur.fetchall()
+
+			return rows
+
 #Use for testing
 if __name__ == "__main__":
 	proxydb = ProxyDB()
 	proxydb.num_tables()
+#	proxydb.reset_db()
 
-	proxydb.add_card_type("Personality")
-	proxydb.add_card_type("Item")
-#	rows = proxydb.getCardTypes()
+#	proxydb.add_card_type("Personality")
+#	proxydb.add_card_type("Item")
+	rows = proxydb.get_card_types()
 
-#	for row in rows:
-#		print row
-
-	newcard = {'Name': 'Fudo', 'Type': 1, 'Force': 10, 'Chi': 5, 'HR': -1, 'GC': 0, 'PH': 0,
+	for row in rows:
+		print row
+'''
+	newcard = {'Name': 'Fudo', 'Type': 4, 'Force': 10, 'Chi': 5, 'HR': -1, 'GC': 0, 'PH': 0,
 				'CardText': 'May not be included in decks.\nCards\' effects will not bow this Personality or move him home.', 
 				'Image': '' }
 	proxydb.add_card(newcard)
@@ -139,5 +167,13 @@ if __name__ == "__main__":
 	md5.update('Fudo')
 	CardId = md5.hexdigest()
 
-	card = proxydb.get_card_by_id(CardId)
-	print card
+	cards = proxydb.get_cards_by_type(1)
+	for card in cards:
+		print card
+
+	proxydb.del_card(CardId)
+
+	cards = proxydb.get_cards_by_type(1)
+	for card in cards:
+		print card
+'''
