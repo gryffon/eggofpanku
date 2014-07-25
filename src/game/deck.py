@@ -385,7 +385,7 @@ class Deck:
 			cardString = {OUTPUT_TYPES.Text:'%d %s\n',
 						  OUTPUT_TYPES.HTML:'%d %s<br/>\n',
 						  OUTPUT_TYPES.BBCode:'%d %s\n',
-						  OUTPUT_TYPES.EnhText:'%d %s [%s] [%s]\n'}[saveType]
+						  OUTPUT_TYPES.EnhText:'%d %s [%s - %s]\n'}[saveType]
 						  
 			fp.write(headerString % (title,cardCount))
 			for count, card in cardlist:
@@ -395,7 +395,7 @@ class Deck:
 					displayrarity = card.rarity
 				
 				if saveType is OUTPUT_TYPES.EnhText:
-					fp.write(cardString % (count, card.name, ''.join(i for i in card.id if not i.isdigit()), displayrarity))
+					fp.write(cardString % (count, card.name, displayrarity, card.id[:-3]))
 				else:
 					fp.write(cardString % (count, card.name))
 
