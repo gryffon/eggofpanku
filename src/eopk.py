@@ -1072,19 +1072,15 @@ class MainWindow(wx.Frame):
 		toolbar.Realize()
 	
 	def SetupMenus(self):
+		#File Menu
 		mnuFile = wx.Menu()
 		self.mnuFile = mnuFile
 		mnuFile.Append(ID_MNU_HOST, "&Host Table\tCtrl+K",  "Host a new game table that other players can connect to.")
-
-		#Added 8/23/08 PCW
-		#Removed until I get the GameMatch Server working 10/04/2008 PCW
-		#mnuFile.Append(ID_MNU_FIND_GAME_MATCH, "&Game Matcher\t",  "Use the online game matching service to find another player.")
 
 		mnuFile.Append(ID_MNU_CONNECT, "&Connect to Table...",  "Connect to game table hosted elsewhere.")
 		mnuFile.Append(ID_MNU_DISCONNECT, "&Disconnect",  "Disconnect from the current game.")
 		mnuFile.AppendSeparator()
 		mnuFile.Append(ID_MNU_JOIN_GAME, "&Join Game...\tCtrl+J",  "Sit down to play with a deck.")
-		#mnuFile.Append(ID_MNU_CHANGE_DECK, "Change &Deck...",  "Switch your deck for another one.")
 		mnuFile.Append(ID_MNU_LEAVE_GAME, "&Leave Game",  "Leave the current game.")
 		mnuFile.Append(ID_MNU_START_GAME, "Start &Game\tCtrl+S",  "Start the game session.")
 		mnuFile.AppendSeparator()
@@ -1092,10 +1088,9 @@ class MainWindow(wx.Frame):
 		mnuFile.AppendSeparator()
 		mnuFile.Append(ID_MNU_DECK_EDIT, "Launch Deck &Editor",  "Open the deck editor where you can build or edit decks.")
 		mnuFile.AppendSeparator()
-		#mnuFile.Append(ID_MNU_LAUNCH_EGGUPDATER, "Check for updates",  "Launch EggUpdater to check for application updates.")
-		#mnuFile.AppendSeparator()
 		mnuFile.Append(ID_MNU_EXIT, "E&xit", "")
-		
+
+		#Game Menu		
 		mnuGame = wx.Menu()
 		self.mnuGame = mnuGame
 		mnuGame.Append(ID_MNU_STRAIGHTEN_ALL, "&Straighten All\tCtrl+U", "Straighten all your cards in play.")
@@ -1117,6 +1112,7 @@ class MainWindow(wx.Frame):
 		
 		mnuGame.AppendMenu(ID_MNU_CREATE_CARD, "Create Card", self.mnuCreateCard, "Create a card to be put into play.")
 		
+		#Dynasty Deck Menu
 		mnuDynasty = wx.Menu()
 		self.mnuDynasty = mnuDynasty
 		mnuDynasty.Append(ID_MNU_DYN_SHUFFLE, "Shuffle", "Shuffle your dynasty deck.")
@@ -1126,6 +1122,7 @@ class MainWindow(wx.Frame):
 		mnuDynasty.Append(ID_MNU_DYN_LOOK_TOP, "Look at top cards...", "Look at the top N cards of your dynasty deck.")
 		mnuDynasty.Append(ID_MNU_DYN_LOOK_BOTTOM, "Look at bottom cards...", "Look at the bottom N cards of your dynasty deck.")
 		
+		#Fate Deck Menu
 		mnuFate = wx.Menu()
 		self.mnuFate = mnuFate
 		mnuFate.Append(ID_MNU_FATE_DRAW, "&Draw\tCtrl+D", "Draw the top card of your fate deck.")
@@ -1140,6 +1137,7 @@ class MainWindow(wx.Frame):
 		mnuFate.AppendSeparator()
 		mnuFate.Append(ID_MNU_FOCUS_CREATE, 'Create focus &pool...\tCtrl+P', 'Create a focus pool from the top 3 cards of your fate deck.')
 		
+		#Fate Hand Menu
 		mnuFateHand = wx.Menu()
 		self.mnuFateHand = mnuFateHand
 		mnuFateHand.Append(ID_MNU_HAND_REVEAL, "Reveal", "Reveal your fate hand.")
@@ -1149,6 +1147,15 @@ class MainWindow(wx.Frame):
 		mnuFateHand.Append(ID_MNU_HAND_DISCARD, "Discard", "Discard your entire fate hand.")
 		mnuFateHand.Append(ID_MNU_HAND_DISCARD_RANDOM, "Discard random card", "Discard a random card from your fate hand.")
 		
+		#Database Menu
+		mnu_database = wx.Menu()
+		self.mnu_database = mnu_database
+		mnu_proxy_database = wx.Menu()
+		mnu_proxy_database.Append(ID_MNU_BROWSE_PROXY, "Browse", "Browse previously added cards.")
+		mnu_proxy_database.Append(ID_MNU_ADD_PROXY, "Add Card(s)", "Add new card(s) to proxy card database.")
+		mnu_database.AppendMenu(ID_MNU_PROXY_DATABASE, "Proxy Database", mnu_proxy_database, "Manage Proxy Card Database.")
+
+		#Help Menu
 		mnuHelp = wx.Menu()
 		self.mnuHelp = mnuHelp
 		mnuHelp.Append(ID_MNU_HELP_ABOUT,"About", "Information about Egg of P'an Ku")
@@ -1162,6 +1169,7 @@ class MainWindow(wx.Frame):
 		menuBar.Append(mnuDynasty, "&Dynasty Deck")
 		menuBar.Append(mnuFate, "F&ate Deck")
 		menuBar.Append(mnuFateHand, "Fate &Hand")
+		menuBar.Append(mnu_database, "Database(s)")
 		menuBar.Append(mnuHelp, "&Help")
 		self.SetMenuBar(menuBar)
 		
@@ -1385,7 +1393,7 @@ class MainWindow(wx.Frame):
 	
 	def OnMenuCreateCard(self, event):
 		if self.client and self.client.Playing():
-			dlg = proxygui.CreateCardDialog(self)
+			dlg = proxygui.quick_create_proxy_dialog(self)
 			if dlg.ShowModal() == wx.ID_OK:
 				self.client.Send(netcore.Msg('create-card', **dlg.GetStats()))
 	
