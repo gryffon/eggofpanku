@@ -53,9 +53,9 @@ class quick_create_proxy_dialog(wx.Dialog):
 	def __init__(self, parent):
 		#Open database and populate CardTypes
 		proxdb = proxydb.ProxyDB()
-		card_types = proxdb.get_card_types()
+		card_types = proxdb.get_all_card_types()
 		for card_type in card_types:
-			self.cardTypes[card_type[1]] = card_type[0]
+			self.cardTypes[card_type.id] = card_type.name
 
 		wx.Dialog.__init__(self, parent, wx.ID_ANY, 'Create Card')
 		sizer = wx.BoxSizer(wx.VERTICAL)
