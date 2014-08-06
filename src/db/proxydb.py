@@ -127,7 +127,8 @@ class ProxyDB():
 
 	def __init__(self):
 		#Open connection to database
-		self.engine = create_engine('sqlite:///proxy.db')
+		proxy_database = os.path.join(locationsettings.data_dir, 'proxy.db')
+		self.engine = create_engine('sqlite:///' + proxy_database)
 		self.session = sessionmaker(bind=engine)
 
 	def add_card_type(self, name):
