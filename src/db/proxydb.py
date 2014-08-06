@@ -27,7 +27,7 @@ date: 21 Jul 2014
 """
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Table
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import create_engine
@@ -47,6 +47,12 @@ from settings.xmlsettings import locationsettings
 from settings import xmlfilters
 
 Base = declarative_base()
+
+#association table for keywords
+card_keywords = Table('card_keywords', Base.metadata,
+	Column('card_id', String(10), ForeignKey('cards.id')),
+	Column('keyword_id', Integer, ForeignKey('keywords.id'))
+)
 
 class CardType(Base):
 	"""
@@ -70,11 +76,24 @@ class Set(Base):
 
 	id = Column(Integer, primary_key=True)
 	name = Column(String)
+	abbreviation = Column(String(5))
 
 	cards = relationship("Card")
 
 	def __repr__(self):
 		return "<Set (id='%s', name='%s'>" % (self.id, self.name)
+
+class Keyword(Base):
+	"""
+	Model of keywords table
+	"""
+	__tablename = 'keywords'
+
+	id = Column(Integer, primary_key=True)
+	keyword = Column(String)
+
+	def __repr__(self):
+		return "<Keyword (id='%s', keyword='%s'>" % (self.id, self.keyword)
 
 class Card(Base):
 	"""
@@ -94,6 +113,8 @@ class Card(Base):
 	cardtext = Column(String)
 	image = Column(String)
 
+	keywords = relationship('Keyword', secondary=card_keywords, backref=backref'cards', lazy='dynamic'))
+
 	def __repr__(self):
 		return "<Card (name='%s')>" % self.name
 
@@ -109,7 +130,70 @@ class ProxyDB():
 		self.engine = create_engine('sqlite:///proxy.db')
 		self.session = sessionmaker(bind=engine)
 
+	def add_card_type(self, name):
+		session = self.session()
+		new_cardtype = CardType(name = name)
+		session.add(new_cardtype)
+		session.commit()
+		session.close()
 
+	def remove_card_type(self):
+		#Placeholder
+		session = self.session()
+
+	def get_card_type(self, id):
+		session = self.session()
+		card_type = session.query.filter(CardType.id == id).first()
+		session.commit()
+		session.close()
+		return card_type
+
+	def get_all_card_types(self):
+		session = self.session()
+		card_types = session.query(CardType).all()
+		session.close()
+		return card_types
+
+	def add_set(self):
+		session = self.session()
+		new_set = Set(name = name)
+		session.add(new_set)
+		session.commit()
+		session.close()
+
+	def remove_set(self):
+		#Placeholder
+		session = self.session()
+
+	def get_set(self, id):
+		session = self.session()
+		set = session.query.filter(Set.id == id).first()
+		session.commit()
+		session.close()
+		return set
+
+	def get_all_sets(self):
+		#Placeholder
+		session = self.session()
+
+	def add_card(self):
+		#Placeholder
+		session = self.session()
+
+	def remove_card(self):
+		#Placeholder
+		session = self.session()
+
+	def get_card(self):
+		session = self.session()
+		card = session.query.filter(Card.id == id).first()
+		session.commit()
+		session.close()
+		return card
+
+	def get_cards_by_filter(self):
+		#Placeholder
+		session = self.session()
 
 #Use for testing
 if __name__ == "__main__":
