@@ -27,11 +27,14 @@ date: 21 Jul 2014
 """
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Table
+from sqlalchemy import Column, Integer, String, Table, MetaData, UniqueConstraint
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.engine import Engine
+from sqlalchemy import event
+from sqlalchemy.exc import IntegrityError
 import hashlib
 import sys
 import os
@@ -59,6 +62,7 @@ class CardType(Base):
 	Model of cardtypes table
 	"""
 	__tablename__ = 'cardtypes'
+	__table_args__ = (UniqueConstraint('type'),)
 
 	id = Column(Integer, primary_key=True)
 	type = Column(String)
@@ -74,7 +78,7 @@ class Set(Base):
 	"""
 	__tablename__ = 'sets'
 
-	id = Column(Integer, primary_key=True)
+	id = Column(Integer, unique=True, primary_key=True)
 	name = Column(String)
 	abbreviation = Column(String(5))
 
@@ -87,7 +91,7 @@ class Keyword(Base):
 	"""
 	Model of keywords table
 	"""
-	__tablename = 'keywords'
+	__tablename__ = 'keywords'
 
 	id = Column(Integer, primary_key=True)
 	keyword = Column(String)
@@ -113,7 +117,7 @@ class Card(Base):
 	cardtext = Column(String)
 	image = Column(String)
 
-	keywords = relationship('Keyword', secondary=card_keywords, backref=backref'cards', lazy='dynamic'))
+	keywords = relationship('Keyword', secondary=card_keywords, backref=backref('cards', lazy='dynamic'))
 
 	def __repr__(self):
 		return "<Card (name='%s')>" % self.name
@@ -129,13 +133,34 @@ class ProxyDB():
 		#Open connection to database
 		proxy_database = os.path.join(locationsettings.data_dir, 'proxy.db')
 		self.engine = create_engine('sqlite:///' + proxy_database)
-		self.session = sessionmaker(bind=engine)
+		disk_metadata = MetaData(bind=self.engine, reflect=True)
+		if len(disk_metadata.tables) == 0:
+			print "No tables defined, creating initial database."
+			Base.metadata.create_all(self.engine)
+		self.session = sessionmaker(bind=self.engine)
+
+		#Debug; verify foreign_keys
+		foreign_keys = self.engine.execute('PRAGMA foreign_keys').fetchone()
+		if foreign_keys[0] == 0:
+			print "FOREIGN KEYS are OFF"
+		elif foreign_keys[0] == 1:
+			print "FOREIGN KEYS are ON"
+
+	@event.listens_for(Engine, "connect")
+	def set_sqlite_pragma(dbapi_connection, connection_record):
+		cursor = dbapi_connection.cursor()
+		cursor.execute("PRAGMA foreign_keys=ON")
+		cursor.close()
 
 	def add_card_type(self, name):
 		session = self.session()
-		new_cardtype = CardType(name = name)
-		session.add(new_cardtype)
-		session.commit()
+		try:
+			new_cardtype = CardType(type = name)
+			session.add(new_cardtype)
+			session.commit()
+		except IntegrityError:
+			print 'CardType already exists with type=' + name
+		
 		session.close()
 
 	def remove_card_type(self):
@@ -199,3 +224,7 @@ class ProxyDB():
 #Use for testing
 if __name__ == "__main__":
 	proxydb = ProxyDB()
+	proxydb.add_card_type("Personality")
+	proxydb.add_card_type("Follower")
+	card_types = proxydb.get_all_card_types()
+	print card_types
