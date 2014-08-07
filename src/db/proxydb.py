@@ -35,7 +35,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.engine import Engine
 from sqlalchemy import event
 from sqlalchemy.exc import IntegrityError
-import hashlib
 import sys
 import os
 
@@ -55,6 +54,12 @@ Base = declarative_base()
 card_keywords = Table('card_keywords', Base.metadata,
 	Column('card_id', String(10), ForeignKey('cards.id')),
 	Column('keyword_id', Integer, ForeignKey('keywords.id'))
+)
+
+#association table for clans
+card_clans = Table('card_clans', Base.metadata,
+	Column('card_id', String(10), ForeignKey('cards.id')),
+	Column('clan_id', Integer, ForeignKey('clans.id'))
 )
 
 class CardType(Base):
@@ -77,6 +82,7 @@ class Set(Base):
 	Model of sets table
 	"""
 	__tablename__ = 'sets'
+	__table_args__ = (UniqueConstraint('name', 'abbreviation'),)
 
 	id = Column(Integer, unique=True, primary_key=True)
 	name = Column(String)
@@ -85,13 +91,14 @@ class Set(Base):
 	cards = relationship("Card")
 
 	def __repr__(self):
-		return "<Set (id='%s', name='%s'>" % (self.id, self.name)
+		return "<Set (id='%s', name='%s', abbreviation='%s'>" % (self.id, self.name, self.abbreviation)
 
 class Keyword(Base):
 	"""
 	Model of keywords table
 	"""
 	__tablename__ = 'keywords'
+	__table_args__ = (UniqueConstraint('keyword'),)
 
 	id = Column(Integer, primary_key=True)
 	keyword = Column(String)
@@ -99,11 +106,25 @@ class Keyword(Base):
 	def __repr__(self):
 		return "<Keyword (id='%s', keyword='%s'>" % (self.id, self.keyword)
 
+class Clan(Base):
+	"""
+	Model of clans table
+	"""
+	__tablename__ = 'clans'
+	__table_args__ = (UniqueConstraint('clan'),)
+
+	id = Column(Integer, primary_key=True)
+	clan = Column(String)
+
+	def __repr__(self):
+		return "<Clan (id='%s', clan='%s'>" % (self.id, self.clan)
+
 class Card(Base):
 	"""
 	Model of cards table
 	"""
 	__tablename__ = 'cards'
+	__table_args__ = (UniqueConstraint('name'),)
 
 	id = Column(String(10), primary_key=True)
 	name = Column(String)
@@ -116,8 +137,10 @@ class Card(Base):
 	ph = Column(Integer)
 	cardtext = Column(String)
 	image = Column(String)
+	artist = Column(String)
 
 	keywords = relationship('Keyword', secondary=card_keywords, backref=backref('cards', lazy='dynamic'))
+	clans = relationship('Clan', secondary=card_clans, backref=backref('cards', lazy='dynamic'))
 
 	def __repr__(self):
 		return "<Card (name='%s')>" % self.name
@@ -146,12 +169,16 @@ class ProxyDB():
 		elif foreign_keys[0] == 1:
 			print "FOREIGN KEYS are ON"
 
+	#Ensure that we're correctly using foreign keys.
 	@event.listens_for(Engine, "connect")
 	def set_sqlite_pragma(dbapi_connection, connection_record):
 		cursor = dbapi_connection.cursor()
 		cursor.execute("PRAGMA foreign_keys=ON")
 		cursor.close()
 
+	"""
+	CardType Functions
+	"""
 	def add_card_type(self, name):
 		session = self.session()
 		try:
@@ -169,8 +196,7 @@ class ProxyDB():
 
 	def get_card_type(self, id):
 		session = self.session()
-		card_type = session.query.filter(CardType.id == id).first()
-		session.commit()
+		card_type = session.query(CardType).filter(CardType.id == id).first()
 		session.close()
 		return card_type
 
@@ -180,11 +206,17 @@ class ProxyDB():
 		session.close()
 		return card_types
 
-	def add_set(self):
+	"""
+	Set Functions
+	"""
+	def add_set(self, name, abbv):
 		session = self.session()
-		new_set = Set(name = name)
-		session.add(new_set)
-		session.commit()
+		try:
+			new_set = Set(name = name, abbreviation=abbv)
+			session.add(new_set)
+			session.commit()
+		except IntegrityError:
+			print 'Set already exists with name=' + name
 		session.close()
 
 	def remove_set(self):
@@ -193,27 +225,65 @@ class ProxyDB():
 
 	def get_set(self, id):
 		session = self.session()
-		set = session.query.filter(Set.id == id).first()
-		session.commit()
+		set = session.query(Set).filter(Set.id == id).first()
 		session.close()
 		return set
 
 	def get_all_sets(self):
+		session = self.session()
+		sets = session.query(Set).all()
+		session.close()
+		return sets
+
+	"""
+	Clan Functions
+	"""
+	def add_clan(self, name):
+		session = self.session()
+		try:
+			new_clan = Clan(clan = name)
+			session.add(new_clan)
+			session.commit()
+		except IntegrityError:
+			print 'Clan already exists with clan=' + name
+		session.close()
+
+	def remove_clan(self):
 		#Placeholder
 		session = self.session()
 
-	def add_card(self):
-		#Placeholder
+	def get_clan(self, id):
 		session = self.session()
+		set = session.query(Clan).filter(Clan.id == id).first()
+		session.close()
+		return set
+
+	def get_all_clans(self):
+		session = self.session()
+		sets = session.query(Clan).all()
+		session.close()
+		return sets
+
+	"""
+	Card Functions
+	"""
+	def add_card(self, card = None):
+		session = self.session()
+		if card != None:
+			try:
+				session.add(card)
+				session.commit()
+			except IntegrityError:
+				print "Card alread exists with name=" + card.name
+
 
 	def remove_card(self):
 		#Placeholder
 		session = self.session()
 
-	def get_card(self):
+	def get_card(self, id):
 		session = self.session()
-		card = session.query.filter(Card.id == id).first()
-		session.commit()
+		card = session.query(Card).filter(Card.id == id).first()
 		session.close()
 		return card
 
@@ -224,7 +294,35 @@ class ProxyDB():
 #Use for testing
 if __name__ == "__main__":
 	proxydb = ProxyDB()
+	"""
+	Create data
+	""
 	proxydb.add_card_type("Personality")
 	proxydb.add_card_type("Follower")
-	card_types = proxydb.get_all_card_types()
-	print card_types
+	proxydb.add_set("Aftermath", "AM")
+	proxydb.add_set("Gates of Chaos", "GoC")
+	proxydb.add_set("Ivory Edition", "Ivory")
+	proxydb.add_clan("Crab")
+	proxydb.add_clan("Crane")
+	proxydb.add_clan("Dragon")
+	proxydb.add_clan("Lion")
+	#"""
+	#card_types = proxydb.get_all_card_types()
+	print proxydb.get_card_type(1)
+	print proxydb.get_card_type(2)
+	print proxydb.get_card_type(3)
+	sets = proxydb.get_all_sets()
+	#print sets
+	print proxydb.get_set(1)
+	print proxydb.get_set(2)
+	print proxydb.get_set(3)
+	clans = proxydb.get_all_clans()
+	print clans
+	print proxydb.get_clan(1)
+	print proxydb.get_clan(3)
+	print proxydb.get_clan(5)
+	#Cards
+	#new_card = Card(id="Ivory005", name="Ashalan", force=4, chi=4, hr=-1, gc=0, ph=0, type=1, set=3, cardtext="![CDATA[<b>Shugenja &#8226;</b> Ashalan &#8226; Nonhuman &#8226; <br>(This is a proxy for a created card. It is not considered to have a title and cannot be included in decks.)]]")
+	#proxydb.add_card(card=new_card)
+	card = proxydb.get_card(id="Ivory005")
+	print card
