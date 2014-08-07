@@ -190,9 +190,11 @@ class ProxyDB():
 		
 		session.close()
 
-	def remove_card_type(self):
-		#Placeholder
+	def remove_card_type(self, cardtype):
 		session = self.session()
+		session.delete(cardtype)
+		session.commit()
+		session.close()
 
 	def get_card_type(self, id):
 		session = self.session()
@@ -219,9 +221,11 @@ class ProxyDB():
 			print 'Set already exists with name=' + name
 		session.close()
 
-	def remove_set(self):
-		#Placeholder
+	def remove_set(self, set):
 		session = self.session()
+		session.delete(set)
+		session.commit
+		session.close()
 
 	def get_set(self, id):
 		session = self.session()
@@ -248,9 +252,11 @@ class ProxyDB():
 			print 'Clan already exists with clan=' + name
 		session.close()
 
-	def remove_clan(self):
-		#Placeholder
+	def remove_clan(self, clan):
 		session = self.session()
+		session.delete(clan)
+		session.commit()
+		session.close()
 
 	def get_clan(self, id):
 		session = self.session()
@@ -267,7 +273,7 @@ class ProxyDB():
 	"""
 	Card Functions
 	"""
-	def add_card(self, card = None):
+	def add_card(self, card = None, name=None, type=None, set=None, clan=None, force=None, chi=None, hr=None, gc=None, ph=None, text=None, artist=None):
 		session = self.session()
 		if card != None:
 			try:
@@ -275,11 +281,14 @@ class ProxyDB():
 				session.commit()
 			except IntegrityError:
 				print "Card alread exists with name=" + card.name
+		session.close()
 
 
-	def remove_card(self):
-		#Placeholder
+	def remove_card(self, card):
 		session = self.session()
+		session.delete(card)
+		session.commit()
+		session.close()
 
 	def get_card(self, id):
 		session = self.session()
@@ -287,9 +296,36 @@ class ProxyDB():
 		session.close()
 		return card
 
-	def get_cards_by_filter(self):
-		#Placeholder
+	def get_cards_by_filter(self, name=None, type=None, set=None, clan=None, force=None, chi=None, hr=None, gc=None, ph=None, text=None, limit=None):
 		session = self.session()
+		filter_query = 'session.query(Card)'
+		if name != None:
+			filter_query = filter_query + '.filter(Card.name.like(\'%\'+name+\'%\'))'
+		if type != None:
+			filter_query = filter_query + '.filter(Card.type==type)'
+		if set != None:
+			filter_query = filter_query + '.filter(Card.set==set)'
+		if clan != None:
+			filter_query = filter_query + '.filter(Card.clan==clan)'
+		if force != None:
+			filter_query = filter_query + '.filter(Card.force==force)'
+		if chi != None:
+			filter_query = filter_query + '.filter(Card.chi==chi)'
+		if hr != None:
+			filter_query = filter_query + '.filter(Card.hr==hr)'
+		if gc != None:
+			filter_query = filter_query + '.filter(Card.gc==gc)'
+		if ph != None:
+			filter_query = filter_query + '.filter(Card.ph==ph)'
+		if text != None:
+			filter_query = filter_query + '.filter(Card.cardtext.like(\'%\'+text+\'%\'))'
+		if limit != None:
+			filter_query = filter_query + '.limit(limit)'
+		filter_query = filter_query + '.all()'
+		cards = eval(filter_query)
+		session.close()
+		return cards
+
 
 #Use for testing
 if __name__ == "__main__":
@@ -325,4 +361,8 @@ if __name__ == "__main__":
 	#new_card = Card(id="Ivory005", name="Ashalan", force=4, chi=4, hr=-1, gc=0, ph=0, type=1, set=3, cardtext="![CDATA[<b>Shugenja &#8226;</b> Ashalan &#8226; Nonhuman &#8226; <br>(This is a proxy for a created card. It is not considered to have a title and cannot be included in decks.)]]")
 	#proxydb.add_card(card=new_card)
 	card = proxydb.get_card(id="Ivory005")
-	print card
+	#print card
+	for qcard in proxydb.get_cards_by_filter(name="Ash", limit=1):
+		print qcard
+
+	
