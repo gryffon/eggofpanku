@@ -130,11 +130,12 @@ class Card(Base):
 	name = Column(String)
 	type = Column(Integer, ForeignKey('cardtypes.id'))
 	set = Column(Integer, ForeignKey('sets.id'))
-	force = Column(Integer)
-	chi = Column(Integer)
-	hr = Column(Integer)
-	gc = Column(Integer)
-	ph = Column(Integer)
+	rarity = Column(String)
+	force = Column(String)
+	chi = Column(String)
+	honor_req = Column(String)
+	cost = Column(String)
+	personal_honor = Column(String)
 	cardtext = Column(String)
 	image = Column(String)
 	artist = Column(String)
@@ -202,6 +203,12 @@ class ProxyDB():
 		session.close()
 		return card_type
 
+	def get_card_type_by_name(self, name):
+		session = self.session()
+		card_type = session.query(CardType).filter(CardType.type == name).first()
+		session.close()
+		return card_type
+
 	def get_all_card_types(self):
 		session = self.session()
 		card_types = session.query(CardType).all()
@@ -230,6 +237,18 @@ class ProxyDB():
 	def get_set(self, id):
 		session = self.session()
 		set = session.query(Set).filter(Set.id == id).first()
+		session.close()
+		return set
+	
+	def get_set_by_name(self, name):
+		session = self.session()
+		set = session.query(Set).filter(Set.name == name).first()
+		session.close()
+		return set
+
+	def get_set_by_abbv(self, abbv):
+		session = self.session()
+		set = session.query(Set).filter(Set.abbreviation == abbv).first()
 		session.close()
 		return set
 
@@ -264,11 +283,23 @@ class ProxyDB():
 		session.close()
 		return set
 
+	def get_clan_by_name(self, name):
+		session = self.session()
+		set = session.query(Clan).filter(Clan.clan == name).first()
+		session.close()
+		return set
+
 	def get_all_clans(self):
 		session = self.session()
 		sets = session.query(Clan).all()
 		session.close()
 		return sets
+
+	def get_card_clans(self, card):
+		session = self.session()
+		clans = card.clans
+		session.close()
+		return clans
 
 	"""
 	Card Functions
@@ -326,23 +357,39 @@ class ProxyDB():
 		session.close()
 		return cards
 
+	def get_all_cards(self):
+		session = self.session()
+		cards = session.query(Card).all()
+		session.close()
+		return cards
 
 #Use for testing
 if __name__ == "__main__":
 	proxydb = ProxyDB()
 	"""
 	Create data
-	""
+	"""
 	proxydb.add_card_type("Personality")
 	proxydb.add_card_type("Follower")
-	proxydb.add_set("Aftermath", "AM")
+	proxydb.add_card_type("Item")
+	proxydb.add_set("Coils of Madness", "CoM")
 	proxydb.add_set("Gates of Chaos", "GoC")
+	proxydb.add_set("Aftermath", "AM")
 	proxydb.add_set("Ivory Edition", "Ivory")
+	proxydb.add_set("The Coming Storm", "TCS")
+	proxydb.add_set("A Line in the Sand", "AlitS")
 	proxydb.add_clan("Crab")
 	proxydb.add_clan("Crane")
 	proxydb.add_clan("Dragon")
 	proxydb.add_clan("Lion")
+	proxydb.add_clan("Mantis")
+	proxydb.add_clan("Phoenix")
+	proxydb.add_clan("Scorpion")
+	proxydb.add_clan("Spider")
+	proxydb.add_clan("Unaligned")
+	proxydb.add_clan("Unicorn")
 	#"""
+	"""
 	#card_types = proxydb.get_all_card_types()
 	print proxydb.get_card_type(1)
 	print proxydb.get_card_type(2)
@@ -357,12 +404,5 @@ if __name__ == "__main__":
 	print proxydb.get_clan(1)
 	print proxydb.get_clan(3)
 	print proxydb.get_clan(5)
-	#Cards
-	#new_card = Card(id="Ivory005", name="Ashalan", force=4, chi=4, hr=-1, gc=0, ph=0, type=1, set=3, cardtext="![CDATA[<b>Shugenja &#8226;</b> Ashalan &#8226; Nonhuman &#8226; <br>(This is a proxy for a created card. It is not considered to have a title and cannot be included in decks.)]]")
-	#proxydb.add_card(card=new_card)
-	card = proxydb.get_card(id="Ivory005")
-	#print card
-	for qcard in proxydb.get_cards_by_filter(name="Ash", limit=1):
-		print qcard
-
+	"""
 	
