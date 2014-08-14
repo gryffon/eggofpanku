@@ -41,7 +41,7 @@ class quick_create_proxy_dialog(wx.Dialog):
 	cardTypes = {}
 	
 	def get_cardtype(self):
-		return self.cardTypes[self.cmbType.GetValue()]
+		return self.cmbType.GetValue().lower()
 	
 	def GetStats(self):
 		return {
@@ -148,10 +148,10 @@ class full_create_proxy_dialog(wx.Dialog):
 		self.create_gui(parent)	
 
 	def get_cardtype(self):
-		return self.cardTypes[self.cmbType.GetValue()]
+		return self.cmbType.GetClientData(self.cmbType.GetSelection())
 	
 	def get_set(self):
-		return self.cardSets[self.cmbSet.GetValue()]
+		return self.cmbSet.GetClientData(self.cmbType.GetSelection())
 
 	def get_stats(self):
 		return {
@@ -176,9 +176,9 @@ class full_create_proxy_dialog(wx.Dialog):
 		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Card Type'), wx.VERTICAL)
 		
 		self.cmbType = wx.ComboBox(self, size=(200,-1), style=wx.CB_READONLY)
-		for type in self.cardTypes.values():
-			self.cmbType.Append(type)
-		self.cmbType.SetValue('Personality')
+		for (id, type) in self.cardTypes.iteritems():
+			print id, type
+			self.cmbType.Append(type, id)
 		sbsizer.Add(self.cmbType, 0, wx.CENTRE|wx.ALL|wx.EXPAND, 5)
 		
 		sizer.Add(sbsizer, 0, wx.EXPAND | wx.ALL, 5)
@@ -187,10 +187,11 @@ class full_create_proxy_dialog(wx.Dialog):
 		#Card Set Sizer & Combo
 		sbsizer = wx.StaticBoxSizer(wx.StaticBox(self, -1, 'Card Set'), wx.VERTICAL)
 		
-		self.cmbType = wx.ComboBox(self, size=(200,-1), style=wx.CB_READONLY)
-		for set in self.cardSets.values():
-			self.cmbType.Append(set)
-		sbsizer.Add(self.cmbType, 0, wx.CENTRE|wx.ALL|wx.EXPAND, 5)
+		self.cmbSet = wx.ComboBox(self, size=(200,-1), style=wx.CB_READONLY)
+		for (id, set) in self.cardSets.iteritems():
+			print id, set
+			self.cmbSet.Append(set, id)
+		sbsizer.Add(self.cmbSet, 0, wx.CENTRE|wx.ALL|wx.EXPAND, 5)
 		
 		sizer.Add(sbsizer, 0, wx.EXPAND | wx.ALL, 5)
 
@@ -257,5 +258,8 @@ if __name__ == "__main__":
 	frame = wx.Frame(None)
 	frame.Show()
 	dlg = full_create_proxy_dialog(frame)
-	dlg.ShowModal()
+	if dlg.ShowModal() == wx.ID_OK:
+		print dlg.get_set()
+		print dlg.get_cardtype()
+		print dlg.get_stats()
 	app.MainLoop()
