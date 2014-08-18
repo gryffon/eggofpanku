@@ -201,9 +201,7 @@ class CardPreviewWindow(wx.SplitterWindow):
 			#	html.append('<br>Gold Cost: <b>%s</b>' % card.cost)
 
 			textArr = []
-			print card.cardtext
-			"""
-			for text in card.cardtext.split("<br>"):
+			for text in card.text.split("<br>"):
 				textArr.append('<p>%s</p>' % text)
 			
 			#textArr.append('<p><font size="-1"><i>%s</i></font></p>' % card.flavor)
@@ -215,17 +213,18 @@ class CardPreviewWindow(wx.SplitterWindow):
 			#	html.append('<br>Focus Value: <b>%s</b>' % card.focus)
 
 			#html.append('<br><font size="-1">Legal in <b>%s</b></font>' % ', '.join(card.legal))
-	
+			
 			if card.rarity == "pr":
 				html.append('<br><font size="-1">Created card</font>')
 			else:
 				html.append('<br><font size="-1">%s</font>' % card.id)
 				if card.rarity != "":
 					html.append('<img src=\'' + locationsettings.data_dir + '/' + 'images/rarity_%s.png\' />' % card.rarity)
-					
+			
 			if card.artist != "":
-				html.append('<br><font size="-1">Artist: %s</font>' % card.artist
-			"""					
+				html.append('<br><font size="-1">Artist: %s</font>' % card.artist)
+			
+			#Do nothing
 		else:
 			# HTML card text
 			try:
@@ -262,6 +261,7 @@ class CardPreviewWindow(wx.SplitterWindow):
 			
 			html.append('<br><font size="-1">Legal in <b>%s</b></font>' % ', '.join(card.legal))
 			
+			#rarity flavor and artist to go in.
 			if card.id[0] == '_':
 				html.append('<br><font size="-1">Created card</font>')
 			else:
@@ -272,14 +272,14 @@ class CardPreviewWindow(wx.SplitterWindow):
 			if card.artist != "":
 				html.append('<br><font size="-1">Artist: %s</font>' % card.artist)
 		
-		#rarity flavor and artist to go in.
+		
 		html.append('</center></body></html>')
 		
 		self.cardText.SetPage('\n'.join(html))
 		self.cardText.Refresh()
 		
 		# Rulings
-		"""
+		
 		try:
 			if card.rulings:
 				self.EnableRulings()
@@ -289,7 +289,6 @@ class CardPreviewWindow(wx.SplitterWindow):
 				self.EnableRulings(False)
 		except AttributeError:
 			self.EnableRulings(False)
-		"""
 
 		self.Layout()
 
