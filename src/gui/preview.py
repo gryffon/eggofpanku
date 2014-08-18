@@ -26,6 +26,7 @@ from OpenGL.GL import *
 #Local Imports
 import canvas
 from db import database
+from db import proxydb
 
 from settings.xmlsettings import settings
 from settings.xmlsettings import locationsettings
@@ -51,6 +52,8 @@ class CardPreviewCanvas(canvas.L5RCanvas):
 	def __init__(self, parent, id=wx.ID_ANY, *args, **kwargs):
 		canvas.L5RCanvas.__init__(self, parent, id, *args, **kwargs)
 		self.previewCard = None
+		self.proxy = False
+		self.use_db = False
 		self.previewFacedown = False
 		
 	def OnDraw(self):
@@ -61,7 +64,7 @@ class CardPreviewCanvas(canvas.L5RCanvas):
 			if self.previewFacedown:
 				self.DrawFacedownCard(self.previewCard)
 			else:
-				self.DrawCard(self.previewCard)
+				self.DrawCard(self.previewCard, use_db = self.use_db)
 	
 	def SetupSize(self):
 		glMatrixMode(GL_PROJECTION)
@@ -77,12 +80,23 @@ class CardPreviewCanvas(canvas.L5RCanvas):
 		glViewport(0, 0, x, y)
 		self.Refresh()
 	
-	def SetCard(self, cdid):
-		try:
-			self.previewCard = database.get()[cdid];
-			self.previewFacedown = False
-		except KeyError:
-			self.previewCard = None
+	def SetCard(self, cdid, use_db = False, proxy = False):
+		self.proxy = proxy
+		print cdid
+		if use_db:
+			if proxy:
+				proxdb = proxydb.ProxyDB()
+				self.use_db = True
+				self.previewCard = proxdb.get_card(cdid);
+				self.previewFacedown = False
+		else:
+			try:
+				self.previewCard = database.get()[cdid];
+				self.previewFacedown = False
+				self.use_db = False
+			except KeyError:
+				self.previewCard = None
+
 		
 		self.Refresh()
 	
@@ -140,66 +154,123 @@ class CardPreviewWindow(wx.SplitterWindow):
 			if self.notebook.GetPageCount() == 2:
 				self.notebook.RemovePage(1)
 	
-	def SetCard(self, cdid):
+	def SetCard(self, cdid, use_db = False, proxy = False):
 		"""Show a faceup card."""
+		proxdb = None
+
 		if self.previewCard == cdid:
-			return
+				return
 		self.previewCard = cdid
-		self.oglCanvas.SetCard(cdid)
-		try:
-			card = database.get()[cdid]
-		except KeyError:
-			print cdid
-			return
-		
-		# HTML card text
+
+		if use_db:
+			#Using database
+			self.oglCanvas.SetCard(cdid, use_db = use_db, proxy = proxy)
+			self.proxyCard = proxy
+			if proxy:
+				proxdb = proxydb.ProxyDB()
+				card = proxdb.get_card(cdid)
+		else:
+			self.oglCanvas.SetCard(cdid)
+			try:
+				card = database.get()[cdid]
+			except KeyError:
+				print cdid
+				return
+
 		html = ['<html><body bgcolor="#ffffa0"><center>']
 		
 		html.append('<font size="+1"><b>%s</b></font>' % card.name) # Everything has a name.
 		
-		try:
-			html.append('<br>%s' % typeNames[card.type])
-		except KeyError:
-			pass
-		
-		if card.type in ('personality', 'follower', 'item'): # Force and chi.
-			html.append('<br>Force: <b>%s</b>  Chi: <b>%s</b>' % (card.force, card.chi))
-		elif card.type == 'holding' and card.force != '':
-			html.append('<br>Gold Production: <b>%s</b>' % card.force)
-		
-		if card.type == 'personality': # Gold cost, honor req, phonor.
-			html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>  PH: <b>%s</b>' % (card.honor_req, card.cost, card.personal_honor))
-		elif card.type == 'follower': # Gold cost, honor req.
-			html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>' % (card.honor_req, card.cost))
-		elif card.type == 'stronghold': # Production, honor, etc.
-			html.append('<br>Province Strength: <b>%s</b><br>Gold Production: <b>%s</b><br>Starting Honor: <b>%s</b>' %  \
-				(card.province_strength, card.gold_production, card.starting_honor))
-		elif card.hasGoldCost(): # Gold cost.
-			html.append('<br>Gold Cost: <b>%s</b>' % card.cost)
+		if use_db:
+			card_type = proxdb.get_card_type(card.type)
+			html.append('<br>%s' % card_type.type)
 
-		textArr = []
-		for text in card.text.split("<br>"):
-			textArr.append('<p>%s</p>' % text)
-		
-		textArr.append('<p><font size="-1"><i>%s</i></font></p>' % card.flavor)
-		
-		cardText = '<hr><font size="-1">%s</font><hr>' % ('\n'.join(textArr))
+			if card_type.type in ('Personality', 'Follower', 'Item'): # Force and chi.
+				html.append('<br>Force: <b>%s</b>  Chi: <b>%s</b>' % (card.force, card.chi))
+			elif card_type.type == 'Holding' and card.force != '':
+				html.append('<br>Gold Production: <b>%s</b>' % card.force)
 
-		html.append(cardText)
-		if card.isFate():
-			html.append('<br>Focus Value: <b>%s</b>' % card.focus)
-		
-		html.append('<br><font size="-1">Legal in <b>%s</b></font>' % ', '.join(card.legal))
-		
-		if card.id[0] == '_':
-			html.append('<br><font size="-1">Created card</font>')
+			if card_type.type == 'Personality': # Gold cost, honor req, phonor.
+				html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>  PH: <b>%s</b>' % (card.honor_req, card.cost, card.personal_honor))
+			elif card_type.type == 'Follower': # Gold cost, honor req.
+				html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>' % (card.honor_req, card.cost))
+			elif card_type.type == 'Stronghold': # Production, honor, etc.
+				html.append('<br>Province Strength: <b>%s</b><br>Gold Production: <b>%s</b><br>Starting Honor: <b>%s</b>' %  \
+					(card.province_strength, card.gold_production, card.starting_honor))
+			#elif card.hasGoldCost(): # Gold cost.
+			#	html.append('<br>Gold Cost: <b>%s</b>' % card.cost)
+
+			textArr = []
+			print card.cardtext
+			"""
+			for text in card.cardtext.split("<br>"):
+				textArr.append('<p>%s</p>' % text)
+			
+			#textArr.append('<p><font size="-1"><i>%s</i></font></p>' % card.flavor)
+			
+			cardText = '<hr><font size="-1">%s</font><hr>' % ('\n'.join(textArr))
+
+			html.append(cardText)
+			#if card.isFate():
+			#	html.append('<br>Focus Value: <b>%s</b>' % card.focus)
+
+			#html.append('<br><font size="-1">Legal in <b>%s</b></font>' % ', '.join(card.legal))
+	
+			if card.rarity == "pr":
+				html.append('<br><font size="-1">Created card</font>')
+			else:
+				html.append('<br><font size="-1">%s</font>' % card.id)
+				if card.rarity != "":
+					html.append('<img src=\'' + locationsettings.data_dir + '/' + 'images/rarity_%s.png\' />' % card.rarity)
+					
+			if card.artist != "":
+				html.append('<br><font size="-1">Artist: %s</font>' % card.artist
+			"""					
 		else:
-			html.append('<br><font size="-1">%s</font>' % card.id)
-			if card.rarity != "":
-				html.append('<img src=\'' + locationsettings.data_dir + '/' + 'images/rarity_%s.png\' />' % card.rarity)
-				
-		if card.artist != "":
-			html.append('<br><font size="-1">Artist: %s</font>' % card.artist)
+			# HTML card text
+			try:
+				html.append('<br>%s' % typeNames[card.type])
+			except KeyError:
+				pass
+			
+			if card.type in ('personality', 'follower', 'item'): # Force and chi.
+				html.append('<br>Force: <b>%s</b>  Chi: <b>%s</b>' % (card.force, card.chi))
+			elif card.type == 'holding' and card.force != '':
+				html.append('<br>Gold Production: <b>%s</b>' % card.force)
+			
+			if card.type == 'personality': # Gold cost, honor req, phonor.
+				html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>  PH: <b>%s</b>' % (card.honor_req, card.cost, card.personal_honor))
+			elif card.type == 'follower': # Gold cost, honor req.
+				html.append('<br>HR: <b>%s</b>  GC: <b>%s</b>' % (card.honor_req, card.cost))
+			elif card.type == 'stronghold': # Production, honor, etc.
+				html.append('<br>Province Strength: <b>%s</b><br>Gold Production: <b>%s</b><br>Starting Honor: <b>%s</b>' %  \
+					(card.province_strength, card.gold_production, card.starting_honor))
+			elif card.hasGoldCost(): # Gold cost.
+				html.append('<br>Gold Cost: <b>%s</b>' % card.cost)
+
+			textArr = []
+			for text in card.text.split("<br>"):
+				textArr.append('<p>%s</p>' % text)
+			
+			textArr.append('<p><font size="-1"><i>%s</i></font></p>' % card.flavor)
+			
+			cardText = '<hr><font size="-1">%s</font><hr>' % ('\n'.join(textArr))
+
+			html.append(cardText)
+			if card.isFate():
+				html.append('<br>Focus Value: <b>%s</b>' % card.focus)
+			
+			html.append('<br><font size="-1">Legal in <b>%s</b></font>' % ', '.join(card.legal))
+			
+			if card.id[0] == '_':
+				html.append('<br><font size="-1">Created card</font>')
+			else:
+				html.append('<br><font size="-1">%s</font>' % card.id)
+				if card.rarity != "":
+					html.append('<img src=\'' + locationsettings.data_dir + '/' + 'images/rarity_%s.png\' />' % card.rarity)
+					
+			if card.artist != "":
+				html.append('<br><font size="-1">Artist: %s</font>' % card.artist)
 		
 		#rarity flavor and artist to go in.
 		html.append('</center></body></html>')
@@ -208,6 +279,7 @@ class CardPreviewWindow(wx.SplitterWindow):
 		self.cardText.Refresh()
 		
 		# Rulings
+		"""
 		try:
 			if card.rulings:
 				self.EnableRulings()
@@ -217,7 +289,8 @@ class CardPreviewWindow(wx.SplitterWindow):
 				self.EnableRulings(False)
 		except AttributeError:
 			self.EnableRulings(False)
-		
+		"""
+
 		self.Layout()
-		#self.Refresh()
+
 

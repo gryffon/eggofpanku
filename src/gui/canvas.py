@@ -124,7 +124,7 @@ class L5RCanvas(GLCanvas):
 		
 		glPopMatrix()
 	
-	def DrawCard(self, card):
+	def DrawCard(self, card, use_db = False):
 		"""Draw a single game card centered on the origin."""
 		glPushMatrix()
 		
@@ -140,24 +140,42 @@ class L5RCanvas(GLCanvas):
 		
 		if card is not None:
 			# Make sure we have the card image.
-			if not self.texCard.has_key(card.id):
-				for k,loc in card.images.iteritems():
+			if not use_db:
+				if not self.texCard.has_key(card.id):
+					for k,loc in card.images.iteritems():
+						try:
+							if loc.startswith('images/cards/'):
+								if settings.imagepackdir_changed == True:
+									loc = settings.dir_imagepacks + loc[13:]
+								else:
+									loc = locationsettings.data_dir + '/' + settings.dir_imagepacks + loc[13:]
+							self.texCard[card.id] = self.LoadTexture(loc)
+							break
+						except IOError:
+							pass
+					else:  # If none of them work, try to go for a generic texture.
+						try:
+							self.texCard[card.id] = self.LoadGeneric(card.type)
+						except IOError:
+							self.texCard[card.id] = None  # Give up.
+			else:
+				if card.image != "":
 					try:
-						if loc.startswith('images/cards/'):
+						if card.image.startswith('images/cards/'):
 							if settings.imagepackdir_changed == True:
-								loc = settings.dir_imagepacks + loc[13:]
+								loc = settings.dir_imagepacks + card.image[13:]
 							else:
-								loc = locationsettings.data_dir + '/' + settings.dir_imagepacks + loc[13:]
-						self.texCard[card.id] = self.LoadTexture(loc)
-						break
+								loc = locationsettings.data_dir + '/' + settings.dir_imagepacks + card.image[13:]
+							self.texCard[card.id] = self.LoadTexture(loc)
 					except IOError:
 						pass
-				else:  # If none of them work, try to go for a generic texture.
+				else:
 					try:
 						self.texCard[card.id] = self.LoadGeneric(card.type)
 					except IOError:
 						self.texCard[card.id] = None  # Give up.
-			
+
+
 			if self.texCard[card.id]:
 				glColor4f(1.0, 1.0, 1.0, 1.0)
 				glBindTexture(GL_TEXTURE_2D, self.texCard[card.id])
