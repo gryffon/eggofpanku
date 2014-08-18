@@ -136,7 +136,7 @@ class Card(Base):
 	honor_req = Column(String)
 	cost = Column(String)
 	personal_honor = Column(String)
-	cardtext = Column(String)
+	text = Column(String)
 	image = Column(String)
 	artist = Column(String)
 
