@@ -317,7 +317,7 @@ class ProxyBrowsePanel(wx.Panel):
 	def OnListClick(self, event):
 		idx = event.GetIndex()
 		cdid = self.cardMap[self.lstCards.GetItemData(idx)]
-		wx.FindWindowById(ID_CARD_PREVIEW).SetCard(cdid)
+		wx.FindWindowById(ID_CARD_PREVIEW).SetCard(cdid, use_db = True, proxy = True)
 
 	def OnListActivate(self, event):
 		cdid = self.cardMap[self.lstCards.GetItemData(event.GetIndex())]
