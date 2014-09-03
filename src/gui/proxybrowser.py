@@ -77,8 +77,10 @@ def GetCurrentDeck():
 class CardSorter:
 	"""Base class for card sorters."""
 	def __init__(self, cardmap):
-		self.cardDB = database.get()
+		self.proxdb = proxydb.ProxyDB()
+		self.cardDB = self.proxdb.get_all_cards()
 		self.cardmap = cardmap
+		print cardmap
 
 	def __call__(self, idx1, idx2):
 		card1 = self.cardDB[self.cardmap[idx1]]
@@ -408,7 +410,7 @@ class MainWindow(wx.Frame):
 #Use for testing
 if __name__ == "__main__":
 
-	app = wx.App()
+	app = wx.PySimpleApp()
 	if dbimport.EnsureExists():
 		frame = MainWindow()
 		app.MainLoop()
