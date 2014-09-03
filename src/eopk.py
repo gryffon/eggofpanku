@@ -1271,6 +1271,8 @@ class MainWindow(wx.Frame):
 		
 		wx.EVT_TEXT_ENTER(self, ID_IRC_CHAT_ENTRY, self.OnChatEntry)
 		wx.EVT_CLOSE(self, self.OnClose)
+
+		wx.EVT_MENU(self, ID_MNU_ADD_PROXY, self.OnMenuProxyAdd)
 		
 	
 	def PrintToChat(self, msg):
@@ -2054,7 +2056,11 @@ class MainWindow(wx.Frame):
 	def OnMenuHandDiscardRandom(self, event):
 		self.client.Send(netcore.Msg('move-random', fromzid=game.ZONE_HAND, pid=self.client.localPlayer.pid, zid=game.ZONE_DISCARD_FATE))
 	
-	
+	'''
+	Proxy Database Menu functions
+	'''
+
+
 	def StopServer(self):
 		if self.server:
 			self.PrintToChat('Stopping server...')
