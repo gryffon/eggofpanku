@@ -192,48 +192,56 @@
   <!-- Legality -->
   <filter>
     <type>legality</type>
-    <name>ivory</name>
+    <legalname>ivory</legalname>
+    <legalname>emperor</legalname>
+    <legalname>samurai</legalname>
+    <legalname>celestial</legalname>
+    <displayName>Modern</displayName>
+  </filter>
+  <filter>
+    <type>legality</type>
+    <legalame>ivory2</legalame>
+    <displayName>Ivory Strict</displayName>
+  </filter>
+  <filter>
+    <type>legality</type>
+    <legalname>ivory</legalname>
     <default>True</default>
     <displayName>Ivory</displayName>
   </filter>
   <filter>
     <type>legality</type>
-    <name>ivory2</name>
-    <displayName>Ivory Strict</displayName>
-  </filter>
-  <filter>
-    <type>legality</type>
-    <name>emperor</name>
+    <legalname>emperor</legalname>
     <displayName>Emperor</displayName>
   </filter>
   <filter>
     <type>legality</type>
-    <name>celestial</name>
+    <legalname>celestial</legalname>
     <displayName>Celestial</displayName>
   </filter>
   <filter>
     <type>legality</type>
-    <name>samurai</name>
+    <legalname>samurai</legalname>
     <displayName>Samurai</displayName>
   </filter>
   <filter>
     <type>legality</type>
-    <name>lotus</name>
+    <legalname>lotus</legalname>
     <displayName>Lotus</displayName>
   </filter>
   <filter>
     <type>legality</type>
-    <name>diamond</name>
+    <legalname>diamond</legalname>
     <displayName>Diamond</displayName>
   </filter>
   <filter>
     <type>legality</type>
-    <name>gold</name>
+    <legalname>gold</legalname>
     <displayName>Gold</displayName>
   </filter>
   <filter>
     <type>legality</type>
-    <name>jade</name>
+    <legalname>jade</legalname>
     <displayName>Jade</displayName>
   </filter>
   <!-- Rarity -->
@@ -721,7 +729,7 @@
   </filter>
   <filter>
     <type>set</type>
-    <name>AlitS</name>
+    <name>ALitS</name>
     <displayName>A Line in the Sand</displayName>
   </filter>
 </filterList>
