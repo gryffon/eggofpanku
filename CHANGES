@@ -1,4 +1,13 @@
 News & Changes
+  2014-Octorber-20 Egg of P'an Ku 1.0.4
+  * Add default Conspiracy Token (courtesy of http://kolatinformant.net)
+  * Add default Clout Token
+  * Update how filters.xml treats legality sections:
+      It will now respect the <name> instead of using <displayName>
+      Multiple <name> sections can be included
+      Supports <default>, which needs to be included on one legality for the Combo Box to start with it selected.
+  * Check for <gold_production> on holdings, to support future change of removing this from the card text.
+
   2014-July-18 Egg of P'an Ku 1.0.3
   * Add Output Type "Enhanced Text." "Enhanced Text" includes the Set and Rarity in the output.
 
