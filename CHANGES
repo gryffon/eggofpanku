@@ -3,7 +3,8 @@ News & Changes
   * Fix restricting by Set/Rarity
   * Update filters.xml to be more current.
   * Legality now uses legalname instead of just name
-  
+  * Revert test code preventing creating of cards
+
   2014-October-20 Egg of P'an Ku 1.0.4
   * Add default Conspiracy Token (courtesy of http://kolatinformant.net)
   * Add default Clout Token
