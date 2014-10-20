@@ -33,7 +33,9 @@ EOPK_COPYRIGHT = 'Copyright (C) 2014 Ryan Karetas'
 EOPK_UNOFFICIAL_TEXT = " -- an unofficial Legend of the Five Rings online tabletop"
 EOPK_WARRANTY_TEXT = "comes with ABSOLUTELY NO WARRANTY." \
 			" This is free software, and you are welcome to redistribute it" \
-			" under certain conditions; see LICENSE for details."
+			" under certain conditions; see LICENSE for details." \
+			"\n\n" \
+			"Conspiracy token art used with permission from The Kolat Informant: http://kolatinformant.com/"
 
 EOPK_BETA_TESTERS = ('Jeremy Petravicz', 'Stasinos Karampatsos', 'Angelo Alvisi', 'Jean-Baptiste Perrin', 'Shiba Patrick', 'Faber van Kraanen')
 
