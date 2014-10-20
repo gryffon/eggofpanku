@@ -21,7 +21,7 @@ class FilterData:
         self.displayName = None
         self.deckType = None
         self.hasCost = None
-        self.name = []
+        self.legalname = []
         self.legal = []
 
 class FilterReader:
@@ -61,7 +61,9 @@ class FilterReader:
         elif name == "hasCost":
             self.current.hasCost = self.cdata
         elif name == "name":
-            self.current.name.append(self.cdata)
+            self.current.name = self.cdata
+        elif name == "legalname":
+            self.current.legalname.append(self.cdata)
         elif name == "default":
             self.current.default = self.cdata
         elif name == "displayName":

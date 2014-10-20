@@ -70,7 +70,7 @@ for filterItem in filterList["rarity"]:
 
 
 for filterItem in filterList["legality"]:
-	legalityFormats[filterItem.displayName] = [filterItem.name,filterItem.default]
+	legalityFormats[filterItem.displayName] = [filterItem.legalname,filterItem.default]
 
 for filterItem in filterList["set"]:
 	cardSets[filterItem.displayName] = filterItem.name
