@@ -241,8 +241,22 @@ class RarityFilter(ChoiceFilter):
 class LegalityFilter(ChoiceFilter):
 	name = 'Legality'
 	options = database.legalityFormats
+
+	def MakeWindow(self, parent):
+		
+		self.ctrl = wx.ComboBox(parent, style=wx.CB_READONLY)
+		for type in sorted(self.options.keys()):
+			self.ctrl.Append(type)
+			if self.options[type][1] == "True":
+				self.value = type
+				self.ctrl.SetValue(type)
+		parent.Bind(wx.EVT_COMBOBOX, self.OnChange, self.ctrl)
+		return self.ctrl
+
 	def match(self, card):
-		return self.value.lower() in card.legal
+		for name in self.options[self.value][0]:
+			if name in card.legal:
+				return True
 
 class SetFilter(ChoiceFilter):
 	name = 'Set'

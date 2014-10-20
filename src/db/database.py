@@ -44,7 +44,7 @@ _database = None
 cardTypes = []
 factions = []
 minorClans = []
-legalityFormats = []
+legalityFormats = {}
 rarityFormats = {}
 cardSets = OrderedDict()
 
@@ -70,7 +70,7 @@ for filterItem in filterList["rarity"]:
 
 
 for filterItem in filterList["legality"]:
-	legalityFormats.append(filterItem.displayName)
+	legalityFormats[filterItem.displayName] = [filterItem.name,filterItem.default]
 
 for filterItem in filterList["set"]:
 	cardSets[filterItem.displayName] = filterItem.name

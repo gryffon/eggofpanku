@@ -17,9 +17,11 @@ class FilterData:
     def __init__(self):
         self.type = None
         self.name = None
+        self.default = False
         self.displayName = None
         self.deckType = None
         self.hasCost = None
+        self.name = []
         self.legal = []
 
 class FilterReader:
@@ -59,7 +61,9 @@ class FilterReader:
         elif name == "hasCost":
             self.current.hasCost = self.cdata
         elif name == "name":
-            self.current.name = self.cdata
+            self.current.name.append(self.cdata)
+        elif name == "default":
+            self.current.default = self.cdata
         elif name == "displayName":
             self.current.displayName = self.cdata
         elif name == "legal":
