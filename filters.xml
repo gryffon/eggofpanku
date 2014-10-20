@@ -193,7 +193,13 @@
   <filter>
     <type>legality</type>
     <name>ivory</name>
+    <default>True</default>
     <displayName>Ivory</displayName>
+  </filter>
+  <filter>
+    <type>legality</type>
+    <name>ivory2</name>
+    <displayName>Ivory Strict</displayName>
   </filter>
   <filter>
     <type>legality</type>
@@ -707,5 +713,15 @@
     <type>set</type>
     <name>Ivory</name>
     <displayName>Ivory Edition</displayName>
+  </filter>
+  <filter>
+    <type>set</type>
+    <name>TCS</name>
+    <displayName>The Coming Storm</displayName>
+  </filter>
+  <filter>
+    <type>set</type>
+    <name>AlitS</name>
+    <displayName>A Line in the Sand</displayName>
   </filter>
 </filterList>
