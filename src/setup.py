@@ -183,6 +183,17 @@ setup(
 			'copyright': guids.EOPK_COPYRIGHT,
 		},
 	],
+	console=[
+		{
+			'script': 'diagnose.py',
+			'icon_resources': [(0, '..\\images\\iconedit.ico')],
+			'other_resources': [(24, 1, manifestxml % (guids.EOPK_APPNAME + ' Diagnostic Tool'))],
+			'name': guids.EOPK_APPNAME + ' Diagnostic Tool',
+			'description': 'Diagnostic Tool for %s' % guids.EOPK_APPNAME,
+			'version': guids.EOPK_VERSION_FULL,
+			'copyright': guids.EOPK_COPYRIGHT,
+		},
+	],
 	zipfile='sys/library.zip',
 	options={
 		'py2exe':{
@@ -205,7 +216,7 @@ setup(
 )
 
 nsisfiles = [
-	('.', ['EoPK.exe', 'deckedit.exe', 'MSVCR90.dll', 'python27.dll', 'README', 'LICENSE', 'CHANGES', 'updates.xml']), 
+	('.', ['EoPK.exe', 'deckedit.exe', 'diagnose.exe','MSVCR90.dll', 'python27.dll', 'README', 'LICENSE', 'CHANGES', 'updates.xml']), 
 	('.',['msvcp90.dll', 'gdiplus.dll', 'DataHandler.dll', 'UpdaterClasses.dll','Ionic.Zip.dll',]),
 	('sys', ['sys\\%s' % f for f in os.listdir('dist\\sys')]),
 ]
