@@ -37,7 +37,7 @@
 ehthumbs.db
 Thumbs.db
 
-#Project Specifc Files
+#Project Specific Files
 ######################
 *.sublime-project
 *.sublime-workspace
@@ -48,3 +48,6 @@ cards-complete.xml
 .eopkde-recent
 src/desktop.ini
 src/location.xml
+eopk-32/*
+src/dist/*
+src/build/*
