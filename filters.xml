@@ -200,7 +200,7 @@
   </filter>
   <filter>
     <type>legality</type>
-    <legalame>ivory2</legalame>
+    <legalname>ivory2</legalname>
     <displayName>Ivory Strict</displayName>
   </filter>
   <filter>
