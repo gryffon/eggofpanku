@@ -481,7 +481,11 @@ class Server(threading.Thread):
 					# Found it!
 					self.HandleMoveCard(player.client, cgid, player.pid, game.ZONE_PLAY, x=senseiLoc, y=0, faceup=True)
 					# Also adjust family honor.
-					self.HandleSetFamilyHonor(player.client, honor=player.familyHonor + int(card.data.starting_honor))
+					if ( card.data.starting_honor !- '*' ):
+						self.HandleSetFamilyHonor(player.client, honor=player.familyHonor + int(card.data.starting_honor))
+					else:
+						# '*' for starting_honor appears to be used to represent setting it to 0
+						self.HandleSetFamilyHonor(player.client, honor=0)
 					senseiFound = True
 					break
 
