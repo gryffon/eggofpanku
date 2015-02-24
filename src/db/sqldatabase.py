@@ -82,6 +82,124 @@ class EopkDB():
 		cursor.close()
 
 
+	"""
+	CardType Functions
+	"""
+	def add_card_type(self, name, displayname):
+		session = self.session()
+		try:
+			new_cardtype = CardType(type = name, display_name = displayname)
+			session.add(new_cardtype)
+			session.commit()
+		except IntegrityError:
+			print 'CardType already exists with type=' + name
+		
+		session.close()
+
+	def remove_card_type(self, cardtype):
+		session = self.session()
+		session.delete(cardtype)
+		session.commit()
+		session.close()
+
+	def get_card_type(self, id):
+		session = self.session()
+		card_type = session.query(CardType).filter(CardType.id == id).first()
+		session.close()
+		return card_type
+
+	def get_card_type_by_name(self, name):
+		session = self.session()
+		card_type = session.query(CardType).filter(CardType.type == name).first()
+		session.close()
+		return card_type
+
+	def get_all_card_types(self):
+		session = self.session()
+		card_types = session.query(CardType).all()
+		session.close()
+		return card_types
+
+	"""
+	Set Functions
+	"""
+	def add_set(self, abbv, displayname):
+		session = self.session()
+		try:
+			new_set = Set(name = abbv, display_name = displayname)
+			session.add(new_set)
+			session.commit()
+		except IntegrityError:
+			print 'Set already exists with name=' + abbv
+		session.close()
+
+	def remove_set(self, set):
+		session = self.session()
+		session.delete(set)
+		session.commit
+		session.close()
+
+	def get_set(self, id):
+		session = self.session()
+		set = session.query(Set).filter(Set.id == id).first()
+		session.close()
+		return set
+	
+	def get_set_by_display_name(self, name):
+		session = self.session()
+		set = session.query(Set).filter(Set.display_name == name).first()
+		session.close()
+		return set
+
+	def get_set_by_abbv(self, abbv):
+		session = self.session()
+		set = session.query(Set).filter(Set.name == abbv).first()
+		session.close()
+		return set
+
+	def get_all_sets(self):
+		session = self.session()
+		sets = session.query(Set).all()
+		session.close()
+		return sets
+
+	"""
+	Clan Functions
+	"""
+	def add_clan(self, name, displayname):
+		session = self.session()
+		try:
+			new_clan = Faction(faction = name, display_name = displayname)
+			session.add(new_clan)
+			session.commit()
+		except IntegrityError:
+			print 'Clan already exists with clan=' + name
+		session.close()
+
+	def remove_clan(self, clan):
+		session = self.session()
+		session.delete(clan)
+		session.commit()
+		session.close()
+
+	def get_clan(self, id):
+		session = self.session()
+		set = session.query(Clan).filter(Clan.id == id).first()
+		session.close()
+		return set
+
+	def get_clan_by_name(self, name):
+		session = self.session()
+		set = session.query(Clan).filter(Clan.clan == name).first()
+		session.close()
+		return set
+
+	def get_all_clans(self):
+		session = self.session()
+		sets = session.query(Clan).all()
+		session.close()
+		return sets
+
 
 #Filter Models
 class CardType(Base):
