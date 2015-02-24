@@ -45,7 +45,7 @@ from gui.guids import *
 
 logging.basicConfig(level=logging.DEBUG,
 					format='%(asctime)s %(levelname)s %(message)s',
-					filename='eopk.log',
+					filename=os.path.join(locationsettings.data_dir,eopk.log),
 					filemode='w')
 
 LinkClickEvent, EVT_LINK_CLICK = wx.lib.newevent.NewEvent()
