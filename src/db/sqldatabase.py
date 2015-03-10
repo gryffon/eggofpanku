@@ -21,7 +21,7 @@
 """
 	SQL based database module for Egg of P'an Ku.
 author: Ryan Karetas
-file: proxydb.py
+file: sqldatabase.py
 date: 24 Feb 2015
 """
 
